@@ -1,0 +1,926 @@
+<title>SCOPE India Atlas</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Source+Sans+3:wght@400;600;700&family=Mukta:wght@400;600;700&display=swap">
+<style>
+/* Layout: election-night "balance" board — a headline bar across the top, map on the left, ranked board on the right */
+:root{
+  --bg:#eef1f5; --panel:#ffffff; --ink:#0f1b2d; --muted:#5a6678; --line:#d9dee7; --soft:#f4f6f9;
+  --accent:#0b5f73; --accent-ink:#ffffff; --good:#1f8a52; --bad:#c23b3b; --focus:#e08a00;
+  --z-N:#3a6db5; --z-C:#c9822a; --z-E:#2b9677; --z-W:#c04b55; --z-S:#7656b0; --z-NE:#5c8c2a;
+  --s0:#e3edf1; --s1:#c3dbe4; --s2:#9cc4d4; --s3:#6fa8bf; --s4:#458aa6; --s5:#236b88; --s6:#0c4b66;
+  --dim:.28; --ghost:#dde2ea; --bg-map:#ffffff; --ocean:#f2f6fa; --shadow:0 1px 2px rgba(15,27,45,.06),0 4px 16px rgba(15,27,45,.05);
+  --f-display:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
+  --f-body:"Source Sans 3","Mukta",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mr:"Mukta","Noto Sans Devanagari","Source Sans 3",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0c131c; --panel:#141e2a; --ink:#e7edf4; --muted:#93a1b3; --line:#263445; --soft:#1a2634;
+  --accent:#5cc2d6; --accent-ink:#06222a; --good:#4cc07f; --bad:#ff7b7b; --focus:#ffb547;
+  --z-N:#6f9ee6; --z-C:#e8a650; --z-E:#4fc29f; --z-W:#ec7b84; --z-S:#a58ae0; --z-NE:#8fbd55;
+  --s0:#1c2c3a; --s1:#1e4152; --s2:#22586c; --s3:#2b7189; --s4:#3c8ea6; --s5:#5aadc2; --s6:#8fd3e2;
+  --dim:.22; --ghost:#223040; --bg-map:#141e2a; --ocean:#101924; --shadow:0 1px 2px rgba(0,0,0,.3); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0c131c; --panel:#141e2a; --ink:#e7edf4; --muted:#93a1b3; --line:#263445; --soft:#1a2634;
+  --accent:#5cc2d6; --accent-ink:#06222a; --good:#4cc07f; --bad:#ff7b7b; --focus:#ffb547;
+  --z-N:#6f9ee6; --z-C:#e8a650; --z-E:#4fc29f; --z-W:#ec7b84; --z-S:#a58ae0; --z-NE:#8fbd55;
+  --s0:#1c2c3a; --s1:#1e4152; --s2:#22586c; --s3:#2b7189; --s4:#3c8ea6; --s5:#5aadc2; --s6:#8fd3e2;
+  --dim:.22; --ghost:#223040; --bg-map:#141e2a; --ocean:#101924; --shadow:0 1px 2px rgba(0,0,0,.3); color-scheme:dark}
+html,body{background:var(--bg);color:var(--ink)}
+:root{--z-AS:var(--z-C);--z-AF:var(--z-E);--z-EU:var(--z-N);--z-NA:var(--z-W);--z-SA:var(--z-NE);--z-OC:var(--z-S);--z-BL:var(--z-N);--z-MY:var(--z-S);--z-BG:var(--z-W);--z-KB:var(--z-C);--z-KK:var(--z-N);--z-PN:var(--z-S);--z-NS:var(--z-W);--z-AU:var(--z-C);--z-AM:var(--z-E);--z-NG:var(--z-NE)}
+.crumb{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.crumb button{border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:5px 10px;font-weight:700;font-size:13px}
+.hint{font-size:12.5px;color:var(--muted)}
+.drill{border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);border-radius:8px;padding:8px 12px;font-weight:700;font-size:14px;align-self:flex-start}
+.home{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:700;background:var(--focus);color:#1b1205}
+#map .homepin{fill:var(--focus);stroke:var(--ink);stroke-width:1.2px;vector-effect:non-scaling-stroke;pointer-events:none}
+[hidden]{display:none!important}
+body{font-family:var(--f-body);font-size:15px;line-height:1.45;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:18px 32px}
+html[lang="mr"] body{font-family:var(--f-mr)}
+.wrap{max-width:1240px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.num{font-variant-numeric:tabular-nums}
+
+/* header */
+.top{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:flex-end;justify-content:space-between;border-bottom:3px solid var(--ink);padding-bottom:10px}
+.eyebrow{font-family:var(--f-display);font-weight:600;letter-spacing:.14em;text-transform:uppercase;font-size:13px;color:var(--accent)}
+h1{font-family:var(--f-display);font-weight:700;font-size:clamp(34px,5vw,52px);line-height:.95;margin:2px 0 0;letter-spacing:.005em;text-transform:uppercase}
+h1 small{font-size:.42em;color:var(--muted);font-weight:600;letter-spacing:.06em;margin-left:8px;vertical-align:.35em}
+.controls{display:flex;gap:10px;flex-wrap:wrap}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;background:var(--panel);overflow:hidden}
+.seg button{border:0;background:none;padding:7px 13px;font-weight:600;font-size:14px;display:flex;gap:6px;align-items:center}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.seg button:disabled{cursor:not-allowed;color:var(--muted)}
+.soon{font-size:10px;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--line);border-radius:4px;padding:0 4px}
+
+/* metric tabs */
+.metrics{display:flex;gap:6px;overflow-x:auto;scrollbar-width:thin;padding-bottom:2px}
+.metrics button{flex:0 0 auto;border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:7px 14px;font-weight:600;font-size:14px;white-space:nowrap}
+.metrics button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+
+/* balance */
+.balance{background:var(--panel);border-radius:12px;box-shadow:var(--shadow);padding:16px 18px 14px;display:flex;flex-direction:column;gap:10px}
+.bal-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap}
+.bal-title{font-family:var(--f-display);font-weight:700;font-size:clamp(20px,2.6vw,28px);line-height:1.05;text-transform:uppercase;text-wrap:balance;margin:0}
+html[lang="mr"] .bal-title{font-family:var(--f-mr);text-transform:none}
+.bal-big{font-family:var(--f-display);font-weight:700;font-size:clamp(26px,3.4vw,40px);line-height:1}
+.bal-big span{display:block;font-size:13px;font-family:var(--f-body);font-weight:600;color:var(--muted);text-align:right}
+.bar{position:relative;display:flex;height:46px;border-radius:6px;overflow:visible;background:var(--soft)}
+.bar .seg2{height:100%;display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--f-display);font-weight:700;font-size:17px;border-right:2px solid var(--panel);cursor:pointer;min-width:0;overflow:hidden;white-space:nowrap;transition:opacity .15s}
+.bar .seg2:first-child{border-radius:6px 0 0 6px}.bar .seg2:last-child{border-radius:0 6px 6px 0;border-right:0}
+.bar .seg2.off{opacity:.3}
+.bar{margin-top:14px}
+@media (max-width:500px){.bar .seg2{font-size:13px}}
+.half{position:absolute;left:50%;top:-8px;bottom:-8px;width:0;border-left:2px dashed var(--ink);pointer-events:none}
+.half span{position:absolute;top:-16px;left:0;transform:translateX(-50%);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;background:var(--panel);padding:0 4px}
+.zchips{display:flex;flex-wrap:wrap;gap:6px 14px}
+.zchip{display:flex;align-items:center;gap:7px;border:0;background:none;padding:3px 2px;font-size:14px;border-radius:6px}
+.zchip i{width:12px;height:12px;border-radius:3px;display:inline-block;flex:none}
+.zchip b{font-variant-numeric:tabular-nums}
+.zchip.off{opacity:.45}
+.strip{position:relative;height:64px;margin:6px 6px 0}
+.strip .axis{position:absolute;left:0;right:0;top:30px;height:2px;background:var(--line)}
+.strip .dot{position:absolute;top:22px;width:14px;height:14px;margin-left:-7px;border-radius:50%;border:2px solid var(--panel);cursor:pointer;padding:0}
+.strip .dot.sel{width:20px;height:20px;margin-left:-10px;top:19px;border-color:var(--ink)}
+.strip .avg{position:absolute;top:6px;bottom:6px;border-left:2px dashed var(--ink)}
+.strip .avg span{position:absolute;top:-6px;left:4px;font-size:11px;font-weight:700;white-space:nowrap;letter-spacing:.04em;text-transform:uppercase}
+.strip .tick{position:absolute;top:40px;font-size:12px;color:var(--muted);transform:translateX(-50%)}
+.strip .tick:first-of-type{transform:none}
+.extremes{display:flex;gap:8px 22px;flex-wrap:wrap;font-size:14px;color:var(--muted)}
+.extremes b{color:var(--ink)}
+
+/* main grid */
+.grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:14px;align-items:start}
+.lay-world .wrap{max-width:1680px}
+.lay-world .grid{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr)}
+@media (max-width:860px){.lay-world .grid{grid-template-columns:minmax(0,1fr)}}
+html:not(.lay-world) .mapbox{height:auto;background:none;overflow:visible}
+html:not(.lay-world) #map{height:auto;max-height:76vh;touch-action:auto;cursor:default}
+html:not(.lay-world) .zoomctl, html:not(.lay-world) .readout, html:not(.lay-world) .wheelhint{display:none!important}
+@media (max-width:860px){.grid{grid-template-columns:minmax(0,1fr)}}
+.card{background:var(--panel);border-radius:12px;box-shadow:var(--shadow)}
+.mapcard{padding:14px 14px 12px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.maphead{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.maphead h2{font-family:var(--f-display);font-weight:700;font-size:20px;text-transform:uppercase;letter-spacing:.02em;margin:0}
+html[lang="mr"] .maphead h2{font-family:var(--f-mr);text-transform:none}
+.btn{border:1px solid var(--ink);background:var(--ink);color:var(--bg);border-radius:8px;padding:7px 14px;font-weight:700;font-size:14px}
+.btn.ghost{background:none;color:var(--ink)}
+.mapbox{position:relative;height:max(420px, calc(100vh - 290px));border-radius:10px;overflow:hidden;background:var(--soft)}
+@media (max-width:700px){.mapbox{height:66vh;min-height:340px}}
+#map{width:100%;height:100%;display:block;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}
+#map.dragging{cursor:grabbing}
+.mapcard:fullscreen{border-radius:0;overflow:auto;padding:14px max(14px, env(safe-area-inset-right, 0px)) 14px max(14px, env(safe-area-inset-left, 0px))}
+.mapcard:fullscreen .mapbox{height:calc(100vh - 150px)}
+.zoomctl{position:absolute;top:10px;right:10px;display:flex;flex-direction:column;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--panel);box-shadow:var(--shadow);z-index:2}
+.zoomctl button{width:36px;height:36px;border:0;border-bottom:1px solid var(--line);background:none;font-size:19px;font-weight:700;line-height:1}
+.zoomctl button:last-child{border-bottom:0;font-size:16px}
+.zoomctl button:hover{background:var(--soft)}
+.wheelhint{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb, var(--ink) 45%, transparent);color:#fff;font-size:18px;font-weight:700;pointer-events:none;z-index:3;text-align:center;padding:16px}
+.readout{position:absolute;left:10px;bottom:10px;max-width:calc(100% - 20px);display:flex;gap:10px;align-items:baseline;border:1px solid var(--line);background:var(--panel);border-radius:10px;padding:8px 12px;box-shadow:var(--shadow);text-align:left;z-index:2}
+.readout b{font-family:var(--f-display);font-size:19px;text-transform:uppercase;letter-spacing:.02em}
+html[lang="mr"] .readout b{font-family:var(--f-mr);text-transform:none}
+.readout span{font-size:14px;color:var(--muted);white-space:nowrap}
+.readout em{font-style:normal;font-size:12px;color:var(--accent);font-weight:700;white-space:nowrap}
+#map path{stroke:var(--panel);stroke-width:.8px;vector-effect:non-scaling-stroke;stroke-linejoin:round;cursor:pointer;transition:opacity .15s,fill .25s}
+#map path:hover{stroke:var(--ink);stroke-width:1.2px}
+#map path.sel{stroke:var(--ink);stroke-width:2.2px}
+#map path.ghost{fill:var(--ghost);stroke:var(--panel);cursor:default}
+#map path.sphere{fill:var(--ocean);stroke:var(--line);stroke-width:1px;cursor:default}
+#map path.sphere:hover{stroke:var(--line);stroke-width:1px}
+#map circle.wdot{stroke:var(--ink);stroke-width:.8px;vector-effect:non-scaling-stroke;cursor:pointer}
+#map circle.wdot.sel{stroke-width:2.2px}
+#map path.ghost:hover{stroke:var(--panel);stroke-width:.8px}
+#map path.ghostd{opacity:.42;stroke:var(--panel);cursor:pointer}
+#map path.ghostd:hover{opacity:.85;stroke:var(--ink)}
+#map .border{fill:none;stroke:var(--ink);stroke-width:1.6px;pointer-events:none;stroke-dasharray:5 3;opacity:.55}
+#map .nblabel{fill:var(--muted);font-family:var(--f-display);font-weight:700;letter-spacing:.08em;text-transform:uppercase;pointer-events:none;paint-order:stroke;stroke:var(--bg-map);stroke-width:3px;vector-effect:non-scaling-stroke}
+.nbtoggle{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;color:var(--ink);cursor:pointer;margin-left:6px;white-space:nowrap}
+#map path.dim,#map circle.dim{opacity:var(--dim)}
+#map path:focus-visible{outline:none;stroke:var(--focus);stroke-width:2.4}
+#map .ldmark{stroke:var(--ink);stroke-width:1px;vector-effect:non-scaling-stroke;cursor:pointer}
+#map .ldlabel{fill:var(--muted);font-family:var(--f-body)}
+.flash-ok{animation:ok .9s ease 2}.flash-no{animation:no .9s ease 1}
+@keyframes ok{50%{fill:var(--good)}}@keyframes no{50%{fill:var(--bad)}}
+@media (prefers-reduced-motion:reduce){.flash-ok,.flash-no{animation:none}*{transition:none!important}}
+#tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--bg);border-radius:8px;padding:7px 10px;font-size:13px;line-height:1.3;max-width:220px;box-shadow:var(--shadow);z-index:3}
+#tip b{display:block;font-size:14px}
+.legend{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
+.legend .ramp{display:flex;flex:1 1 260px;min-width:0}
+.legend .ramp div{flex:1;display:flex;flex-direction:column;gap:3px;min-width:0}
+.legend .ramp i{height:10px;display:block}
+.legend .ramp span{font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.smalls{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:12px;color:var(--muted)}
+.smalls button{border:1px solid var(--line);border-radius:6px;padding:4px 8px 4px 5px;background:var(--panel);display:flex;gap:6px;align-items:center;font-size:12px;font-weight:600}
+.smalls button i{width:14px;height:14px;border-radius:3px;display:block}
+.smalls button.sel{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+
+/* quiz */
+.quiz{border:2px solid var(--accent);border-radius:10px;padding:10px 12px;display:flex;gap:10px 14px;align-items:center;flex-wrap:wrap;background:var(--soft)}
+.quiz .q{font-weight:700;font-size:17px;flex:1 1 240px}
+.quiz .score{font-family:var(--f-display);font-weight:700;font-size:22px}
+.quiz .fb{flex-basis:100%;font-size:14px;min-height:1.2em}
+.quiz .fb.ok{color:var(--good)}.quiz .fb.no{color:var(--bad)}
+
+/* side */
+.side{display:flex;flex-direction:column;gap:14px;min-width:0}
+.detail{padding:16px 18px;display:flex;flex-direction:column;gap:12px}
+.d-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.d-name{font-family:var(--f-display);font-weight:700;font-size:30px;line-height:1;text-transform:uppercase;margin:0}
+html[lang="mr"] .d-name{font-family:var(--f-mr);text-transform:none;font-size:28px}
+.d-alt{font-size:15px;color:var(--muted);margin-top:3px}
+.pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#fff;white-space:nowrap}
+.d-meta{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:14px;color:var(--muted)}
+.d-meta b{color:var(--ink);font-weight:600}
+.note{font-size:13.5px;background:var(--soft);border-left:3px solid var(--focus);padding:8px 10px;border-radius:0 6px 6px 0}
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (max-width:420px){.stats{grid-template-columns:minmax(0,1fr)}}
+.stat{border:1px solid var(--line);border-radius:10px;padding:9px 11px;display:flex;flex-direction:column;gap:3px;cursor:pointer;background:none;text-align:left}
+.stat.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.stat .k{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+html[lang="mr"] .stat .k{text-transform:none;letter-spacing:0;font-size:13px}
+.stat .v{font-family:var(--f-display);font-weight:700;font-size:24px;line-height:1.05;font-variant-numeric:tabular-nums}
+.stat .r{font-size:12.5px;color:var(--muted)}
+.cmp{position:relative;height:6px;background:var(--soft);border-radius:3px;margin-top:3px}
+.cmp i{position:absolute;left:0;top:0;bottom:0;border-radius:3px;background:var(--accent)}
+.cmp u{position:absolute;top:-3px;bottom:-3px;border-left:2px solid var(--ink)}
+.rank{padding:14px 14px 8px}
+.rankhead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:6px}
+.rankhead h3{font-family:var(--f-display);font-weight:700;font-size:18px;text-transform:uppercase;margin:0}
+html[lang="mr"] .rankhead h3{font-family:var(--f-mr);text-transform:none}
+.rankhead button{border:1px solid var(--line);background:none;border-radius:6px;padding:3px 8px;font-size:12px;font-weight:600}
+#rank{list-style:none;margin:0;padding:0;max-height:560px;overflow-y:auto}
+#rank li button{width:100%;display:grid;grid-template-columns:26px minmax(0,1fr) auto;gap:8px;align-items:center;border:0;background:none;padding:5px 4px;border-radius:6px;text-align:left}
+#rank li button:hover{background:var(--soft)}
+#rank li button.sel{background:var(--soft);box-shadow:inset 3px 0 0 var(--ink)}
+#rank .rn{font-size:12px;color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
+#rank .nm{display:flex;flex-direction:column;gap:3px;min-width:0}
+#rank .nm span{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#rank .nm i{display:block;height:5px;border-radius:3px}
+#rank .val{font-size:14px;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.src{font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--line);padding-top:12px}
+.src a{color:var(--accent)}
+.src p{margin:0;max-width:110ch}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <div class="eyebrow" id="eyebrow">SCOPE · Geography Lab</div>
+      <h1 id="h1">India Atlas <small>Census 2011</small></h1>
+    </div>
+    <div class="controls">
+      <div class="seg" role="group" aria-label="Scope">
+        <button id="scIndia" aria-pressed="true">India</button>
+        <button id="scWorld" aria-pressed="false">World</button>
+      </div>
+      <div class="seg" role="group" aria-label="Language">
+        <button id="lgEn" aria-pressed="true">EN</button>
+        <button id="lgMr" aria-pressed="false">मराठी</button>
+      </div>
+    </div>
+  </header>
+
+  <nav class="metrics" id="metrics" aria-label="Choose what the map shows"></nav>
+
+
+  <section class="card mapcard" id="mapcard">
+    <div class="maphead">
+      <div class="crumb" id="crumb"></div><h2 id="mapTitle"></h2>
+      <button class="btn" id="quizBtn"></button>
+    </div>
+    <div class="quiz" id="quiz" hidden></div>
+    <div class="hint" id="hint"></div>
+    <div class="mapbox" id="mapbox">
+      <svg id="map" viewBox="0 0 600 672" role="img" aria-label="Map"></svg>
+      <div class="zoomctl" role="group" aria-label="Zoom">
+        <button id="zIn" aria-label="Zoom in" title="Zoom in">+</button>
+        <button id="zOut" aria-label="Zoom out" title="Zoom out">−</button>
+        <button id="zReset" aria-label="Reset view" title="Reset view">⟲</button>
+        <button id="zFull" aria-label="Full screen" title="Full screen">⛶</button>
+      </div>
+      <button class="readout" id="readout" hidden></button>
+      <div class="wheelhint" id="wheelHint" hidden></div>
+      <div id="tip" hidden></div>
+    </div>
+    <div class="legend" id="legend"></div>
+    <div class="smalls" id="smalls"></div>
+  </section>
+
+  <main class="grid" id="grid">
+    <div class="card detail" id="detail"></div>
+    <div class="card rank" id="rankcard">
+      <div class="rankhead"><h3 id="rankTitle"></h3><button id="sortBtn"></button></div>
+      <ol id="rank"></ol>
+    </div>
+  </main>
+
+  <section class="balance" id="balance" aria-live="polite"></section>
+
+
+  <aside class="side" id="side"></aside>
+  <footer class="src" id="src"></footer>
+</div>
+
+<script>
+const B = /*BUNDLE*/;
+const MH = /*MH*/;
+const KA = /*KA*/;
+const FRAME = /*FRAME*/;
+const WD = /*WORLD*/;
+const UI = Object.fromEntries(B.units.map(u => [u.id, u]));
+const LEVELS = {
+  india:{units:B.units, feat:B.feat, groups:["N","C","E","W","S","NE"], vb:FRAME.vb.india, metrics:["pop","area","den","lit","sr","gr"], cards:["pop","area","den","lit","sr","gr"], small:["dl","ch","py","ga","dd","dn","ld","sk","tr"], findMin:3000},
+  world:{units:WD.units, feat:WD.feat, groups:["AS","AF","EU","NA","SA","OC"], vb:[0,0,WD.W,WD.H], small:[], findMin:150000, metrics:["pop","area","den","le","gdp","urb","frs"], cards:["pop","den","le","gdp","urb","frs"]},
+  mh:{units:MH.units, feat:MH.feat, groups:["KK","PN","NS","AU","AM","NG"], vb:FRAME.vb.mh, metrics:["pop","area","den","lit","sr","gr"], cards:["pop","area","den","lit","sr","gr"], small:["mumcity","mumsub"], findMin:0, sel:"sangli",
+      name:{en:"Maharashtra", mr:"महाराष्ट्र", g:"महाराष्ट्रा"},
+      hint:{en:"Figures are for the 35 districts of 2011 (Palghar was still part of Thane). Area is worked out from Census population and density.", mr:"आकडे २०११ च्या ३५ जिल्ह्यांचे आहेत (तेव्हा पालघर ठाणे जिल्ह्यात होता). क्षेत्रफळ जनगणनेतील लोकसंख्या व घनतेवरून काढले आहे."}},
+  ka:{units:KA.units, feat:KA.feat, groups:["BL","MY","BG","KB"], vb:FRAME.vb.ka, metrics:["pop","area","den","lit","sr","gr"], cards:["pop","area","den","lit","sr","gr"], small:[], findMin:0, sel:"belagavi",
+      name:{en:"Karnataka", mr:"कर्नाटक", g:"कर्नाटका"},
+      hint:{en:"Figures are for the 30 districts of 2011 (Vijayanagara was still part of Ballari). Area is worked out from Census population and density.", mr:"आकडे २०११ च्या ३० जिल्ह्यांचे आहेत (तेव्हा विजयनगर बळ्ळारी जिल्ह्यात होता). क्षेत्रफळ जनगणनेतील लोकसंख्या व घनतेवरून काढले आहे."}}
+};
+let UNITS, FEAT, U, ZONES, INDIA, SMALL, FINDABLE;
+
+const T = {
+  en:{eyebrow:"SCOPE · Geography Lab", title:"India Atlas", sub:"Census 2011",
+    india:"India", world:"World", next:"next",
+    zones:{N:"Northern",C:"Central",E:"Eastern",W:"Western",S:"Southern",NE:"North Eastern",KK:"Konkan",PN:"Pune",NS:"Nashik",AU:"Chh. Sambhajinagar",AM:"Amravati",NG:"Nagpur",BL:"Bengaluru",MY:"Mysuru",BG:"Belagavi",KB:"Kalaburagi",AS:"Asia",AF:"Africa",EU:"Europe",NA:"North America",SA:"South America",OC:"Oceania"},
+    lv:{india:{zoneWord:"Zone",zones:"Zones",across:"across States & UTs",avg:"India",total:"India total",unit:"State",units:"States & UTs",mapTitle:"Click a State or UT",small:"Small States & UTs:",hint:"Tip: double-click Maharashtra or Karnataka to see their districts.",balPop:"Where India's people live, by zone",balArea:"How India's land is shared, by zone",balZone:"India's six zones by population",half:"Half of India"},
+        world:{zoneWord:"Continent",zones:"Continents",across:"across countries",avg:"World",total:"World total",unit:"Country",units:"countries",mapTitle:"Click a country",small:"",hint:"Equal Earth projection: every country is shown at its true size. Tip: double-click India to open the India map.",balPop:"Where the world's people live, by continent",balArea:"How the world's land is shared, by continent",balZone:"Continents by population",half:"Half of the world"},
+        dist:{zoneWord:"Division",zones:"Divisions",across:"across {N}'s districts",avg:"{N}",total:"{N} total",unit:"District",units:"districts",mapTitle:"Click a district",small:"Small districts:",balPop:"Where {N}'s people live, by division",balArea:"How {N}'s land is shared, by division",balZone:"{N}'s divisions by population",half:"Half of {N}"}},
+    drill:"See districts", back:"India", district:"District", hq:"Headquarters", was:"called", in2011:"in 2011", home:"SCOPE school is in this district", ourState:"Our state",
+    zoneWord:"Zone", state:"State", ut:"Union Territory",
+    metrics:{pop:"Population",area:"Area",den:"Density",lit:"Literacy",sr:"Sex ratio",gr:"Growth 2001–11",le:"Life expectancy",gdp:"Income per person",urb:"Urban",frs:"Forest cover",zone:"Zones"},
+    units:{pop:"people",area:"km²",den:"per km²",lit:"%",sr:"females per 1,000 males",gr:"% in 10 years",le:"years, at birth",gdp:"₹ per year (GDP per person)",urb:"% living in towns & cities",frs:"% of land"},
+    wtitle:"World Atlas", wsub:"World Bank data", yrs:"yrs", billion:"billion", million:"million", continent:"Continent", openIndia:"Open the India map", oldData:y=>`Latest income figure is from ${y}.`, noData:"No data", iso:"Code",
+    balPop:"Where India's people live, by zone", balArea:"How India's land is shared, by zone", balZone:"India's six zones by population",
+    half:"Half of India", total:"India total",
+    strip:{den:"Population density across States & UTs",lit:"Literacy rate across States & UTs",sr:"Sex ratio across States & UTs",gr:"Population growth 2001–2011 across States & UTs"},
+    avg:"India", highest:"Highest", lowest:"Lowest",
+    mapTitle:"Click a State or UT", quiz:"Quiz mode", exitQuiz:"Exit quiz",
+    small:"Small States & UTs:", capital:"Capital", rank:"Rank", of:"of",
+    vsIndia:"India", ranking:"Ranking", sortHi:"Highest first", sortLo:"Lowest first", sortAZ:"A–Z",
+    find:n=>`Find ${n} on the map`, most:(m,d)=>`Which ${d==="c"?"country":d?"district":"State"} has the highest ${m}?`, least:(m,d)=>`Which ${d==="c"?"country":d?"district":"State"} has the lowest ${m}?`,
+    right:"Correct!", wrong:n=>`Not quite. That was ${n}.`, answerWas:n=>`The answer is ${n}.`, nextQ:"Next question", score:"Score",
+    men:"Males", women:"Females", crore:"crore", lakh:"lakh",
+    srcHead:"Where the numbers come from",
+  },
+  mr:{eyebrow:"स्कोप · भूगोल प्रयोगशाळा", title:"भारत नकाशा", sub:"जनगणना २०११",
+    india:"भारत", world:"जग", next:"लवकरच",
+    zones:{N:"उत्तर",C:"मध्य",E:"पूर्व",W:"पश्चिम",S:"दक्षिण",NE:"ईशान्य",KK:"कोकण",PN:"पुणे",NS:"नाशिक",AU:"छ. संभाजीनगर",AM:"अमरावती",NG:"नागपूर",BL:"बंगळूरु",MY:"म्हैसूर",BG:"बेळगाव",KB:"कलबुर्गी",AS:"आशिया",AF:"आफ्रिका",EU:"युरोप",NA:"उत्तर अमेरिका",SA:"दक्षिण अमेरिका",OC:"ओशनिया"},
+    lv:{india:{zoneWord:"विभाग",zones:"विभाग",across:"राज्ये व केंद्रशासित प्रदेशांतील",avg:"भारत",total:"भारत एकूण",unit:"राज्य",units:"राज्ये व प्रदेश",mapTitle:"राज्य किंवा केंद्रशासित प्रदेशावर क्लिक करा",small:"लहान राज्ये व प्रदेश:",hint:"टीप: जिल्हे पाहण्यासाठी महाराष्ट्र किंवा कर्नाटकावर डबल-क्लिक करा.",balPop:"भारताची लोकसंख्या कोणत्या विभागात राहते",balArea:"भारताची जमीन विभागानुसार",balZone:"लोकसंख्येनुसार भारताचे सहा विभाग",half:"भारताचा अर्धा भाग"},
+        world:{zoneWord:"खंड",zones:"खंड",across:"देशांतील",avg:"जग",total:"जग एकूण",unit:"देश",units:"देश",mapTitle:"देशावर क्लिक करा",small:"",hint:"इक्वल अर्थ प्रक्षेपण: प्रत्येक देश त्याच्या खऱ्या आकारात दिसतो. टीप: भारताचा नकाशा उघडण्यासाठी भारतावर डबल-क्लिक करा.",balPop:"जगाची लोकसंख्या कोणत्या खंडात राहते",balArea:"जगाची जमीन खंडानुसार",balZone:"लोकसंख्येनुसार खंड",half:"जगाचा अर्धा भाग"},
+        dist:{zoneWord:"प्रशासकीय विभाग",zones:"प्रशासकीय विभाग",across:"{G}तील जिल्ह्यांतील",avg:"{N}",total:"{N} एकूण",unit:"जिल्हा",units:"जिल्हे",mapTitle:"जिल्ह्यावर क्लिक करा",small:"लहान जिल्हे:",balPop:"{G}ची लोकसंख्या कोणत्या विभागात राहते",balArea:"{G}ची जमीन विभागानुसार",balZone:"लोकसंख्येनुसार {G}चे प्रशासकीय विभाग",half:"{G}चा अर्धा भाग"}},
+    drill:"जिल्हे पाहा", back:"भारत", district:"जिल्हा", hq:"मुख्यालय", was:"नाव", in2011:"(२०११ मध्ये)", home:"स्कोप शाळा याच जिल्ह्यात आहे", ourState:"आपले राज्य",
+    zoneWord:"विभाग", state:"राज्य", ut:"केंद्रशासित प्रदेश",
+    metrics:{pop:"लोकसंख्या",area:"क्षेत्रफळ",den:"लोकसंख्येची घनता",lit:"साक्षरता",sr:"लिंग गुणोत्तर",gr:"वाढ २००१–११",le:"आयुर्मान",gdp:"दरडोई उत्पन्न",urb:"शहरी लोकसंख्या",frs:"वनक्षेत्र",zone:"विभाग"},
+    units:{pop:"लोक",area:"चौ. किमी",den:"प्रति चौ. किमी",lit:"%",sr:"दर १,००० पुरुषांमागे स्त्रिया",gr:"% दहा वर्षांत",le:"वर्षे (जन्मावेळी)",gdp:"₹ प्रति वर्ष (दरडोई GDP)",urb:"% शहरांत राहणारे",frs:"% जमीन"},
+    wtitle:"जगाचा नकाशा", wsub:"जागतिक बँक आकडेवारी", yrs:"वर्षे", billion:"अब्ज", million:"दशलक्ष", continent:"खंड", openIndia:"भारताचा नकाशा उघडा", oldData:y=>`उत्पन्नाचा ताजा आकडा ${y} चा आहे.`, noData:"माहिती नाही", iso:"कोड",
+    balPop:"भारताची लोकसंख्या कोणत्या विभागात राहते", balArea:"भारताची जमीन विभागानुसार", balZone:"लोकसंख्येनुसार भारताचे सहा विभाग",
+    half:"भारताचा अर्धा भाग", total:"भारत एकूण",
+    strip:{den:"राज्ये व केंद्रशासित प्रदेशांतील लोकसंख्येची घनता",lit:"राज्ये व केंद्रशासित प्रदेशांतील साक्षरता दर",sr:"राज्ये व केंद्रशासित प्रदेशांतील लिंग गुणोत्तर",gr:"२००१–२०११ मधील लोकसंख्या वाढ"},
+    avg:"भारत", highest:"सर्वाधिक", lowest:"सर्वात कमी",
+    mapTitle:"राज्य किंवा केंद्रशासित प्रदेशावर क्लिक करा", quiz:"प्रश्नमंजूषा", exitQuiz:"प्रश्नमंजूषा बंद करा",
+    small:"लहान राज्ये व प्रदेश:", capital:"राजधानी", rank:"क्रमांक", of:"पैकी",
+    vsIndia:"भारत", ranking:"क्रमवारी", sortHi:"जास्त आधी", sortLo:"कमी आधी", sortAZ:"अ–ज्ञ",
+    find:n=>`नकाशावर ${n} शोधा`, most:(m,d)=>`कोणत्या ${d==="c"?"देशाची":d?"जिल्ह्याची":"राज्याची"} ${m} सर्वाधिक आहे?`, least:(m,d)=>`कोणत्या ${d==="c"?"देशाची":d?"जिल्ह्याची":"राज्याची"} ${m} सर्वात कमी आहे?`,
+    right:"बरोबर!", wrong:n=>`चूक. ते ${n} होते.`, answerWas:n=>`उत्तर: ${n}.`, nextQ:"पुढचा प्रश्न", score:"गुण",
+    men:"पुरुष", women:"स्त्रिया", crore:"कोटी", lakh:"लाख",
+    srcHead:"आकडेवारीचे स्रोत",
+  }
+};
+
+const METRICS = () => LEVELS[S.level].metrics.concat("zone");
+const has = (u, m) => u[m] != null;
+const LOGM = {den:1, gdp:1};
+const EXTENSIVE = {pop:1, area:1, zone:1};
+const S = {showNb:true, level:"india", lang:"en", metric:"pop", sel:"mh", zoneFilter:null, sort:"hi", quiz:null};
+try { const L = localStorage.getItem("atlas-lang"); if (L === "mr" || L === "en") S.lang = L; } catch(e) {}
+
+const t = () => T[S.lang];
+const nm = u => S.lang === "mr" ? u.mr : u.en;
+const featName = f => f.lab ? (S.lang === "mr" ? f.mr : f.lab) : nm(U[f.u]);
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+const AVG = {india:{den:382, lit:72.98, sr:943, gr:17.70}, mh:{den:365, lit:82.34, sr:929, gr:15.99, area:307713}, ka:{den:319, lit:75.36, sr:973, gr:15.60, area:191791}, world:WD.avg};
+const isDist = () => S.level !== "india" && S.level !== "world";
+const LV = () => {
+  if (!isDist()) return t().lv[S.level];
+  const L = LEVELS[S.level], src = t().lv.dist, o = {};
+  for (const k in src) o[k] = src[k].replaceAll("{N}", L.name[S.lang==="mr"?"mr":"en"]).replaceAll("{G}", L.name.g);
+  o.hint = L.hint[S.lang]; return o;
+};
+const UNIT_TYPE = () => S.level === "world" ? "Country" : isDist() ? "District" : "State";
+function setLevel(lv, sel){
+  const prevLevel = S._lvSet ? S.level : null; S._lvSet = true;
+  S.level = lv; const L = LEVELS[lv];
+  UNITS = L.units; FEAT = L.feat; ZONES = L.groups; SMALL = L.small;
+  U = Object.fromEntries(UNITS.map(u => [u.id, u]));
+  FINDABLE = UNITS.filter(u => u.area > L.findMin && !SMALL.includes(u.id)).map(u => u.id);
+  const pop = UNITS.reduce((a,u)=>a+u.pop,0), area = UNITS.reduce((a,u)=>a+u.area,0);
+  INDIA = Object.assign({pop, area}, AVG[lv]);
+  S.sel = sel; S.zoneFilter = null;
+  if (S.metric !== "zone" && !L.metrics.includes(S.metric)) S.metric = "pop";
+  const from = (lv === "world" || prevLevel === "world") ? null : curVB;
+  buildMap();
+  zoomTo(from, LEVELS[lv].vb);
+  if (S.quiz){ S.quiz = {score:0, n:0}; renderAll(); newQuestion(); } else renderAll();
+  if (from) $("#mapcard").scrollIntoView({behavior:"smooth", block:"nearest"});
+}
+function stripTitle(m){
+  const en = {den:"Population density", lit:"Literacy rate", sr:"Sex ratio", gr:"Population growth 2001–2011", le:"Life expectancy", gdp:"Income per person", urb:"Share of people in towns & cities", frs:"Forest cover"};
+  const mr = {den:"लोकसंख्येची घनता", lit:"साक्षरता दर", sr:"लिंग गुणोत्तर", gr:"२००१–२०११ मधील लोकसंख्या वाढ", le:"आयुर्मान", gdp:"दरडोई उत्पन्न", urb:"शहरी लोकसंख्येचा वाटा", frs:"वनक्षेत्र"};
+  return S.lang === "mr" ? `${LV().across} ${mr[m]}` : `${en[m]} ${LV().across}`;
+}
+
+const USD_INR = 87.16;  /* World Bank official exchange rate, India, 2025 average (PA.NUS.FCRF) */
+function inr(v, short){
+  if (!short || v < 1e5) return "₹" + Math.round(v).toLocaleString("en-IN");
+  if (v >= 1e7) return "₹" + (v/1e7).toLocaleString("en-IN",{maximumFractionDigits:2}) + " " + t().crore;
+  return "₹" + (v/1e5).toLocaleString("en-IN",{maximumFractionDigits:2}) + " " + t().lakh;
+}
+function fmtBig(n){
+  if (n >= 1e7) return (n/1e7).toLocaleString("en-IN",{maximumFractionDigits:2}) + " " + t().crore;
+  if (n >= 1e5) return (n/1e5).toLocaleString("en-IN",{maximumFractionDigits:2}) + " " + t().lakh;
+  return n.toLocaleString("en-IN");
+}
+function fmt(m, v, short){
+  if (v == null) return "—";
+  if (m === "den" && S.level === "world") return v < 10 ? v.toFixed(1) : Math.round(v).toLocaleString("en-IN");
+  if (m === "pop") return short ? fmtBig(v) : v.toLocaleString("en-IN");
+  if (m === "area") return v.toLocaleString("en-IN") + " km²";
+  if (m === "den") return v.toLocaleString("en-IN");
+  if (m === "lit") return v.toFixed(2) + "%";
+  if (m === "sr") return String(v);
+  if (m === "gr") return (v > 0 ? "+" : "") + v.toFixed(2) + "%";
+  if (v == null) return "—";
+  if (m === "le") return v.toFixed(1) + " " + t().yrs;
+  if (m === "gdp") return inr(v, short);
+  if (m === "urb" || m === "frs") return v.toFixed(1) + "%";
+  return String(v);
+}
+const zcol = z => `var(--z-${z})`;
+
+/* colour bins: quantiles over the 35 units */
+function bins(m){
+  const vals = binUnits().filter(u => has(u, m)).map(u => u[m]).sort((a,b)=>a-b);
+  const n = 7, cuts = [];
+  for (let i=1;i<n;i++) cuts.push(vals[Math.floor(i*vals.length/n)]);
+  return {cuts, min:vals[0], max:vals[vals.length-1]};
+}
+let BIN = null;
+const nbStates = () => isDist() && S.showNb ? Object.keys(LEVELS).filter(k => k !== "india" && k !== "world" && k !== S.level) : [];
+const binUnits = () => UNITS.concat(...nbStates().map(k => LEVELS[k].units));
+function colorOf(u){
+  if (S.metric === "zone") return zcol(u.zone);
+  if (!has(u, S.metric)) return "var(--ghost)";
+  let i = 0; while (i < BIN.cuts.length && u[S.metric] >= BIN.cuts[i]) i++;
+  return `var(--s${i})`;
+}
+function rankOf(u, m){
+  if (!has(u, m)) return null;
+  return UNITS.filter(x => has(x, m) && x[m] > u[m]).length + 1;
+}
+const nWith = m => UNITS.filter(x => has(x, m)).length;
+function scaleOf(m, list){
+  const vals = list.filter(u => has(u, m)).map(u => u[m]);
+  const lo = Math.min(...vals), hi = Math.max(...vals), log = !!LOGM[m] && lo > 0;
+  const f = v => Math.max(0, Math.min(100, log ? (Math.log10(v)-Math.log10(lo))/(Math.log10(hi)-Math.log10(lo))*100 : (v-lo)/((hi-lo)||1)*100));
+  return {lo, hi, log, f};
+}
+
+/* ---------- map ---------- */
+const svg = $("#map"), NS = "http://www.w3.org/2000/svg";
+let dotEls = [], pathEls = [], ghostEls = [], ldMark = null, curVB = null, zoomRaf = 0, zooming = false;
+const svgEl = (tag, attrs) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); return e; };
+const kScale = () => (curVB ? curVB[2] : 600) / 600;   // SVG units per "600-wide" pixel
+const stName = id => S.lang === "mr" ? UI[id].mr : UI[id].en;
+const ghostName = f => f.lab ? (S.lang === "mr" ? f.mr : f.lab) : stName(f.u);
+function setVB(v){ curVB = v; svg.setAttribute("viewBox", v.join(" ")); const z = v[2] / LEVELS[S.level].vb[2]; svg.querySelectorAll("[data-r]").forEach(c => c.setAttribute("r", c.dataset.r * Math.min(1, z))); }
+function zoomTo(from, to){
+  cancelAnimationFrame(zoomRaf);
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!from || reduce){ zooming = false; setVB(to); placeLabels(); return; }
+  zooming = true;
+  const t0 = performance.now(), D = 650, ease = x => x < .5 ? 4*x*x*x : 1 - Math.pow(-2*x + 2, 3)/2;
+  svg.querySelectorAll(".nblabel").forEach(l => l.style.opacity = 0);
+  const step = now => {
+    const p = Math.min(1, (now - t0)/D), e = ease(p);
+    setVB(from.map((v,i) => v + (to[i]-v)*e));
+    if (p < 1) zoomRaf = requestAnimationFrame(step); else { zooming = false; placeLabels(); }
+  };
+  zoomRaf = requestAnimationFrame(step);
+}
+/* ---------- pan & zoom ---------- */
+const baseVB = () => LEVELS[S.level].vb;
+function clampVB(v){
+  const b = baseVB();
+  let [x, y, w, hh] = v;
+  const maxW = b[2]*1.1, minW = b[2]/16;
+  if (w > maxW){ hh *= maxW/w; w = maxW; } if (w < minW){ hh *= minW/w; w = minW; }
+  const cx = Math.max(b[0], Math.min(b[0]+b[2], x + w/2)), cy = Math.max(b[1], Math.min(b[1]+b[3], y + hh/2));
+  return [cx - w/2, cy - hh/2, w, hh];
+}
+function svgPt(cx, cy){ const p = svg.createSVGPoint(); p.x = cx; p.y = cy; return p.matrixTransform(svg.getScreenCTM().inverse()); }
+let labelTimer = 0;
+function zoomAt(factor, cx, cy){
+  if (!curVB) return; cancelAnimationFrame(zoomRaf); zooming = false;
+  const p = svgPt(cx, cy), [x, y, w, hh] = curVB;
+  setVB(clampVB([p.x - (p.x - x)*factor, p.y - (p.y - y)*factor, w*factor, hh*factor]));
+  clearTimeout(labelTimer); labelTimer = setTimeout(placeLabels, 120);
+}
+function zoomCenter(factor){ const r = svg.getBoundingClientRect(); zoomAt(factor, r.left + r.width/2, r.top + r.height/2); }
+let hintT = 0;
+svg.addEventListener("wheel", e => {
+  if (S.level !== "world") return;
+  if (!(e.ctrlKey || e.metaKey)){
+    const w = $("#wheelHint"); w.hidden = false; clearTimeout(hintT); hintT = setTimeout(() => w.hidden = true, 1300); return;
+  }
+  e.preventDefault(); hideTip(); $("#wheelHint").hidden = true;
+  zoomAt(Math.exp(e.deltaY * (e.deltaMode ? 0.05 : 0.0025)), e.clientX, e.clientY);
+}, {passive:false});
+const ptrs = new Map(); let dragMoved = false, lastPinch = 0, panStart = null;
+svg.addEventListener("pointerdown", e => {
+  if (S.level !== "world") return;
+  ptrs.set(e.pointerId, {x:e.clientX, y:e.clientY}); dragMoved = false;
+  if (ptrs.size === 1) panStart = {x:e.clientX, y:e.clientY, vb:curVB.slice()};
+  if (ptrs.size === 2){ const [a, b] = [...ptrs.values()]; lastPinch = Math.hypot(a.x-b.x, a.y-b.y); }
+});
+svg.addEventListener("pointermove", e => {
+  if (!ptrs.has(e.pointerId)) return;
+  ptrs.set(e.pointerId, {x:e.clientX, y:e.clientY});
+  if (ptrs.size === 2){
+    const [a, b] = [...ptrs.values()], d = Math.hypot(a.x-b.x, a.y-b.y);
+    if (lastPinch) zoomAt(lastPinch/d, (a.x+b.x)/2, (a.y+b.y)/2);
+    lastPinch = d; dragMoved = true; panStart = null; return;
+  }
+  if (!panStart) return;
+  const dx = e.clientX - panStart.x, dy = e.clientY - panStart.y;
+  if (!dragMoved && Math.hypot(dx, dy) < 5) return;
+  if (!dragMoved){ dragMoved = true; svg.classList.add("dragging"); try { svg.setPointerCapture(e.pointerId); } catch(_){} hideTip(); }
+  const ctm = svg.getScreenCTM(), s = 1/ctm.a, v = panStart.vb;
+  cancelAnimationFrame(zoomRaf); zooming = false;
+  setVB(clampVB([v[0] - dx*s, v[1] - dy*s, v[2], v[3]]));
+});
+const endPtr = e => {
+  ptrs.delete(e.pointerId); if (ptrs.size < 2) lastPinch = 0;
+  if (ptrs.size === 0){ svg.classList.remove("dragging"); panStart = null; if (dragMoved){ clearTimeout(labelTimer); labelTimer = setTimeout(placeLabels, 60); } }
+  else if (ptrs.size === 1){ const [p] = [...ptrs.values()]; panStart = {x:p.x, y:p.y, vb:curVB.slice()}; }
+};
+svg.addEventListener("pointerup", endPtr); svg.addEventListener("pointercancel", endPtr);
+svg.addEventListener("click", e => { if (dragMoved){ e.stopPropagation(); e.preventDefault(); dragMoved = false; } }, true);
+svg.addEventListener("dblclick", e => { if (S.level === "world" && !e.target.closest("[data-u]")) { e.preventDefault(); zoomAt(0.5, e.clientX, e.clientY); } });
+$("#zIn").onclick = () => zoomCenter(0.6);
+$("#zOut").onclick = () => zoomCenter(1/0.6);
+$("#zReset").onclick = () => zoomTo(curVB, baseVB());
+$("#zFull").onclick = () => {
+  const mc = $("#mapcard");
+  try {
+    if (document.fullscreenElement) document.exitFullscreen();
+    else if (mc.requestFullscreen) mc.requestFullscreen().catch(() => {});
+  } catch(_) {}
+};
+if (!document.fullscreenEnabled) $("#zFull").hidden = true;
+
+function showTip(e, html){
+  if (e.pointerType === "touch") return;
+  const tip = $("#tip"), r = $("#mapbox").getBoundingClientRect();
+  tip.innerHTML = html; tip.hidden = false;
+  let x = e.clientX - r.left + 14, y = e.clientY - r.top + 14;
+  if (x + 220 > r.width) x = e.clientX - r.left - 220;
+  tip.style.left = x + "px"; tip.style.top = y + "px";
+}
+const hideTip = () => { $("#tip").hidden = true; };
+
+function buildMap(){
+  svg.innerHTML = ""; pathEls = []; ghostEls = []; ldMark = null;
+  svg.setAttribute("aria-label", isDist() ? `Map of ${LEVELS[S.level].name.en} by district` : "Map of India by State and Union Territory");
+  if (S.level === "world"){
+    svg.appendChild(svgEl("path", {d:WD.sphere, class:"sphere"}));
+    FEAT.filter(f => !f.u).forEach(f => {
+      const p = svgEl("path", {d:f.d, class:"ghost"});
+      p.addEventListener("pointermove", e => showTip(e, `<b>${esc(S.lang==="mr"&&f.mr?f.mr:f.en)}</b>${esc(t().noData)}`));
+      p.addEventListener("pointerleave", hideTip);
+      svg.appendChild(p);
+    });
+  }
+  if (isDist() && S.showNb){
+    const nb = nbStates();
+    /* neighbouring states without district data: plain grey context */
+    B.feat.forEach(f => {
+      if (f.u === S.level || nb.includes(f.u)) return;
+      const p = svgEl("path", {d:f.d, class:"ghost"});
+      p.addEventListener("pointermove", e => showTip(e, `<b>${esc(ghostName(f))}</b>`));
+      p.addEventListener("pointerleave", hideTip);
+      svg.appendChild(p); ghostEls.push([p, f, null]);
+    });
+    /* neighbouring states that have district data: faded districts on the same colour scale */
+    nb.forEach(k => {
+      const L = LEVELS[k], UU = Object.fromEntries(L.units.map(u => [u.id, u]));
+      L.feat.forEach(f => {
+        const u = UU[f.u], p = svgEl("path", {d:f.d, class:"ghostd", tabindex:"0", role:"button", "aria-label": `${f.lab||u.en}, ${L.name.en}`});
+        p.addEventListener("pointermove", e => {
+          if (S.quiz) return;
+          const nmD = f.lab ? (S.lang==="mr"?f.mr:f.lab) : nm(u);
+          const val = S.metric === "zone" ? "" : esc(fmt(S.metric, u[S.metric], true)) + "<br>";
+          showTip(e, `<b>${esc(nmD)}</b>${val}<span style="opacity:.75">${esc(L.name[S.lang==="mr"?"mr":"en"])} · ${S.lang==="mr"?"उघडण्यासाठी क्लिक करा":"click to open"}</span>`);
+        });
+        p.addEventListener("pointerleave", hideTip);
+        const go = () => { if (!S.quiz){ hideTip(); setLevel(k, f.u); } };
+        p.addEventListener("click", go);
+        p.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); go(); } });
+        svg.appendChild(p); ghostEls.push([p, f, u, k]);
+      });
+      /* dashed outline of that state so the border reads clearly */
+      B.feat.filter(f => f.u === k).forEach(f => svg.appendChild(svgEl("path", {d:f.d, class:"border"})));
+    });
+  }
+  FEAT.filter(f => f.u).forEach(f => {
+    const p = svgEl("path", {d:f.d, tabindex:"0", role:"button"});
+    p.dataset.u = f.u; p.dataset.k = f.k;
+    svg.appendChild(p); pathEls.push([p, f]);
+    bindHover(p, () => f);
+    if (S.level === "india" && LEVELS[f.u]) p.addEventListener("dblclick", e => { e.preventDefault(); if (!S.quiz) setLevel(f.u, LEVELS[f.u].sel); });
+    if (S.level === "world" && f.u === "IND") p.addEventListener("dblclick", e => { e.preventDefault(); if (!S.quiz) setLevel("india", "mh"); });
+  });
+  dotEls = [];
+  if (S.level === "world") UNITS.filter(u => u.dot).forEach(u => {
+    const c = svgEl("circle", {cx:u.dot[0], cy:u.dot[1], r:3.2, "data-r":3.2, class:"wdot", tabindex:"0", role:"button"});
+    c.dataset.u = u.id; svg.appendChild(c); dotEls.push([c, u]);
+    bindHover(c, () => ({u:u.id, k:u.id}));
+  });
+  if (isDist() && S.showNb) B.feat.filter(f => f.u === S.level).forEach(f => svg.appendChild(svgEl("path", {d:f.d, class:"border", style:"opacity:.9;stroke-dasharray:none"})));
+  const k = (LEVELS[S.level].vb[2]) / 600;
+  if (S.level === "world"){ setVB(LEVELS.world.vb); }
+  if (S.level === "india"){
+    /* Lakshadweep islands are too small to see: mark them */
+    const ldF = FEAT.find(f => f.u === "ld"), [lx, ly] = FRAME.ld;
+    ldMark = svgEl("circle", {cx:lx, cy:ly, r:7*k, "data-r":7*k, class:"ldmark", tabindex:"0", role:"button"});
+    ldMark.dataset.u = "ld"; svg.appendChild(ldMark);
+    const ldT = svgEl("text", {x:lx, y:ly - 14*k, "text-anchor":"middle", class:"ldlabel", "font-size":10*k});
+    ldT.textContent = "Lakshadweep"; svg.appendChild(ldT);
+    bindHover(ldMark, () => ldF);
+  }
+  /* SCOPE school, Jalihal (Jat taluka, Sangli district) */
+  const sf = (S.level === "mh" ? FEAT : (S.level === "ka" && S.showNb ? LEVELS.mh.feat : [])).find(f => f.u === "sangli");
+  if (sf){
+    const g = svgEl("g", {"pointer-events":"none"});
+    const cx = sf.c[0] + 18*k, cy = sf.c[1];
+    g.appendChild(svgEl("circle", {class:"homepin", cx, cy, r:6*k, "data-r":6*k}));
+    const tx = svgEl("text", {class:"ldlabel", x:cx, y:cy - 10*k, "text-anchor":"middle", "font-size":11*k, style:"font-weight:700;fill:var(--ink)"});
+    tx.textContent = "SCOPE"; g.appendChild(tx);
+    svg.appendChild(g); ldMark = ldMark || g;
+  }
+}
+/* neighbour-state names, put at the middle of the part of each state that is on screen */
+function placeLabels(){
+  svg.querySelectorAll(".nblabel").forEach(l => l.remove());
+  if (zooming || !isDist() || !S.showNb || !curVB) return;
+  const [vx, vy, vw, vh] = curVB, k = vw/600, groups = {};
+  ghostEls.forEach(([p, f, u, st]) => {
+    const key = st || (f.lab ? f.k : f.u);
+    const name = st ? LEVELS[st].name[S.lang==="mr"?"mr":"en"] : ghostName(f);
+    const b = p.getBBox();
+    const g = groups[key] || (groups[key] = {name, x0:Infinity, y0:Infinity, x1:-Infinity, y1:-Infinity});
+    g.x0 = Math.min(g.x0, b.x); g.y0 = Math.min(g.y0, b.y); g.x1 = Math.max(g.x1, b.x+b.width); g.y1 = Math.max(g.y1, b.y+b.height);
+  });
+  Object.values(groups).forEach(g => {
+    const x0 = Math.max(g.x0, vx), y0 = Math.max(g.y0, vy), x1 = Math.min(g.x1, vx+vw), y1 = Math.min(g.y1, vy+vh);
+    if (x1 - x0 < vw*.12 || y1 - y0 < vh*.06) return;
+    const tx = svgEl("text", {class:"nblabel", x:(x0+x1)/2, y:(y0+y1)/2, "text-anchor":"middle", "dominant-baseline":"middle", "font-size":12*k});
+    tx.textContent = g.name; svg.appendChild(tx);
+  });
+}
+function bindHover(el, getF){
+  el.addEventListener("pointermove", e => {
+    const f = getF(), u = U[f.u];
+    const label = S.quiz ? "?" : esc(featName(f));
+    const val = S.metric === "zone" ? t().zones[u.zone] + " " + LV().zoneWord : fmt(S.metric, u[S.metric], true);
+    const more = !S.quiz && ((S.level === "india" && LEVELS[f.u]) || (S.level === "world" && f.u === "IND")) ? `<br><span style="opacity:.75">${S.lang==="mr"?"जिल्ह्यांसाठी डबल-क्लिक करा":"double-click for districts"}</span>` : "";
+    showTip(e, `<b>${label}</b>${S.quiz ? "" : esc(val)}${S.level==="world"&&f.u==="IND"&&more?`<br><span style="opacity:.75">${S.lang==="mr"?"भारताच्या नकाशासाठी डबल-क्लिक करा":"double-click for the India map"}</span>`:more}`);
+  });
+  el.addEventListener("pointerleave", hideTip);
+  el.addEventListener("click", () => pick(getF().u, el));
+  el.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pick(getF().u, el); } });
+}
+
+function paintMap(){
+  pathEls.forEach(([p,f]) => {
+    const u = U[f.u];
+    p.style.fill = colorOf(u);
+    p.classList.toggle("sel", !S.quiz && f.u === S.sel);
+    p.classList.toggle("dim", !!S.zoneFilter && u.zone !== S.zoneFilter);
+    p.setAttribute("aria-label", S.quiz ? "Map region" : featName(f));
+  });
+  dotEls.forEach(([c, u]) => { c.style.fill = colorOf(u); c.classList.toggle("sel", !S.quiz && u.id === S.sel); c.classList.toggle("dim", !!S.zoneFilter && u.zone !== S.zoneFilter); });
+  ghostEls.forEach(([p, f, u]) => { if (u) p.style.fill = S.metric === "zone" ? "var(--ghost)" : colorOf(u); });
+  if (S.level === "india"){ const c = svg.querySelector(".ldmark"); c.style.fill = colorOf(U.ld); c.classList.toggle("dim", !!S.zoneFilter && "S" !== S.zoneFilter); }
+  // bring selected to front for a clean outline (below borders/pins)
+  pathEls.filter(([p]) => p.classList.contains("sel")).forEach(([p]) => {
+    const after = pathEls[pathEls.length-1][0].nextSibling;
+    svg.insertBefore(p, after);
+  });
+  placeLabels();
+}
+
+/* ---------- small units chips ---------- */
+function renderSmalls(){
+  if (!SMALL.length){ $("#smalls").innerHTML = ""; return; }
+  $("#smalls").innerHTML = `<span>${esc(LV().small)}</span>` + SMALL.map(id => {
+    const u = U[id];
+    return `<button data-u="${id}" class="${!S.quiz && S.sel===id?"sel":""}"><i style="background:${colorOf(u)}"></i>${esc(nm(u))}</button>`;
+  }).join("");
+  $("#smalls").querySelectorAll("button").forEach(b => b.onclick = () => pick(b.dataset.u, null));
+}
+
+/* ---------- metric tabs ---------- */
+function renderTabs(){
+  $("#metrics").innerHTML = METRICS().map(m => `<button data-m="${m}" aria-pressed="${S.metric===m}">${esc(m==="zone"?LV().zones:t().metrics[m])}</button>`).join("");
+  $("#metrics").querySelectorAll("button").forEach(b => b.onclick = () => { S.metric = b.dataset.m; S.zoneFilter = null; renderAll(); });
+}
+
+/* ---------- balance board ---------- */
+function renderBalance(){
+  const m = S.metric, el = $("#balance");
+  if (EXTENSIVE[m]){
+    const key = m === "area" ? "area" : "pop";
+    const total = INDIA[key];
+    const z = ZONES.map(zn => ({zn, v: UNITS.filter(u=>u.zone===zn).reduce((a,u)=>a+u[key],0)})).sort((a,b)=>b.v-a.v);
+    const title = m === "area" ? LV().balArea : m === "zone" ? LV().balZone : LV().balPop;
+    const big = key === "pop" ? fmtBig(total) : total.toLocaleString("en-IN") + " km²";
+    el.innerHTML = `
+      <div class="bal-head"><h2 class="bal-title">${esc(title)}</h2>
+        <div class="bal-big num">${esc(big)}<span>${esc(LV().total)}</span></div></div>
+      <div class="bar" role="img" aria-label="${esc(title)}">
+        ${z.map(o => { const pc = o.v/total*100;
+          return `<div class="seg2 ${S.zoneFilter && S.zoneFilter!==o.zn?"off":""}" data-z="${o.zn}" style="width:${pc}%;background:${zcol(o.zn)}" title="${esc(t().zones[o.zn])}: ${pc.toFixed(1)}%">${pc > 9 ? pc.toFixed(0)+"%" : ""}</div>`; }).join("")}
+        <div class="half"><span>${esc(LV().half)}</span></div>
+      </div>
+      <div class="zchips">${z.map(o => `<button class="zchip ${S.zoneFilter && S.zoneFilter!==o.zn?"off":""}" data-z="${o.zn}" aria-pressed="${S.zoneFilter===o.zn}"><i style="background:${zcol(o.zn)}"></i>${esc(t().zones[o.zn])} <b>${esc(key==="pop"?fmtBig(o.v):o.v.toLocaleString("en-IN")+" km²")}</b> <span>${(o.v/total*100).toFixed(1)}%</span></button>`).join("")}</div>`;
+    el.querySelectorAll("[data-z]").forEach(b => b.onclick = () => { S.zoneFilter = S.zoneFilter === b.dataset.z ? null : b.dataset.z; renderAll(); });
+  } else {
+    const S_ = scaleOf(m, UNITS), lo = S_.lo, hi = S_.hi, sc = S_.f;
+    const st = UNITS.filter(u => u.type === UNIT_TYPE() && has(u, m)).sort((a,b)=>b[m]-a[m]);
+    let ticks = [lo, hi];
+    if (S_.log){ for (let p = Math.ceil(Math.log10(lo)); Math.pow(10,p) < hi; p++){ const v = Math.pow(10,p); if (sc(v) > 12 && sc(v) < 88) ticks.push(v); } }
+    el.innerHTML = `
+      <div class="bal-head"><h2 class="bal-title">${esc(stripTitle(m))}</h2>
+        <div class="bal-big num">${esc(fmt(m, INDIA[m]))}<span>${esc(LV().avg)} · ${esc(t().units[m])}</span></div></div>
+      <div class="strip" role="img" aria-label="${esc(stripTitle(m))}">
+        <div class="axis"></div>
+        <div class="avg" style="left:${sc(INDIA[m])}%"><span>${esc(LV().avg)} ${esc(fmt(m, INDIA[m]))}</span></div>
+        ${UNITS.filter(u => has(u, m)).map(u => `<button class="dot ${u.id===S.sel && !S.quiz?"sel":""}" data-u="${u.id}" style="left:${sc(u[m])}%;background:${zcol(u.zone)};${S.zoneFilter && S.zoneFilter!==u.zone?"opacity:.2":""}" title="${S.quiz?"?":esc(nm(u))+": "+esc(fmt(m,u[m]))}" aria-label="${S.quiz?"?":esc(nm(u))}"></button>`).join("")}
+        ${ticks.map(v => `<span class="tick num" style="left:${sc(v)}%">${esc(fmt(m, v))}</span>`).join("")}
+      </div>
+      <div class="extremes">
+        <span>${esc(t().highest)} (${esc(LV().unit)}): <b>${S.quiz?"?":esc(nm(st[0]))+" "+esc(fmt(m,st[0][m]))}</b></span>
+        <span>${esc(t().lowest)} (${esc(LV().unit)}): <b>${S.quiz?"?":esc(nm(st[st.length-1]))+" "+esc(fmt(m,st[st.length-1][m]))}</b></span>
+        <span class="zchips" style="gap:4px 12px">${ZONES.map(zn=>`<button class="zchip ${S.zoneFilter && S.zoneFilter!==zn?"off":""}" data-z="${zn}" aria-pressed="${S.zoneFilter===zn}"><i style="background:${zcol(zn)}"></i>${esc(t().zones[zn])}</button>`).join("")}</span>
+      </div>`;
+    el.querySelectorAll(".dot").forEach(b => b.onclick = () => pick(b.dataset.u, null));
+    el.querySelectorAll(".zchip").forEach(b => b.onclick = () => { S.zoneFilter = S.zoneFilter === b.dataset.z ? null : b.dataset.z; renderAll(); });
+  }
+}
+
+/* ---------- legend ---------- */
+function renderLegend(){
+  const el = $("#legend");
+  if (S.metric === "zone"){ el.innerHTML = ZONES.map(z => `<span style="display:flex;gap:6px;align-items:center"><i style="width:12px;height:12px;border-radius:3px;background:${zcol(z)};display:inline-block"></i>${esc(t().zones[z])}</span>`).join(""); return; }
+  const m = S.metric, edges = [BIN.min, ...BIN.cuts];
+  const short = v => m==="pop" ? fmtBig(v) : m==="area" ? Math.round(v).toLocaleString("en-IN") : m==="gdp" ? inr(v, true) : m==="le" ? v.toFixed(1) : fmt(m, v);
+  el.innerHTML = `<span>${esc(t().metrics[m])} · ${esc(t().units[m])}</span><div class="ramp">${edges.map((v,i)=>`<div><i style="background:var(--s${i})"></i><span>${esc(short(v))}+</span></div>`).join("")}</div>`;
+}
+
+/* ---------- detail card ---------- */
+function renderReadout(){
+  const r = $("#readout");
+  if (S.quiz || !U[S.sel]){ r.hidden = true; return; }
+  const u = U[S.sel], m = S.metric === "zone" ? null : S.metric;
+  r.hidden = false;
+  r.innerHTML = `<b>${esc(nm(u))}</b><span>${m ? esc(fmt(m, u[m], true)) : esc(t().zones[u.zone])}</span><em>${S.lang==="mr"?"तपशील ↓":"Details ↓"}</em>`;
+  r.onclick = () => $("#detail").scrollIntoView({behavior:"smooth", block:"start"});
+}
+function renderDetail(){
+  renderReadout();
+  const el = $("#detail");
+  if (S.quiz){ el.innerHTML = `<p class="d-alt">${esc(LV().mapTitle)}</p>`; return; }
+  const u = U[S.sel];
+  const feats = FEAT.filter(f => f.u === u.id);
+  const notes = [...new Set(feats.map(f=>f.note).filter(Boolean))];
+  const alt = S.lang === "mr" ? u.en : u.mr;
+  const extra = feats.filter(f=>f.lab).map(f => S.lang==="mr"?f.mr:f.lab);
+  const stats = LEVELS[S.level].cards.map(m => {
+    const r = rankOf(u, m), sc = scaleOf(m, UNITS);
+    const w = has(u, m) ? Math.max(2, sc.f(u[m])) : 0, iw = INDIA[m] != null ? sc.f(INDIA[m]) : null;
+    const ext = m==="pop"||m==="area";
+    return `<button class="stat ${S.metric===m?"on":""}" data-m="${m}">
+      <span class="k">${esc(t().metrics[m])}</span>
+      <span class="v">${isDist()&&m==="area"?"≈ ":""}${esc(fmt(m, u[m], m==="pop"))}</span>
+      <span class="r">${r ? `${esc(t().rank)} ${r} ${esc(t().of)} ${nWith(m)}` : esc(t().noData)}${ext||INDIA[m]==null?"":" · "+esc(LV().avg)+" "+esc(fmt(m, INDIA[m]))}</span>
+      <div class="cmp"><i style="width:${w}%"></i>${ext||iw==null?"":`<u style="left:${iw}%"></u>`}</div>
+    </button>`;
+  }).join("");
+  const big = n => n >= 1e9 ? (n/1e9).toFixed(2)+" "+t().billion : (n/1e6).toFixed(1)+" "+t().million;
+  el.innerHTML = `
+    <div class="d-top">
+      <div><h2 class="d-name">${esc(nm(u))}</h2><div class="d-alt">${esc(alt)}${extra.length?` · ${S.lang==="mr"?"समावेश":"includes"} ${esc(extra.join(", "))}`:""}</div></div>
+      <span class="pill" style="background:${zcol(u.zone)}">${esc(t().zones[u.zone])}</span>
+    </div>
+    ${u.id==="sangli"?`<span class="home">★ ${esc(t().home)}</span>`:""}
+    <div class="d-meta">${S.level==="world" ? `
+      <span>${esc(t().continent)}: <b>${esc(t().zones[u.zone])}</b></span>
+      <span>${esc(t().metrics.area)}: <b class="num">${esc(fmt("area", u.area))}</b></span>
+      <span>${esc(t().metrics.pop)}: <b class="num">≈ ${esc(big(u.pop))}</b> (${u.popY})</span>
+      <span>${esc(t().iso)}: <b>${esc(u.id)}</b></span>` : isDist() ? `
+      <span>${esc(t().district)} · ${esc(t().zones[u.zone])} ${esc(LV().zoneWord.toLowerCase())}</span>
+      <span>${esc(t().hq)}: <b>${esc(u.cap)}</b></span>
+      ${u.old?`<span>${esc(t().was)} <b>${esc(u.old)}</b> ${esc(t().in2011)}</span>`:""}` : `
+      <span>${esc(u.type==="State"?t().state:t().ut)} (2011)</span>
+      <span>${esc(t().capital)}: <b>${esc(u.cap)}</b></span>
+      <span>${esc(t().men)}: <b class="num">${u.male.toLocaleString("en-IN")}</b></span>
+      <span>${esc(t().women)}: <b class="num">${u.female.toLocaleString("en-IN")}</b></span>`}
+    </div>
+    ${S.level==="india"&&LEVELS[u.id]?`<button class="drill" id="drillBtn">${esc(t().drill)} →</button>`:""}
+    ${S.level==="world"&&u.id==="IND"?`<button class="drill" id="drillIndia">${esc(t().openIndia)} →</button>`:""}
+    ${S.level==="world"&&u.gdpY&&u.gdpY<2024?`<div class="note">${esc(t().oldData(u.gdpY))}</div>`:""}
+    ${notes.map(n=>`<div class="note">${esc(n)}</div>`).join("")}
+    ${u.id==="jk"?`<div class="note">Census density for Jammu &amp; Kashmir is worked out on the area under Indian administration (1,01,387 km²), not the full 2,22,236 km².</div>`:""}
+    <div class="stats">${stats}</div>`;
+  el.querySelectorAll(".stat").forEach(b => b.onclick = () => { S.metric = b.dataset.m; S.zoneFilter = null; renderAll(); });
+  const db = $("#drillBtn"); if (db) db.onclick = () => setLevel(u.id, LEVELS[u.id].sel);
+  const di = $("#drillIndia"); if (di) di.onclick = () => setLevel("india", "mh");
+}
+
+/* ---------- ranking ---------- */
+function renderRank(){
+  const m = S.metric === "zone" ? "pop" : S.metric;
+  $("#rankTitle").textContent = `${t().ranking} · ${t().metrics[m]}`;
+  const labels = {hi:t().sortHi, lo:t().sortLo, az:t().sortAZ};
+  $("#sortBtn").textContent = labels[S.sort];
+  let list = [...UNITS];
+  const nv = (u, d) => has(u, m) ? u[m] : d;
+  if (S.sort === "hi") list.sort((a,b)=>nv(b,-Infinity)-nv(a,-Infinity));
+  else if (S.sort === "lo") list.sort((a,b)=>nv(a,Infinity)-nv(b,Infinity));
+  else list.sort((a,b)=>nm(a).localeCompare(nm(b), S.lang==="mr"?"mr":"en"));
+  if (S.zoneFilter) list = list.filter(u => u.zone === S.zoneFilter);
+  const sc = scaleOf(m, UNITS), wOf = v => v == null ? 0 : (sc.log ? sc.f(v) : Math.max(0, v)/Math.max(sc.hi, 1e-9)*100);
+  $("#rank").innerHTML = list.map(u => `<li><button data-u="${u.id}" class="${u.id===S.sel&&!S.quiz?"sel":""}">
+     <span class="rn">${rankOf(u,m) ?? "–"}</span>
+     <span class="nm"><span>${S.quiz?"•••":esc(nm(u))}</span><i style="width:${has(u,m)?Math.max(2,wOf(u[m])):0}%;background:${zcol(u.zone)}"></i></span>
+     <span class="val">${esc(fmt(m,u[m],true))}</span></button></li>`).join("");
+  $("#rank").querySelectorAll("button").forEach(b => b.onclick = () => pick(b.dataset.u, null));
+}
+$("#sortBtn").onclick = () => { S.sort = {hi:"lo", lo:"az", az:"hi"}[S.sort]; renderRank(); };
+
+/* ---------- quiz ---------- */
+function newQuestion(){
+  const q = S.quiz, r = Math.random();
+  if (r < .5){
+    const id = FINDABLE[Math.floor(Math.random()*FINDABLE.length)];
+    q.cur = {kind:"find", ans:id};
+  } else {
+    const ms = LEVELS[S.level].metrics, m = ms[Math.floor(Math.random()*ms.length)];
+    const states = UNITS.filter(u=>u.type===UNIT_TYPE() && has(u, m)).sort((a,b)=>b[m]-a[m]);
+    const most = Math.random() < .55;
+    q.cur = {kind: most?"most":"least", m, ans: (most?states[0]:states[states.length-1]).id};
+  }
+  q.answered = false; q.fb = ""; q.fbCls = "";
+  renderQuiz();
+}
+function qText(){
+  const c = S.quiz.cur;
+  if (c.kind === "find") return t().find(nm(U[c.ans]));
+  const mName = t().metrics[c.m].toLowerCase();
+  const w = S.level === "world" ? "c" : isDist(); return c.kind === "most" ? t().most(S.lang==="mr"?t().metrics[c.m]:mName, w) : t().least(S.lang==="mr"?t().metrics[c.m]:mName, w);
+}
+function renderQuiz(){
+  const el = $("#quiz");
+  el.hidden = !S.quiz;
+  $("#quizBtn").textContent = S.quiz ? t().exitQuiz : t().quiz;
+  $("#quizBtn").className = S.quiz ? "btn ghost" : "btn";
+  if (!S.quiz || !S.quiz.cur) return;
+  const q = S.quiz;
+  el.innerHTML = `<div class="q">${esc(qText())}</div>
+    <div class="score num">${esc(t().score)} ${q.score}/${q.n}</div>
+    ${q.answered ? `<button class="btn" id="nextQ">${esc(t().nextQ)}</button>` : ""}
+    <div class="fb ${q.fbCls}" aria-live="polite">${esc(q.fb)}</div>`;
+  const nb = $("#nextQ"); if (nb) nb.onclick = newQuestion;
+}
+function flash(id, cls){
+  svg.querySelectorAll(`[data-u="${id}"]`).forEach(p => { p.classList.remove("flash-ok","flash-no"); void p.getBBox(); p.classList.add(cls); setTimeout(()=>p.classList.remove(cls), 1900); });
+}
+function answer(id){
+  const q = S.quiz; if (q.answered) return;
+  q.answered = true; q.n++;
+  if (id === q.cur.ans){ q.score++; q.fb = t().right + (q.cur.kind!=="find" ? " " + nm(U[id]) + ": " + fmt(q.cur.m, U[id][q.cur.m]) : ""); q.fbCls = "ok"; flash(id, "flash-ok"); }
+  else { q.fb = (q.cur.kind==="find" ? t().wrong(nm(U[id])) : t().answerWas(nm(U[q.cur.ans]) + " (" + fmt(q.cur.m, U[q.cur.ans][q.cur.m]) + ")")); q.fbCls = "no"; flash(q.cur.ans, "flash-ok"); flash(id, "flash-no"); }
+  renderQuiz();
+}
+$("#quizBtn").onclick = () => {
+  S.quiz = S.quiz ? null : {score:0, n:0};
+  if (S.quiz){ S.zoneFilter = null; renderAll(); newQuestion(); } else renderAll();
+};
+
+/* ---------- selection ---------- */
+function pick(id){
+  if (S.quiz){ answer(id); return; }
+  S.sel = id; renderAll(false);
+  if (S.level !== "world" && window.matchMedia("(max-width:860px)").matches) $("#detail").scrollIntoView({behavior:"smooth", block:"nearest"});
+
+}
+
+/* ---------- sources ---------- */
+function renderSrc(){
+  $("#src").innerHTML = `
+    <strong>${esc(t().srcHead)}</strong>
+    ${S.level==="world"?`<p><b>World:</b> all country figures are from the <a href="https://data.worldbank.org" target="_blank" rel="noopener">World Bank, World Development Indicators</a>, latest year available: population (SP.POP.TOTL, mostly 2025), surface area (AG.SRF.TOTL.K2, 2023), life expectancy at birth (SP.DYN.LE00.IN, 2024), GDP per capita in current US$ (NY.GDP.PCAP.CD, mostly 2025; older years are flagged on the country card), shown in rupees at the World Bank's 2025 average exchange rate of ₹87.16 per US$ (PA.NUS.FCRF) for every country and year, urban population share (SP.URB.TOTL.IN.ZS, 2025) and forest area as a share of land (AG.LND.FRST.ZS, 2023). Density is population ÷ surface area. World averages for life expectancy, urban share and forest cover are the World Bank's own world figures; world income per person and density are worked out from the countries shown. Grey areas have no World Bank figures (for example Taiwan, Western Sahara and Antarctica). Continents follow Natural Earth; Russia is counted in Europe. Map: <a href="https://www.naturalearthdata.com" target="_blank" rel="noopener">Natural Earth</a> 1:10m countries, India point-of-view edition, which draws India's borders as India officially recognises them; drawn in the Equal Earth projection, simplified for display, with very small island countries shown as dots. In मराठी mode, country names use Natural Earth's Devanagari (Hindi) spellings.</p>`:""}
+    ${S.level==="ka"?`<p><b>Karnataka districts:</b> population, decadal growth 2001–2011, sex ratio, literacy rate and density from Census of India 2011 district tables, as compiled by <a href="https://www.census2011.co.in/census/state/districtlist/karnataka.html" target="_blank" rel="noopener">census2011.co.in</a>; district totals add up exactly to the State's official population of 6,10,95,297. District area is population ÷ official density, so it is approximate. Figures use the 30 districts of 2011: Vijayanagara (formed 2020) is shown inside Ballari. Divisions are Karnataka's four revenue divisions. District boundaries: <a href="https://github.com/datta07/INDIAN-SHAPEFILES" target="_blank" rel="noopener">INDIAN-SHAPEFILES</a> (2011 district lines).</p>`:""}
+    ${S.level==="mh"?`<p><b>Maharashtra districts:</b> population, decadal growth 2001–2011, sex ratio, literacy rate and density from Census of India 2011 district tables, as compiled by <a href="https://www.census2011.co.in/census/state/districtlist/maharashtra.html" target="_blank" rel="noopener">census2011.co.in</a>; district totals add up exactly to the State's official population of 11,23,74,333. District area is population ÷ official density, so it is approximate. Figures use the 35 districts of 2011: Palghar (formed 2014) shows undivided Thane. Ahmadnagar is now Ahilyanagar, Aurangabad is now Chhatrapati Sambhajinagar and Osmanabad is now Dharashiv; the map uses today's names. Divisions are Maharashtra's six revenue divisions. District boundaries: <a href="https://github.com/datta07/INDIAN-SHAPEFILES" target="_blank" rel="noopener">INDIAN-SHAPEFILES</a>. The SCOPE pin marks Sangli district, not the exact village.</p>`:""}
+    ${S.level==="world"?"":`    <p>Population, males, females and sex ratio: Census of India 2011, Primary Census Abstract (Office of the Registrar General &amp; Census Commissioner, Ministry of Home Affairs), as reprinted in <a href="https://ecostat.andamannicobar.gov.in/basicstatPDF2024_25/33.populationcensus.pdf" target="_blank" rel="noopener">Basic Statistics 2024-25, Table 32</a>. Literacy rate (age 7+): Census 2011 via <a href="https://education.gov.in/sites/upload_files/mhrd/files/rtise/DOSELR2019530201.pdf" target="_blank" rel="noopener">Ministry of Education, Dept. of School Education &amp; Literacy</a>. Area and decadal growth 2001–2011: Census of India 2011 tables. Density is population ÷ area, except Jammu &amp; Kashmir (official Census figure). Primary source: <a href="https://censusindia.gov.in" target="_blank" rel="noopener">censusindia.gov.in</a>.</p>
+    <p>All figures describe India as it was in 2011 (28 States, 7 Union Territories). The map shows today's boundaries: Telangana (formed 2014) uses undivided Andhra Pradesh figures, and Ladakh (separate UT since 2019) uses Jammu &amp; Kashmir figures. The India total of ${INDIA.pop.toLocaleString("en-IN")} excludes three subdivisions of Senapati district, Manipur, whose count was estimated separately; with them the official total is 1,21,08,54,977. Zones follow the Zonal Councils set up under the States Reorganisation Act, 1956, with the North Eastern Council for the North East; Andaman &amp; Nicobar and Lakshadweep are grouped with the Southern zone. Map boundaries follow the Survey of India's depiction of India's territory, from the open <a href="https://github.com/datta07/INDIAN-SHAPEFILES" target="_blank" rel="noopener">INDIAN-SHAPEFILES</a> dataset, simplified for display.</p>`}`;
+}
+
+/* ---------- language ---------- */
+function setLang(l){
+  S.lang = l; document.documentElement.lang = l;
+  try { localStorage.setItem("atlas-lang", l); } catch(e) {}
+  $("#lgEn").setAttribute("aria-pressed", l==="en"); $("#lgMr").setAttribute("aria-pressed", l==="mr");
+  renderAll();
+}
+$("#lgEn").onclick = () => setLang("en");
+$("#scWorld").onclick = () => { if (S.level !== "world") setLevel("world", "IND"); };
+$("#scIndia").onclick = () => { if (S.level !== "india") setLevel("india", S.level === "world" ? "mh" : S.level); };
+$("#lgMr").onclick = () => setLang("mr");
+
+function applyLayout(){
+  const world = S.level === "world";
+  const wrap = $(".wrap"), grid = $("#grid"), side = $("#side"), mc = $("#mapcard"), bal = $("#balance"), src = $("#src");
+  document.documentElement.classList.toggle("lay-world", world);
+  if (world){
+    if (mc.parentNode !== wrap || mc.nextElementSibling !== grid){ wrap.insertBefore(mc, grid); grid.append($("#detail"), $("#rankcard")); wrap.insertBefore(bal, src); wrap.insertBefore(side, src); }
+  } else if (mc.parentNode !== grid){
+    wrap.insertBefore(bal, grid); grid.prepend(mc); side.append($("#detail"), $("#rankcard")); grid.append(side);
+  }
+}
+function renderAll(){
+  applyLayout();
+  BIN = S.metric === "zone" ? null : bins(S.metric);
+  $("#eyebrow").textContent = t().eyebrow;
+  $("#h1").innerHTML = `${esc(t().title)} <small>${esc(t().sub)}</small>`;
+  $("#scIndia").textContent = t().india; $("#scWorld").textContent = t().world;
+  $("#scIndia").setAttribute("aria-pressed", S.level !== "world"); $("#scWorld").setAttribute("aria-pressed", S.level === "world");
+  $("#h1").innerHTML = `${esc(S.level==="world" ? t().wtitle : t().title)} <small>${esc(S.level==="world" ? t().wsub : t().sub)}</small>`;
+  $("#mapTitle").textContent = S.metric === "zone" ? LV().zones : `${t().metrics[S.metric]} · ${t().units[S.metric]}`;
+  $("#crumb").innerHTML = isDist() ? `<button id="backBtn">← ${esc(t().back)}</button><b>${esc(LEVELS[S.level].name[S.lang==="mr"?"mr":"en"])}</b>` : "";
+  const bb = $("#backBtn"); if (bb) bb.onclick = () => setLevel("india", S.level);
+  $("#wheelHint").textContent = S.lang==="mr" ? "झूम करण्यासाठी Ctrl (Mac वर ⌘) दाबून स्क्रोल करा, किंवा + / − बटणे वापरा" : (/Mac/.test(navigator.platform) ? "Hold ⌘ and scroll to zoom, or use + and −" : "Hold Ctrl and scroll to zoom, or use + and −");
+  $("#hint").innerHTML = esc(LV().hint) + (isDist() ? ` <label class="nbtoggle"><input type="checkbox" id="nbToggle" ${S.showNb?"checked":""}> ${S.lang==="mr"?"शेजारची राज्ये दाखवा":"Show neighbouring states"}</label>` : "");
+  const nt = $("#nbToggle"); if (nt) nt.onchange = () => { S.showNb = nt.checked; buildMap(); renderAll(); };
+  renderTabs(); renderBalance(); paintMap(); renderLegend(); renderSmalls(); renderDetail(); renderRank(); renderQuiz(); renderSrc();
+}
+document.documentElement.lang = S.lang;
+$("#lgEn").setAttribute("aria-pressed", S.lang==="en"); $("#lgMr").setAttribute("aria-pressed", S.lang==="mr");
+setLevel("india", "mh");
+</script>

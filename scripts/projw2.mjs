@@ -1,0 +1,11 @@
+import fs from 'fs'; import * as d3 from 'd3-geo';
+const sph=JSON.parse(fs.readFileSync('sphere_p.json'));
+const g=JSON.parse(fs.readFileSync('w_simp.json'));
+const pts=JSON.parse(fs.readFileSync('pts_p.json'));
+const W=1000; const proj=d3.geoIdentity().reflectY(true).fitWidth(W-8,sph);
+const b=d3.geoPath(proj).bounds(sph); const H=Math.ceil(b[1][1]-b[0][1])+8;
+proj.fitExtent([[4,4],[W-4,H-4]],sph); const path=d3.geoPath(proj).digits(1);
+const feat=g.features.map(f=>({k:f.properties.ADM0_A3,iso:f.properties.ISO_A3_EH,cont:f.properties.CONTINENT,en:f.properties.NAME,hi:f.properties.NAME_HI,d:path(f),a:+path.area(f).toFixed(1)}));
+const P={}; pts.features.forEach(p=>{const q=p.properties; if(!p.geometry) return; P[q.ADM0_A3]={iso:q.ISO_A3_EH,cont:q.CONTINENT,en:q.NAME,hi:q.NAME_HI,c:proj(p.geometry.coordinates).map(v=>+v.toFixed(1))};});
+fs.writeFileSync('w_geo.json',JSON.stringify({W,H,sphere:path(sph.features[0]),feat,P}));
+console.log(W,H,feat.length,Object.keys(P).length,(fs.statSync('w_geo.json').size/1024|0)+'KB');

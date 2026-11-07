@@ -203,6 +203,21 @@ html[lang="mr"] .rankhead h3{font-family:var(--f-mr);text-transform:none}
 .src a{color:var(--accent)}
 .src p{margin:0;max-width:110ch}
 
+/* ===== Motion ===== */
+:root{--ease:cubic-bezier(.22,.61,.36,1);--ease-io:cubic-bezier(.65,0,.35,1)}
+.maphead-r{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-left:auto}
+#map path{transition:fill .55s var(--ease),opacity .35s var(--ease),stroke-width .2s var(--ease)!important}
+#map circle{transition:fill .55s var(--ease),opacity .35s var(--ease)}
+.metrics button,.seg button,.btn,.drill,.stat,.zchip,.smalls button,#rank li button,.zoomctl button,.readout{transition:background-color .25s var(--ease),color .25s var(--ease),border-color .25s var(--ease),box-shadow .25s var(--ease),opacity .25s var(--ease),transform .2s var(--ease)}
+.btn:active,.metrics button:active,.seg button:active,.zoomctl button:active,.drill:active{transform:scale(.97)}
+.bar .seg2{transition:opacity .3s var(--ease)}
+#tip{transition:opacity .15s var(--ease)}
+@keyframes growX{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes popIn{from{transform:scale(.3);opacity:0}to{transform:scale(1);opacity:1}}
+.cmp i{transform-origin:left;animation:growX .7s var(--ease) both}
+#rank.grow .nm i{transform-origin:left;animation:growX .7s var(--ease) both}
+.strip.grow .dot{animation:popIn .45s var(--ease) both}
+@media (prefers-reduced-motion:reduce){.cmp i,#rank.grow .nm i,.strip.grow .dot{animation:none!important}#map path,#map circle{transition:none!important}}
 /* ===== Paper & highlighter theme ===== */
 :root{
   --bg:#ebe6da; --paper-hi:#f6f2e8; --grid:rgba(40,36,28,.05); --panel:#fbf9f4; --ink:#15171c; --muted:#6b675d; --line:#d8d1c1; --soft:#f2eee4;
@@ -332,10 +347,6 @@ html[lang="mr"] .stat .k{font-size:13px;font-weight:700}
       <h1 id="h1">India Atlas <small>Census 2011</small></h1>
     </div>
     <div class="controls">
-      <div class="seg" role="group" aria-label="Scope">
-        <button id="scIndia" aria-pressed="true">India</button>
-        <button id="scWorld" aria-pressed="false">World</button>
-      </div>
       <div class="seg" role="group" aria-label="Language">
         <button id="lgEn" aria-pressed="true">EN</button>
         <button id="lgMr" aria-pressed="false">मराठी</button>
@@ -349,7 +360,13 @@ html[lang="mr"] .stat .k{font-size:13px;font-weight:700}
   <section class="card mapcard" id="mapcard">
     <div class="maphead">
       <div class="crumb" id="crumb"></div><h2 id="mapTitle"></h2>
-      <button class="btn" id="quizBtn"></button>
+      <div class="maphead-r">
+        <div class="seg" role="group" aria-label="Map">
+          <button id="scIndia" aria-pressed="true">India</button>
+          <button id="scWorld" aria-pressed="false">World</button>
+        </div>
+        <button class="btn" id="quizBtn"></button>
+      </div>
     </div>
     <div class="quiz" id="quiz" hidden></div>
     <div class="hint" id="hint"></div>
@@ -487,6 +504,7 @@ function setLevel(lv, sel){
   const from = (lv === "world" || prevLevel === "world") ? null : curVB;
   buildMap();
   zoomTo(from, LEVELS[lv].vb);
+  if (!from && prevLevel && !REDUCE()) svg.animate([{opacity:0, transform:"scale(.985)"},{opacity:1, transform:"none"}], {duration:520, easing:"cubic-bezier(.22,.61,.36,1)"});
   if (S.quiz){ S.quiz = {score:0, n:0}; renderAll(); newQuestion(); } else renderAll();
   if (from) $("#mapcard").scrollIntoView({behavior:"smooth", block:"nearest"});
 }
@@ -565,7 +583,8 @@ function zoomTo(from, to){
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (!from || reduce){ zooming = false; setVB(to); placeLabels(); return; }
   zooming = true;
-  const t0 = performance.now(), D = 650, ease = x => x < .5 ? 4*x*x*x : 1 - Math.pow(-2*x + 2, 3)/2;
+  cancelAnimationFrame(glideRaf); tgtVB = null;
+  const t0 = performance.now(), D = 900, ease = x => x < .5 ? 16*x*x*x*x*x : 1 - Math.pow(-2*x + 2, 5)/2;
   svg.querySelectorAll(".nblabel").forEach(l => l.style.opacity = 0);
   const step = now => {
     const p = Math.min(1, (now - t0)/D), e = ease(p);
@@ -586,11 +605,26 @@ function clampVB(v){
 }
 function svgPt(cx, cy){ const p = svg.createSVGPoint(); p.x = cx; p.y = cy; return p.matrixTransform(svg.getScreenCTM().inverse()); }
 let labelTimer = 0;
+let tgtVB = null, glideRaf = 0;
+const REDUCE = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function glide(){
+  cancelAnimationFrame(glideRaf);
+  const step = () => {
+    let done = true;
+    const next = curVB.map((v, i) => { const d = tgtVB[i] - v; if (Math.abs(d) > Math.abs(tgtVB[2]) * 0.0005) done = false; return v + d * 0.2; });
+    setVB(done ? tgtVB.slice() : next);
+    if (!done) glideRaf = requestAnimationFrame(step); else { tgtVB = null; clearTimeout(labelTimer); labelTimer = setTimeout(placeLabels, 60); }
+  };
+  glideRaf = requestAnimationFrame(step);
+}
 function zoomAt(factor, cx, cy){
   if (!curVB) return; cancelAnimationFrame(zoomRaf); zooming = false;
-  const p = svgPt(cx, cy), [x, y, w, hh] = curVB;
-  setVB(clampVB([p.x - (p.x - x)*factor, p.y - (p.y - y)*factor, w*factor, hh*factor]));
-  clearTimeout(labelTimer); labelTimer = setTimeout(placeLabels, 120);
+  const p = svgPt(cx, cy), base = tgtVB || curVB;
+  const fx = (p.x - curVB[0]) / curVB[2], fy = (p.y - curVB[1]) / curVB[3];   /* keep the point under the cursor fixed */
+  const w = base[2]*factor, hh = base[3]*factor;
+  const next = clampVB([p.x - fx*w, p.y - fy*hh, w, hh]);
+  if (REDUCE()){ setVB(next); clearTimeout(labelTimer); labelTimer = setTimeout(placeLabels, 120); return; }
+  tgtVB = next; glide();
 }
 function zoomCenter(factor){ const r = svg.getBoundingClientRect(); zoomAt(factor, r.left + r.width/2, r.top + r.height/2); }
 let hintT = 0;
@@ -606,7 +640,7 @@ const ptrs = new Map(); let dragMoved = false, lastPinch = 0, panStart = null;
 svg.addEventListener("pointerdown", e => {
   if (S.level !== "world") return;
   ptrs.set(e.pointerId, {x:e.clientX, y:e.clientY}); dragMoved = false;
-  if (ptrs.size === 1) panStart = {x:e.clientX, y:e.clientY, vb:curVB.slice()};
+  if (ptrs.size === 1){ cancelAnimationFrame(glideRaf); tgtVB = null; panStart = {x:e.clientX, y:e.clientY, vb:curVB.slice()}; }
   if (ptrs.size === 2){ const [a, b] = [...ptrs.values()]; lastPinch = Math.hypot(a.x-b.x, a.y-b.y); }
 });
 svg.addEventListener("pointermove", e => {
@@ -622,7 +656,7 @@ svg.addEventListener("pointermove", e => {
   if (!dragMoved && Math.hypot(dx, dy) < 5) return;
   if (!dragMoved){ dragMoved = true; svg.classList.add("dragging"); try { svg.setPointerCapture(e.pointerId); } catch(_){} hideTip(); }
   const ctm = svg.getScreenCTM(), s = 1/ctm.a, v = panStart.vb;
-  cancelAnimationFrame(zoomRaf); zooming = false;
+  cancelAnimationFrame(zoomRaf); cancelAnimationFrame(glideRaf); tgtVB = null; zooming = false;
   setVB(clampVB([v[0] - dx*s, v[1] - dy*s, v[2], v[3]]));
 });
 const endPtr = e => {
@@ -803,6 +837,7 @@ function renderTabs(){
 }
 
 /* ---------- balance board ---------- */
+let lastViewKey = "", viewChanged = false, lastSelKey = "";
 function renderBalance(){
   const m = S.metric, el = $("#balance");
   if (EXTENSIVE[m]){
@@ -845,6 +880,13 @@ function renderBalance(){
   }
 }
 
+function animateBalance(){
+  if (!viewChanged || REDUCE()) return;
+  const bar = document.querySelector("#balance .bar"), strip = document.querySelector("#balance .strip");
+  if (bar) bar.animate([{clipPath:"inset(0 100% 0 0)"},{clipPath:"inset(0 0 0 0)"}], {duration:750, easing:"cubic-bezier(.22,.61,.36,1)"});
+  if (strip){ strip.classList.add("grow"); strip.querySelectorAll(".dot").forEach((d, i) => d.style.animationDelay = Math.min(i*8, 400) + "ms"); }
+  document.querySelector("#balance .bal-head")?.animate([{opacity:0, transform:"translateY(6px)"},{opacity:1, transform:"none"}], {duration:420, easing:"cubic-bezier(.22,.61,.36,1)"});
+}
 /* ---------- legend ---------- */
 function renderLegend(){
   const el = $("#legend");
@@ -866,6 +908,9 @@ function renderReadout(){
 function renderDetail(){
   renderReadout();
   const el = $("#detail");
+  const sk = S.level + "|" + S.sel + "|" + S.lang;
+  if (sk !== lastSelKey && !REDUCE()) requestAnimationFrame(() => el.animate([{opacity:.25, transform:"translateY(6px)"},{opacity:1, transform:"none"}], {duration:380, easing:"cubic-bezier(.22,.61,.36,1)"}));
+  lastSelKey = sk;
   if (S.quiz){ el.innerHTML = `<p class="d-alt">${esc(LV().mapTitle)}</p>`; return; }
   const u = U[S.sel];
   const feats = FEAT.filter(f => f.u === u.id);
@@ -927,6 +972,7 @@ function renderRank(){
   else list.sort((a,b)=>nm(a).localeCompare(nm(b), S.lang==="mr"?"mr":"en"));
   if (S.zoneFilter) list = list.filter(u => u.zone === S.zoneFilter);
   const sc = scaleOf(m, UNITS), wOf = v => v == null ? 0 : (sc.log ? sc.f(v) : Math.max(0, v)/Math.max(sc.hi, 1e-9)*100);
+  $("#rank").classList.toggle("grow", viewChanged);
   $("#rank").innerHTML = list.map(u => `<li><button data-u="${u.id}" class="${u.id===S.sel&&!S.quiz?"sel":""}">
      <span class="rn">${rankOf(u,m) ?? "–"}</span>
      <span class="nm"><span>${S.quiz?"•••":esc(nm(u))}</span><i style="width:${has(u,m)?Math.max(2,wOf(u[m])):0}%;background:${zcol(u.zone)}"></i></span>
@@ -1027,6 +1073,7 @@ function applyLayout(){
 }
 function renderAll(){
   applyLayout();
+  const vk = S.level + "|" + S.metric + "|" + S.lang; viewChanged = vk !== lastViewKey; lastViewKey = vk;
   BIN = S.metric === "zone" ? null : bins(S.metric);
   $("#eyebrow").textContent = t().eyebrow;
   $("#h1").innerHTML = `${esc(t().title)} <small>${esc(t().sub)}</small>`;
@@ -1041,7 +1088,7 @@ function renderAll(){
   $("#wheelHint").textContent = S.lang==="mr" ? "झूम करण्यासाठी Ctrl (Mac वर ⌘) दाबून स्क्रोल करा, किंवा + / − बटणे वापरा" : (/Mac/.test(navigator.platform) ? "Hold ⌘ and scroll to zoom, or use + and −" : "Hold Ctrl and scroll to zoom, or use + and −");
   $("#hint").innerHTML = esc(LV().hint) + (isDist() ? ` <label class="nbtoggle"><input type="checkbox" id="nbToggle" ${S.showNb?"checked":""}> ${S.lang==="mr"?"शेजारची राज्ये दाखवा":"Show neighbouring states"}</label>` : "");
   const nt = $("#nbToggle"); if (nt) nt.onchange = () => { S.showNb = nt.checked; buildMap(); renderAll(); };
-  renderTabs(); renderBalance(); paintMap(); renderLegend(); renderSmalls(); renderDetail(); renderRank(); renderQuiz(); renderSrc();
+  renderTabs(); renderBalance(); animateBalance(); paintMap(); renderLegend(); renderSmalls(); renderDetail(); renderRank(); renderQuiz(); renderSrc();
 }
 document.documentElement.lang = S.lang;
 $("#lgEn").setAttribute("aria-pressed", S.lang==="en"); $("#lgMr").setAttribute("aria-pressed", S.lang==="mr");

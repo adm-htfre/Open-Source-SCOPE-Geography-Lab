@@ -2,6 +2,8 @@
 
 An interactive geography atlas for SCOPE school (Yerala Project Society, Jalihal) Geography classes. Open `index.html` in any browser: it is a single self-contained file, so it works offline and can be hosted on GitHub Pages.
 
+Give it a shot here - https://adm-htfre.github.io/Open-Source-SCOPE-Geography-Lab
+
 ## What it does
 
 - **World map** (Equal Earth projection): population, area, density, life expectancy, income per person (in ₹), urban share and forest cover for 215 countries. Pan, zoom and full-screen.
@@ -25,3 +27,5 @@ All figures for India describe 2011 boundaries: Telangana shows undivided Andhra
 - `index.html`: the atlas (everything inlined)
 - `data/`: the processed data and projected map shapes baked into the page
 - `scripts/`: the scripts used to build the data and the page (`template.html` + `build.py`)
+
+<img width="1273" height="1017" alt="image" src="https://github.com/user-attachments/assets/6b3bfcc3-ecc7-4a24-903c-f16a4ef89f0f" />

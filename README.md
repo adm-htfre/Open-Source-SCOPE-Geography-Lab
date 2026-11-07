@@ -1,8 +1,12 @@
+
 # Open Source SCOPE - Geography Lab
 
 An interactive geography atlas for SCOPE school (Yerala Project Society, Jalihal) Geography classes. Open `index.html` in any browser: it is a single self-contained file, so it works offline and can be hosted on GitHub Pages.
 
 Give it a shot here - https://adm-htfre.github.io/Open-Source-SCOPE-Geography-Lab
+
+<img width="1273" height="1017" alt="image" src="https://github.com/user-attachments/assets/6b3bfcc3-ecc7-4a24-903c-f16a4ef89f0f" />
+
 
 ## What it does
 
@@ -28,4 +32,4 @@ All figures for India describe 2011 boundaries: Telangana shows undivided Andhra
 - `data/`: the processed data and projected map shapes baked into the page
 - `scripts/`: the scripts used to build the data and the page (`template.html` + `build.py`)
 
-<img width="1273" height="1017" alt="image" src="https://github.com/user-attachments/assets/6b3bfcc3-ecc7-4a24-903c-f16a4ef89f0f" />
+

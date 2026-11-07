@@ -1,0 +1,562 @@
+<title>Geography Lab Term 2 Lessons</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,500&family=Archivo:wght@600;700;800;900&family=Mukta:wght@400;500;600;700;800&family=Tiro+Devanagari+Marathi:ital@0;1&display=swap">
+<style>
+/* Layout: a lesson board on warm grid paper — eyebrow, serif headline with a highlighter word, outlined cards, black fact chips, a lesson rail along the bottom */
+:root{
+  --paper:#ebe6da; --paper-hi:#f6f2e8; --grid:rgba(40,36,28,.05); --ink:#15171c; --muted:#6b675d; --line:#d8d1c1;
+  --card:#fbf9f4; --soft:#f2eee4; --hl:#f7d548; --chip:#15171c; --chip-ink:#fff;
+  --blue:#3b6fd6; --red:#d1543a; --green:#2f8a4f; --amber:#c9822a; --rail:#f8f5ee;
+  --f-serif:"Source Serif 4","Iowan Old Style",Georgia,serif;
+  --f-sans:"Archivo","Mukta","Arial Narrow",system-ui,sans-serif;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#1b1a17; --paper-hi:#25231f; --grid:rgba(255,248,230,.045); --ink:#f1ece0; --muted:#a9a293; --line:#3b382f;
+  --card:#23211d; --soft:#2a2823; --hl:#e8c234; --chip:#f1ece0; --chip-ink:#15171c;
+  --blue:#6f9bf0; --red:#ec7c62; --green:#5cc483; --amber:#e8a650; --rail:#23211d; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#1b1a17; --paper-hi:#25231f; --grid:rgba(255,248,230,.045); --ink:#f1ece0; --muted:#a9a293; --line:#3b382f;
+  --card:#23211d; --soft:#2a2823; --hl:#e8c234; --chip:#f1ece0; --chip-ink:#15171c;
+  --blue:#6f9bf0; --red:#ec7c62; --green:#5cc483; --amber:#e8a650; --rail:#23211d; color-scheme:dark}
+html[lang="mr"]{--f-serif:"Tiro Devanagari Marathi","Noto Serif Devanagari",serif; --f-sans:"Mukta","Noto Sans Devanagari",sans-serif}
+html,body{background:var(--paper);color:var(--ink)}
+body{font-family:var(--f-serif);font-size:17px;line-height:1.5;min-height:100vh;display:flex;flex-direction:column;
+  background:radial-gradient(ellipse 70% 55% at 50% 35%, var(--paper-hi), transparent 70%) fixed,
+  linear-gradient(var(--grid) 1px, transparent 1px) 0 0/28px 28px, linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0/28px 28px, var(--paper)}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:3px solid var(--hl);outline-offset:2px}
+mark{background:var(--hl);color:#15171c;padding:0 .14em;border-radius:3px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.wrap{width:100%;max-width:1180px;margin:0 auto;box-sizing:border-box;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+.lab,.eyebrow,.chip,.tag,.btn,.rail,.seg button,.g-chip,.k{font-family:var(--f-sans)}
+.eyebrow{font-weight:800;font-size:12.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+h1{font-weight:700;font-size:clamp(32px,5vw,56px);line-height:1.1;letter-spacing:-.01em;margin:4px 0 0;text-wrap:balance}
+h2{font-weight:700;font-size:clamp(22px,2.6vw,30px);line-height:1.15;margin:0;text-wrap:balance}
+html[lang="mr"] h1,html[lang="mr"] h2,html[lang="mr"] h3{font-weight:400;line-height:1.35}
+.top{display:flex;justify-content:space-between;align-items:flex-end;gap:12px 20px;flex-wrap:wrap;padding-block:22px 12px;border-bottom:2px solid var(--ink)}
+.seg{display:inline-flex;border:2px solid var(--ink);border-radius:6px;overflow:hidden;background:var(--card)}
+.seg button{border:0;background:none;padding:6px 12px;font-weight:800;font-size:13px}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.chip{display:inline-block;font-weight:800;font-size:clamp(13px,1.5vw,15.5px);letter-spacing:.04em;text-transform:uppercase;background:var(--chip);color:var(--chip-ink);padding:6px 11px;border-radius:4px}
+.tag{display:inline-block;font-weight:800;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#fff;padding:3px 8px;border-radius:2px}
+.quote{border:2px solid var(--ink);background:var(--card);padding:6px 12px;border-radius:2px;font-size:18px}
+.card{background:var(--card);border:2px solid var(--ink);border-radius:12px;box-shadow:0 2px 0 rgba(0,0,0,.06),0 12px 26px -16px rgba(60,45,15,.4)}
+.btn{text-decoration:none;display:inline-block;border:2px solid var(--chip);background:var(--chip);color:var(--chip-ink);border-radius:4px;font-weight:800;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;padding:8px 13px;transition:transform .2s var(--ease),background .25s var(--ease)}
+.btn.ghost{background:var(--card);color:var(--ink);border-color:var(--ink)}
+.btn:active{transform:scale(.97)}
+html[lang="mr"] .eyebrow,html[lang="mr"] .chip,html[lang="mr"] .tag,html[lang="mr"] .btn,html[lang="mr"] .rail *,html[lang="mr"] .g-chip,html[lang="mr"] .k{letter-spacing:0!important;text-transform:none!important}
+html[lang="mr"] .chip{font-weight:700;font-size:16px;padding:5px 11px 3px}
+html[lang="mr"] .btn{font-size:15px;font-weight:700}
+
+/* home */
+.home-intro{padding-block:22px 6px;max-width:68ch;color:var(--muted);font-style:italic}
+html[lang="mr"] .home-intro{font-style:normal}
+.weeks{display:flex;flex-direction:column;gap:22px;padding-block:14px 40px}
+.week h3{font-family:var(--f-sans);font-weight:900;font-size:13px;letter-spacing:.18em;text-transform:uppercase;margin:0 0 10px;display:flex;align-items:center;gap:10px}
+.week h3::after{content:"";flex:1;height:2px;background:var(--ink);opacity:.25}
+.lcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:14px}
+.lcard{display:flex;flex-direction:column;gap:8px;padding:16px 18px;text-decoration:none;color:inherit;transition:transform .25s var(--ease),box-shadow .25s var(--ease)}
+.lcard:hover{transform:translateY(-3px)}
+.lcard h2{font-size:24px}
+.lcard p{margin:0;color:var(--muted);font-size:15.5px}
+.lcard .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.g-chip{font-weight:900;font-size:12px;letter-spacing:.08em;text-transform:uppercase;border:2px solid var(--ink);border-radius:3px;padding:2px 7px}
+
+/* lesson */
+.stage{flex:1;padding-block:clamp(22px,4vw,44px) 120px;display:flex;flex-direction:column;gap:20px}
+.slide{display:flex;flex-direction:column;gap:20px}
+.slide.enter>*{animation:rise .5s var(--ease) both}
+.slide.enter>*:nth-child(2){animation-delay:.05s}.slide.enter>*:nth-child(3){animation-delay:.1s}.slide.enter>*:nth-child(4){animation-delay:.15s}.slide.enter>*:nth-child(5){animation-delay:.2s}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.lead{font-size:clamp(18px,2vw,22px);max-width:62ch;margin:0}
+.row{display:flex;flex-wrap:wrap;gap:14px 22px;align-items:flex-start}
+.place{display:flex;gap:16px;align-items:center;padding:12px 22px 12px 12px;min-width:0}
+.ring{flex:none;width:86px;height:86px;border-radius:50%;border:4px solid var(--ring);background:var(--paper);display:grid;place-items:center;overflow:hidden}
+.ring svg{width:66px;height:66px}.ring path{fill:var(--ink)}
+.place h2{font-size:clamp(22px,2.4vw,28px)}
+.meta{display:flex;gap:8px 10px;align-items:center;flex-wrap:wrap;margin-top:6px}
+.meta em{color:var(--muted);font-size:15.5px}
+.facts{display:flex;flex-direction:column;gap:10px;align-items:flex-start;padding-top:8px}
+.pts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:14px}
+.pt{padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.pt .k{font-weight:900;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.pt h3{margin:0;font-size:22px;font-weight:700;line-height:1.2}
+.pt p{margin:0;font-size:16px}
+.cmp{padding:16px 18px;display:flex;flex-direction:column;gap:14px;max-width:820px}
+.cmp-row{display:grid;grid-template-columns:minmax(0,190px) minmax(0,1fr);gap:6px 14px;align-items:center}
+@media (max-width:560px){.cmp-row{grid-template-columns:minmax(0,1fr)}}
+.cmp-row>b{font-family:var(--f-sans);font-weight:800;font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+html[lang="mr"] .cmp-row>b{letter-spacing:0;text-transform:none;font-size:15px}
+.bars{display:flex;flex-direction:column;gap:5px}
+.bar{display:grid;grid-template-columns:minmax(0,110px) minmax(0,1fr) auto;gap:8px;align-items:center;font-size:15px}
+.bar .tr{height:16px;background:var(--soft);border:1.5px solid var(--ink);border-radius:2px;overflow:hidden}
+.bar .tr i{display:block;height:100%;transform-origin:left;animation:growX .8s var(--ease) both}
+.bar .v{font-family:var(--f-sans);font-weight:800;font-variant-numeric:tabular-nums;font-size:14px}
+@keyframes growX{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.src{font-style:italic;color:var(--muted);font-size:14.5px;margin:0;max-width:72ch}
+html[lang="mr"] .src{font-style:normal}
+
+/* widgets */
+.widget{padding:16px 18px;display:flex;flex-direction:column;gap:12px}
+.lgrid{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:2px;max-width:420px;aspect-ratio:1;border:2px solid var(--ink);background:var(--ink);touch-action:manipulation}
+.lgrid button{border:0;padding:0;background:var(--soft);transition:background .2s var(--ease)}
+.pal{display:flex;flex-wrap:wrap;gap:6px}
+.pal button{display:flex;gap:6px;align-items:center;border:2px solid var(--ink);background:var(--card);border-radius:4px;padding:4px 9px;font-family:var(--f-sans);font-weight:700;font-size:13px}
+.pal button[aria-pressed="true"]{box-shadow:0 0 0 2px var(--ink);background:var(--hl);color:#15171c}
+.pal i{width:14px;height:14px;border:1.5px solid var(--ink);border-radius:2px;display:inline-block}
+.wflex{display:flex;flex-wrap:wrap;gap:18px;align-items:flex-start}
+.wflex>*{min-width:0}
+.tally{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.tally div{border:1.5px solid var(--ink);border-radius:8px;padding:8px 10px;display:flex;flex-direction:column;gap:6px;background:var(--card)}
+.tally span{font-family:var(--f-sans);font-weight:700;font-size:13px}
+.tally .ctl{display:flex;gap:6px;align-items:center}
+.tally .ctl button{width:34px;height:34px;border:2px solid var(--ink);border-radius:4px;background:var(--card);font-weight:900;font-size:18px}
+.tally output{font-family:var(--f-serif);font-weight:700;font-size:24px;min-width:2ch;text-align:center}
+.big{font-weight:700;font-size:clamp(26px,3vw,36px);line-height:1.1}
+.idl-ctl{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;font-family:var(--f-sans);font-weight:700;font-size:14px}
+.idl-ctl input[type=range]{width:min(320px,70vw);accent-color:var(--blue)}
+.idl-wrap{overflow-x:auto}
+.idl{display:grid;grid-template-columns:repeat(25,minmax(52px,1fr));min-width:1100px;border:2px solid var(--ink);border-radius:6px;overflow:hidden}
+.idl div{padding:6px 2px;text-align:center;font-family:var(--f-sans);font-size:12px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:2px;transition:background .3s var(--ease)}
+.idl div b{font-size:13.5px;font-variant-numeric:tabular-nums}
+.idl div.d0{background:color-mix(in srgb, var(--blue) 18%, var(--card))}
+.idl div.d1{background:color-mix(in srgb, var(--hl) 45%, var(--card))}
+.idl div.dm{background:color-mix(in srgb, var(--red) 16%, var(--card))}
+.idl div.ist{box-shadow:inset 0 0 0 2px var(--ink)}
+.sort{display:flex;flex-direction:column;gap:6px}
+.sort .it{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;border-bottom:1px solid var(--line);padding:5px 0}
+.sort .it>span{font-size:16px}
+.sort .opts{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+.sort .opts button{border:1.5px solid var(--ink);border-radius:3px;background:var(--card);font-family:var(--f-sans);font-weight:700;font-size:12px;padding:3px 8px;transition:background .2s var(--ease)}
+.sort .opts button.ok{background:var(--green);border-color:var(--green);color:#fff}
+.sort .opts button.no{background:var(--red);border-color:var(--red);color:#fff}
+.pattern{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:14px}
+.pattern .card{padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+.pattern svg{width:100%;height:auto;border:1.5px solid var(--ink);border-radius:6px;background:var(--soft)}
+
+/* quiz */
+.q{padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.q h3{margin:0;font-size:20px;font-weight:700}
+.q .opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:8px}
+.q .opts button{text-align:left;border:2px solid var(--ink);border-radius:6px;background:var(--card);padding:8px 12px;font-size:16px;transition:background .25s var(--ease),color .25s var(--ease)}
+.q .opts button.ok{background:var(--green);border-color:var(--green);color:#fff}
+.q .opts button.no{background:var(--red);border-color:var(--red);color:#fff}
+.q .why{margin:0;font-size:15px;color:var(--muted);font-style:italic}
+html[lang="mr"] .q .why{font-style:normal}
+.notes{padding:14px 18px}
+.notes summary{cursor:pointer;font-family:var(--f-sans);font-weight:900;font-size:13px;letter-spacing:.14em;text-transform:uppercase}
+html[lang="mr"] .notes summary{letter-spacing:0;text-transform:none;font-size:15px}
+.notes ul{margin:10px 0 0;padding-left:20px;font-size:16px}
+
+/* rail */
+.rail{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--rail);border-top:2px solid var(--ink);padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:9px calc(9px + env(safe-area-inset-bottom, 0px))}
+.rail-in{max-width:1180px;margin:0 auto;display:flex;gap:8px 16px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.rail .brand b{display:block;font-weight:900;font-size:13.5px;letter-spacing:.2em;text-transform:uppercase}
+.rail .brand span{font-weight:600;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.rail .steps{display:flex;gap:6px;flex-wrap:wrap}
+.rail .steps button{border:1.5px solid var(--ink);background:var(--card);border-radius:3px;font-weight:800;font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:4px 9px;transition:background .25s var(--ease),color .25s var(--ease)}
+.rail .steps button.done{background:color-mix(in srgb, var(--blue) 25%, var(--card))}
+.rail .steps button[aria-current="true"]{background:var(--blue);border-color:var(--blue);color:#fff;box-shadow:0 0 0 2px var(--ink)}
+.rail .nav{display:flex;gap:6px}
+html[lang="mr"] .rail .steps button{font-size:13px;font-weight:700}
+@media (max-width:700px){.rail .brand{display:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<header class="wrap top">
+  <div>
+    <div class="eyebrow" id="eyebrow"></div>
+    <h1 id="title"></h1>
+  </div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+    <a class="btn ghost" id="homeBtn" href="#" hidden></a>
+    <div class="seg" role="group" aria-label="Language"><button id="lgEn">EN</button><button id="lgMr">मराठी</button></div>
+  </div>
+</header>
+<main class="wrap stage" id="stage"></main>
+<nav class="rail" id="rail" hidden aria-label="Lesson steps">
+  <div class="rail-in">
+    <div class="brand"><b id="rbrand"></b><span id="rsub"></span></div>
+    <div class="steps" id="rsteps"></div>
+    <div class="nav"><button class="btn ghost" id="prev">←</button><button class="btn" id="next">→</button></div>
+  </div>
+</nav>
+
+<script>
+const SH = /*SHAPES*/;
+let LANG = "en";
+try { const l = localStorage.getItem("lab-lang"); if (l === "mr" || l === "en") LANG = l; } catch(e) {}
+const L = o => (o && typeof o === "object" && "en" in o) ? (LANG === "mr" ? o.mr : o.en) : o;
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const DEV = s => LANG === "mr" ? String(s).replace(/[0-9]/g, d => "०१२३४५६७८९"[d]) : String(s);
+const $ = s => document.querySelector(s);
+const UI = {
+  brand:{en:"What the map says", mr:"नकाशा काय सांगतो"},
+  sub:{en:"SCOPE Geography Lab · Term 2", mr:"स्कोप भूगोल प्रयोगशाळा · सत्र २"},
+  homeEyebrow:{en:"SCOPE Geography Lab · Term 2, 2026–27", mr:"स्कोप भूगोल प्रयोगशाळा · सत्र २, २०२६–२७"},
+  homeTitle:{en:"Lessons for the <mark>next three weeks</mark>", mr:"पुढील तीन आठवड्यांचे <mark>धडे</mark>"},
+  intro:{en:"Built from the SCOPE Weekly Curriculum Map. Each lesson has short slides to project in class, a hands-on activity, a three-question check and notes for the teacher. Switch to मराठी at any time.",
+         mr:"स्कोपच्या साप्ताहिक अभ्यासक्रम आराखड्यावर आधारित. प्रत्येक धड्यात वर्गात दाखवण्यासाठी छोटी पाने, एक कृती, तीन प्रश्नांची चाचणी आणि शिक्षकांसाठी सूचना आहेत. कधीही English वर बदलता येते."},
+  weekOf:{en:"Week of", mr:"आठवडा:"}, grade:{en:"Grade", mr:"इयत्ता"}, open:{en:"Open lesson →", mr:"धडा उघडा →"},
+  all:{en:"All lessons", mr:"सर्व धडे"}, notes:{en:"Teacher notes", mr:"शिक्षकांसाठी सूचना"},
+  check:{en:"Quick check", mr:"झटपट चाचणी"}, right:{en:"Correct.", mr:"बरोबर."}, wrong:{en:"Not quite.", mr:"थोडं चुकलं."},
+  score:{en:"Score", mr:"गुण"}, slides:{en:"slides", mr:"पाने"}, reset:{en:"Clear", mr:"पुसा"}
+};
+const shape = (k, ring) => { const s = SH[k], [x0,y0,x1,y1] = s.b, w = x1-x0, h = y1-y0, m = Math.max(w,h)*.08;
+  return `<div class="ring" style="--ring:${ring}"><svg viewBox="${x0-m} ${y0-m} ${w+2*m} ${h+2*m}" aria-hidden="true"><path d="${s.d}"/></svg></div>`; };
+const place = (k, name, tag, color, meta) => `<div class="card place">${shape(k, color)}<div><h2>${esc(L(name))}</h2><div class="meta"><span class="tag" style="background:${color}">${esc(L(tag))}</span><em>${esc(DEV(L(meta)))}</em></div></div></div>`;
+const chips = arr => `<div class="facts">${arr.map(c => c.q ? `<span class="quote">${esc(DEV(L(c.q)))}</span>` : `<span class="chip">${esc(DEV(L(c)))}</span>`).join("")}</div>`;
+const pts = arr => `<div class="pts">${arr.map(p => `<div class="card pt">${p.k?`<span class="k">${esc(L(p.k))}</span>`:""}<h3>${esc(L(p.h))}</h3><p>${esc(DEV(L(p.p)))}</p></div>`).join("")}</div>`;
+const cmp = rows => `<div class="card cmp">${rows.map(r => { const max = Math.max(...r.v.map(x => x.n));
+  return `<div class="cmp-row"><b>${esc(L(r.h))}</b><div class="bars">${r.v.map(x => `<div class="bar"><span>${esc(L(x.l))}</span><span class="tr"><i style="width:${x.n/max*100}%;background:${x.c}"></i></span><span class="v">${esc(DEV(L(x.t)))}</span></div>`).join("")}</div></div>`; }).join("")}</div>`;
+
+/* ===================== LESSON CONTENT ===================== */
+const IN = "var(--amber)", MH = "var(--blue)", SG = "var(--red)", BR = "var(--green)";
+const LESSONS = [
+/* ---------- Grade 8 · Land Use ---------- */
+{ id:"g8-land-use", grade:8, weeks:["2026-11-23","2026-11-30"],
+  topic:{en:"Land Use", mr:"भूमी उपयोजन"},
+  blurb:{en:"How people use land in villages and towns, land records, and a hands-on map of our own village.", mr:"गाव व शहरातील जमिनीचा वापर, जमिनीच्या नोंदी आणि आपल्या गावाचा नकाशा तयार करण्याची कृती."},
+  slides:[
+    {step:{en:"Question",mr:"प्रश्न"}, eyebrow:{en:"Grade 8 · Land Use",mr:"इयत्ता ८ · भूमी उपयोजन"}, title:{en:"Land use: <mark>what is our land for?</mark>",mr:"भूमी उपयोजन: <mark>आपली जमीन कशासाठी?</mark>"},
+     body:()=>`<p class="lead">${esc(L({en:"Think of the walk from your house to school. Name every kind of land you pass on the way.",mr:"घरापासून शाळेपर्यंतचा रस्ता आठवा. वाटेत कोणकोणत्या प्रकारची जमीन दिसते, ते सांगा."}))}</p>
+       <div class="row">${chips([{en:"Fields",mr:"शेत"},{en:"Houses",mr:"घरे"},{en:"Roads",mr:"रस्ते"},{en:"Grazing land",mr:"गायरान"},{en:"Temple, school, well",mr:"मंदिर, शाळा, विहीर"}])}</div>
+       <p class="src">${esc(L({en:"Every piece of land is being used for something, or left empty for a reason. That use is called land use.",mr:"प्रत्येक जमिनीचा काही ना काही वापर होत असतो, किंवा ती काही कारणाने मोकळी ठेवलेली असते. यालाच भूमी उपयोजन म्हणतात."}))}</p>`},
+    {step:{en:"Village",mr:"ग्रामीण"}, eyebrow:{en:"Rural land use",mr:"ग्रामीण भूमी उपयोजन"}, title:{en:"In the village: <mark>five kinds of land</mark>",mr:"गावात: <mark>जमिनीचे पाच प्रकार</mark>"},
+     body:()=>pts([
+       {k:{en:"Most land",mr:"सर्वाधिक जमीन"}, h:{en:"Agricultural land",mr:"शेतजमीन"}, p:{en:"Land where crops are grown: jowar, bajra, grapes, sugarcane.",mr:"जिथे पिके घेतली जातात: ज्वारी, बाजरी, द्राक्षे, ऊस."}},
+       {h:{en:"Fallow land",mr:"पडीक जमीन"}, p:{en:"Farmland left uncultivated for a season or more, often so the soil can recover.",mr:"एक किंवा अधिक हंगाम लागवड न केलेली शेतजमीन; अनेकदा जमिनीचा कस परत यावा म्हणून."}},
+       {h:{en:"Forest",mr:"वनक्षेत्र"}, p:{en:"Land under trees, protected or reserved by the government.",mr:"झाडांनी व्यापलेली जमीन; शासनाने संरक्षित किंवा राखीव ठेवलेली."}},
+       {h:{en:"Pasture (gairan)",mr:"गायरान (कुरण)"}, p:{en:"Common land of the village where animals graze.",mr:"गावाची सामाईक जमीन, जिथे जनावरे चरतात."}},
+       {h:{en:"Settlement (gaothan)",mr:"गावठाण"}, p:{en:"The part of the village where houses, lanes and public buildings stand.",mr:"गावाचा तो भाग जिथे घरे, गल्ल्या आणि सार्वजनिक इमारती असतात."}}])},
+    {step:{en:"Town",mr:"शहरी"}, eyebrow:{en:"Urban land use",mr:"नागरी भूमी उपयोजन"}, title:{en:"In the town: <mark>land does more jobs</mark>",mr:"शहरात: <mark>जमिनीचे अनेक उपयोग</mark>"},
+     body:()=>pts([
+       {h:{en:"Residential",mr:"निवासी"}, p:{en:"Houses and apartment buildings.",mr:"घरे आणि इमारती."}},
+       {h:{en:"Commercial",mr:"व्यापारी"}, p:{en:"Shops, markets, banks, offices.",mr:"दुकाने, बाजार, बँका, कार्यालये."}},
+       {h:{en:"Industrial",mr:"औद्योगिक"}, p:{en:"Factories and workshops, such as a sugar factory or MIDC area.",mr:"कारखाने व कार्यशाळा, उदा. साखर कारखाना, एमआयडीसी क्षेत्र."}},
+       {h:{en:"Transport",mr:"वाहतूक"}, p:{en:"Roads, bus stands, railway lines and stations.",mr:"रस्ते, बस स्थानके, लोहमार्ग व स्थानके."}},
+       {h:{en:"Public utilities",mr:"सार्वजनिक सुविधा"}, p:{en:"Schools, hospitals, water tanks, post offices.",mr:"शाळा, दवाखाने, पाण्याच्या टाक्या, टपाल कार्यालये."}},
+       {h:{en:"Recreation",mr:"मनोरंजन / मोकळ्या जागा"}, p:{en:"Parks, playgrounds and open spaces.",mr:"बागा, मैदाने आणि मोकळ्या जागा."}}])},
+    {step:{en:"Records",mr:"नोंदी"}, eyebrow:{en:"Who owns which land?",mr:"कोणती जमीन कोणाची?"}, title:{en:"Land records: <mark>the 7/12 extract</mark>",mr:"जमिनीच्या नोंदी: <mark>सातबारा उतारा</mark>"},
+     body:()=>`<div class="row"><div class="card pt" style="max-width:520px"><span class="k">${esc(L({en:"Village farmland",mr:"गावातील शेतजमीन"}))}</span><h3>${esc(L({en:"7/12 extract",mr:"सातबारा उतारा"}))}</h3><p>${esc(L({en:"In Maharashtra, Village Forms 7 and 12 record who owns a piece of farmland, its area, and the crops grown on it.",mr:"महाराष्ट्रात गाव नमुना ७ व १२ मध्ये शेतजमिनीचा मालक, क्षेत्र आणि त्यात घेतलेली पिके यांची नोंद असते."}))}</p></div>
+       <div class="card pt" style="max-width:520px"><span class="k">${esc(L({en:"Town land",mr:"शहरातील जमीन"}))}</span><h3>${esc(L({en:"Property card",mr:"मालमत्ता पत्रक"}))}</h3><p>${esc(L({en:"In towns and cities, the property card records the owner and area of a plot.",mr:"शहरात मालमत्ता पत्रकात भूखंडाचा मालक व क्षेत्र यांची नोंद असते."}))}</p></div></div>
+       <div class="row">${chips([{q:{en:"“Ask at home: does your family have a 7/12 extract? What crop is written on it?”",mr:"“घरी विचारा: आपल्याकडे सातबारा उतारा आहे का? त्यावर कोणते पीक लिहिले आहे?”"}}])}</div>`},
+    {step:{en:"Activity",mr:"कृती"}, eyebrow:{en:"Activity · 20 minutes",mr:"कृती · २० मिनिटे"}, title:{en:"Map <mark>our village</mark>",mr:"आपल्या <mark>गावाचा नकाशा</mark>"}, widget:"grid",
+     body:()=>`<p class="lead">${esc(L({en:"Each square is one part of the village. Pick a land use, then tap squares to colour them. The bars show what share of the village each use takes.",mr:"प्रत्येक चौकोन म्हणजे गावाचा एक भाग. जमिनीचा प्रकार निवडा आणि चौकोनांवर टॅप करून रंग भरा. पट्ट्या दाखवतात की कोणत्या वापराला किती जमीन आहे."}))}</p><div class="card widget" id="w"></div>
+       <p class="src">${esc(L({en:"Do this on grid paper too: 1 square = one field or block of houses. Compare maps between groups.",mr:"हेच चौकटीच्या कागदावरही करा: १ चौकोन = एक शेत किंवा घरांचा एक गट. गटांचे नकाशे एकमेकांशी तुलना करा."}))}</p>`},
+    {step:{en:"Check",mr:"चाचणी"}, eyebrow:{en:"Quick check",mr:"झटपट चाचणी"}, title:{en:"What did we <mark>learn?</mark>",mr:"आपण काय <mark>शिकलो?</mark>"}, quiz:[
+      {q:{en:"Which document records who owns a farm and what is grown on it?",mr:"शेताचा मालक व त्यात घेतलेले पीक कोणत्या कागदपत्रात नोंदवलेले असते?"}, o:[{en:"7/12 extract",mr:"सातबारा उतारा"},{en:"Ration card",mr:"शिधापत्रिका"},{en:"School leaving certificate",mr:"शाळा सोडल्याचा दाखला"}], a:0, why:{en:"Village Forms 7 and 12 together record ownership, area and crops.",mr:"गाव नमुना ७ व १२ मध्ये मालकी, क्षेत्र आणि पिकांची नोंद असते."}},
+      {q:{en:"Farmland left without crops for a season is called:",mr:"एखाद्या हंगामात पीक न घेतलेल्या शेतजमिनीला काय म्हणतात?"}, o:[{en:"Pasture",mr:"गायरान"},{en:"Fallow land",mr:"पडीक जमीन"},{en:"Gaothan",mr:"गावठाण"}], a:1, why:{en:"Fallow land is resting farmland.",mr:"पडीक जमीन म्हणजे विश्रांती दिलेली शेतजमीन."}},
+      {q:{en:"A bus stand and a railway line are examples of:",mr:"बस स्थानक आणि लोहमार्ग ही कोणत्या भूमी उपयोजनाची उदाहरणे आहेत?"}, o:[{en:"Transport land use",mr:"वाहतूक"},{en:"Residential land use",mr:"निवासी"},{en:"Agricultural land use",mr:"शेती"}], a:0, why:{en:"Land used to move people and goods is transport land use.",mr:"लोक व माल यांच्या ने-आणीसाठी वापरली जाणारी जमीन."}}]}
+  ],
+  notes:{en:["Textbook: Grade 8 Geography, chapter ‘Land Use’ (Balbharati). Two weeks: 23 Nov and 30 Nov.","Week 1: slides 1–4 and the ownership discussion. Week 2: the village-map activity and the quick check.","Materials: grid paper and colour pencils. If possible, bring a sample 7/12 extract (personal details hidden).","Link to Science: Grade 8 is studying cells this week; no overlap. Link to the Maker Meetup: students can build a 3D model of the village map."],
+         mr:["पाठ्यपुस्तक: इयत्ता ८ भूगोल, ‘भूमी उपयोजन’ हा पाठ (बालभारती). दोन आठवडे: २३ नोव्हेंबर व ३० नोव्हेंबर.","पहिला आठवडा: पाने १–४ आणि मालकीवर चर्चा. दुसरा आठवडा: गावाचा नकाशा कृती आणि झटपट चाचणी.","साहित्य: चौकटीचा कागद आणि रंगीत पेन्सिली. शक्य असल्यास सातबारा उताऱ्याचा नमुना आणा (वैयक्तिक माहिती झाकून).","मेकर मीटअप: विद्यार्थी गावाच्या नकाशाचे त्रिमितीय मॉडेल बनवू शकतात."]}
+},
+/* ---------- Grade 8 · Population ---------- */
+{ id:"g8-population", grade:8, weeks:["2026-12-07","2026-12-14"],
+  topic:{en:"Population", mr:"लोकसंख्या"},
+  blurb:{en:"India, Maharashtra and Sangli in Census 2011 numbers: size, density, sex ratio and literacy, plus a class survey.", mr:"जनगणना २०११ मधील भारत, महाराष्ट्र व सांगली: आकार, घनता, लिंग गुणोत्तर व साक्षरता, आणि वर्गातील सर्वेक्षण."},
+  slides:[
+    {step:{en:"Size",mr:"आकार"}, eyebrow:{en:"Grade 8 · Population · Census 2011",mr:"इयत्ता ८ · लोकसंख्या · जनगणना २०११"}, title:{en:"Population: <mark>how many of us?</mark>",mr:"लोकसंख्या: <mark>आपण किती आहोत?</mark>"},
+     body:()=>`<div class="row">${place("india",{en:"India",mr:"भारत"},{en:"Country",mr:"देश"},IN,{en:"121.09 crore people",mr:"१२१.०९ कोटी लोक"})}${chips([{en:"Second largest in the world",mr:"जगात दुसरा क्रमांक"}])}</div>
+       <div class="row">${place("maharashtra",{en:"Maharashtra",mr:"महाराष्ट्र"},{en:"Our state",mr:"आपले राज्य"},MH,{en:"11.24 crore people",mr:"११.२४ कोटी लोक"})}${chips([{en:"2nd largest state after Uttar Pradesh",mr:"उत्तर प्रदेशनंतर दुसरे मोठे राज्य"}])}</div>
+       <div class="row">${place("sangli",{en:"Sangli",mr:"सांगली"},{en:"Our district",mr:"आपला जिल्हा"},SG,{en:"28.22 lakh people",mr:"२८.२२ लाख लोक"})}${chips([{en:"About 1 in 40 people in Maharashtra",mr:"महाराष्ट्रातील सुमारे ४० पैकी १ व्यक्ती"}])}</div>`},
+    {step:{en:"Compare",mr:"तुलना"}, eyebrow:{en:"India · Maharashtra · Sangli",mr:"भारत · महाराष्ट्र · सांगली"}, title:{en:"Three ways to <mark>describe people</mark>",mr:"लोकसंख्येचे <mark>तीन निकष</mark>"},
+     body:()=>cmp([
+       {h:{en:"Density (per km²)",mr:"घनता (प्रति चौ. किमी)"}, v:[{l:{en:"India",mr:"भारत"},n:382,t:"382",c:IN},{l:{en:"Maharashtra",mr:"महाराष्ट्र"},n:365,t:"365",c:MH},{l:{en:"Sangli",mr:"सांगली"},n:329,t:"329",c:SG}]},
+       {h:{en:"Sex ratio (women per 1,000 men)",mr:"लिंग गुणोत्तर (दर १,००० पुरुषांमागे स्त्रिया)"}, v:[{l:{en:"India",mr:"भारत"},n:943,t:"943",c:IN},{l:{en:"Maharashtra",mr:"महाराष्ट्र"},n:929,t:"929",c:MH},{l:{en:"Sangli",mr:"सांगली"},n:966,t:"966",c:SG}]},
+       {h:{en:"Literacy (age 7+)",mr:"साक्षरता (७ वर्षांवरील)"}, v:[{l:{en:"India",mr:"भारत"},n:72.98,t:"72.98%",c:IN},{l:{en:"Maharashtra",mr:"महाराष्ट्र"},n:82.34,t:"82.34%",c:MH},{l:{en:"Sangli",mr:"सांगली"},n:81.48,t:"81.48%",c:SG}]}])
+       +`<p class="src">${esc(L({en:"Census of India 2011. Ask: where does Sangli do better than India, and where does it not?",mr:"भारताची जनगणना २०११. विचारा: सांगली कुठे भारतापेक्षा पुढे आहे आणि कुठे नाही?"}))}</p>`},
+    {step:{en:"Why here?",mr:"इथेच का?"}, eyebrow:{en:"Distribution of population",mr:"लोकसंख्येचे वितरण"}, title:{en:"Why do people <mark>live where they live?</mark>",mr:"लोक <mark>कुठे राहतात आणि का?</mark>"},
+     body:()=>pts([
+       {k:{en:"Physical factors",mr:"प्राकृतिक घटक"}, h:{en:"Land, water, climate, soil",mr:"भूरचना, पाणी, हवामान, मृदा"}, p:{en:"Flat plains with water and fertile soil hold many people. Deserts, steep hills and dense forests hold few.",mr:"पाणी व सुपीक मृदा असलेल्या सपाट मैदानांत जास्त लोक राहतात. वाळवंट, तीव्र उताराचे डोंगर आणि घनदाट जंगलांत कमी."}},
+       {k:{en:"Human factors",mr:"मानवी घटक"}, h:{en:"Jobs, roads, towns, history",mr:"रोजगार, रस्ते, शहरे, इतिहास"}, p:{en:"Factories, markets, transport and schools pull people in. That is why Mumbai and Pune are crowded.",mr:"कारखाने, बाजारपेठा, वाहतूक व शाळा लोकांना आकर्षित करतात. म्हणूनच मुंबई व पुणे दाट लोकवस्तीची आहेत."}},
+       {k:{en:"Population as a resource",mr:"संसाधन म्हणून लोकसंख्या"}, h:{en:"Healthy, skilled people",mr:"निरोगी, कुशल लोक"}, p:{en:"Educated and healthy people help a region grow. Numbers alone are not the whole story.",mr:"शिक्षित व निरोगी लोक प्रदेशाच्या प्रगतीला हातभार लावतात. केवळ संख्या महत्त्वाची नसते."}}])},
+    {step:{en:"Survey",mr:"सर्वेक्षण"}, eyebrow:{en:"Activity · class survey",mr:"कृती · वर्गातील सर्वेक्षण"}, title:{en:"Our class <mark>in numbers</mark>",mr:"आपला वर्ग <mark>आकड्यांत</mark>"}, widget:"tally",
+     body:()=>`<p class="lead">${esc(L({en:"Count the people in all your homes together. The page works out your class’s own sex ratio and age groups, just like the Census does.",mr:"सर्वांच्या घरातील लोकांची एकत्र मोजणी करा. जनगणनेप्रमाणेच हे पान तुमच्या वर्गाचे लिंग गुणोत्तर आणि वयोगट काढेल."}))}</p><div class="card widget" id="w"></div>`},
+    {step:{en:"Check",mr:"चाचणी"}, eyebrow:{en:"Quick check",mr:"झटपट चाचणी"}, title:{en:"What did we <mark>learn?</mark>",mr:"आपण काय <mark>शिकलो?</mark>"}, quiz:[
+      {q:{en:"Population density means:",mr:"लोकसंख्येची घनता म्हणजे:"}, o:[{en:"People per square kilometre",mr:"दर चौरस किलोमीटरमागे लोक"},{en:"People per house",mr:"दर घरामागे लोक"},{en:"Births per year",mr:"दरवर्षीचे जन्म"}], a:0, why:{en:"Density = population ÷ area.",mr:"घनता = लोकसंख्या ÷ क्षेत्रफळ."}},
+      {q:{en:"Sangli’s sex ratio in 2011 was 966. This means:",mr:"२०११ मध्ये सांगलीचे लिंग गुणोत्तर ९६६ होते. याचा अर्थ:"}, o:[{en:"966 women for every 1,000 men",mr:"दर १,००० पुरुषांमागे ९६६ स्त्रिया"},{en:"966 men for every 1,000 women",mr:"दर १,००० स्त्रियांमागे ९६६ पुरुष"},{en:"966 children per 1,000 adults",mr:"दर १,००० प्रौढांमागे ९६६ मुले"}], a:0, why:{en:"India counts women per 1,000 men.",mr:"भारतात दर १,००० पुरुषांमागे स्त्रियांची संख्या मोजतात."}},
+      {q:{en:"Which pulls people to a city?",mr:"लोकांना शहराकडे काय आकर्षित करते?"}, o:[{en:"Steep slopes",mr:"तीव्र उतार"},{en:"Jobs and transport",mr:"रोजगार आणि वाहतूक"},{en:"Dense forest",mr:"घनदाट जंगल"}], a:1, why:{en:"Jobs, markets and transport are human factors that attract people.",mr:"रोजगार, बाजारपेठा व वाहतूक हे लोकांना आकर्षित करणारे मानवी घटक आहेत."}}]}
+  ],
+  notes:{en:["Textbook: Grade 8 Geography, chapter ‘Population’ (Balbharati). Weeks of 7 and 14 Dec.","All figures: Census of India 2011 (India 1,21,08,54,977; Maharashtra 11,23,74,333; Sangli 28,22,143).","Survey: ask students the day before to count family members by age group (0–14, 15–59, 60+) and by men/women.","Follow-up: open the Geography Lab atlas, double-click Maharashtra, and compare Sangli with neighbouring districts."],
+         mr:["पाठ्यपुस्तक: इयत्ता ८ भूगोल, ‘लोकसंख्या’ हा पाठ (बालभारती). ७ व १४ डिसेंबरचे आठवडे.","सर्व आकडे: भारताची जनगणना २०११ (भारत १,२१,०८,५४,९७७; महाराष्ट्र ११,२३,७४,३३३; सांगली २८,२२,१४३).","सर्वेक्षण: आदल्या दिवशी विद्यार्थ्यांना घरातील लोकांची वयोगटानुसार (०–१४, १५–५९, ६०+) आणि स्त्री/पुरुष अशी मोजणी करायला सांगा.","पुढील कृती: भूगोल प्रयोगशाळा नकाशा उघडा, महाराष्ट्रावर डबल-क्लिक करा आणि सांगलीची शेजारच्या जिल्ह्यांशी तुलना करा."]}
+},
+/* ---------- Grade 9 · International Date Line ---------- */
+{ id:"g9-date-line", grade:9, weeks:["2026-11-23"],
+  topic:{en:"International Date Line", mr:"आंतरराष्ट्रीय वाररेषा"},
+  blurb:{en:"Why the day changes at 180°, with a live clock strip students can drag around the world.", mr:"१८०° वर वार का बदलतो, आणि जगभर फिरवता येणारी घड्याळांची पट्टी."},
+  slides:[
+    {step:{en:"Question",mr:"प्रश्न"}, eyebrow:{en:"Grade 9 · International Date Line",mr:"इयत्ता ९ · आंतरराष्ट्रीय वाररेषा"}, title:{en:"Where does <mark>today</mark> begin?",mr:"<mark>आजचा दिवस</mark> कुठे सुरू होतो?"},
+     body:()=>`<p class="lead">${esc(L({en:"When it is Monday noon in Jalihal, is it Monday everywhere on Earth? If not, where does Monday stop and Tuesday start?",mr:"जालिहाळमध्ये सोमवारी दुपारी १२ वाजले असताना पृथ्वीवर सगळीकडे सोमवारच असतो का? नसल्यास सोमवार कुठे संपतो आणि मंगळवार कुठे सुरू होतो?"}))}</p>
+       <div class="row">${chips([{en:"360° in 24 hours",mr:"२४ तासांत ३६०°"},{en:"= 15° every hour",mr:"= दर तासाला १५°"},{en:"= 1° every 4 minutes",mr:"= दर ४ मिनिटांत १°"}])}</div>`},
+    {step:{en:"Idea",mr:"संकल्पना"}, eyebrow:{en:"East is ahead, west is behind",mr:"पूर्वेकडे पुढे, पश्चिमेकडे मागे"}, title:{en:"Halfway round, <mark>a whole day apart</mark>",mr:"अर्धी प्रदक्षिणा, <mark>पूर्ण एका दिवसाचा फरक</mark>"},
+     body:()=>pts([
+       {k:{en:"Going east",mr:"पूर्वेकडे जाताना"}, h:{en:"Clocks go ahead",mr:"घड्याळ पुढे"}, p:{en:"Every 15° east, local time is 1 hour ahead. At 180°E it is 12 hours ahead of Greenwich.",mr:"दर १५° पूर्वेकडे स्थानिक वेळ १ तास पुढे. १८०° पूर्वेला ग्रीनिचपेक्षा १२ तास पुढे."}},
+       {k:{en:"Going west",mr:"पश्चिमेकडे जाताना"}, h:{en:"Clocks go back",mr:"घड्याळ मागे"}, p:{en:"Every 15° west, local time is 1 hour behind. At 180°W it is 12 hours behind Greenwich.",mr:"दर १५° पश्चिमेकडे स्थानिक वेळ १ तास मागे. १८०° पश्चिमेला ग्रीनिचपेक्षा १२ तास मागे."}},
+       {k:{en:"At 180°",mr:"१८० अंशावर"}, h:{en:"The two sides meet",mr:"दोन्ही बाजू भेटतात"}, p:{en:"180°E and 180°W are the same line, but 24 hours apart. So the date changes there. This is the International Date Line.",mr:"१८०° पूर्व व १८०° पश्चिम ही एकच रेषा, पण २४ तासांचा फरक. म्हणून तिथे तारीख बदलते. हीच आंतरराष्ट्रीय वाररेषा."}}])},
+    {step:{en:"Try it",mr:"करून पाहा"}, eyebrow:{en:"Interactive · local mean time",mr:"कृती · स्थानिक वेळ"}, title:{en:"Drag the clock <mark>around the world</mark>",mr:"घड्याळ <mark>जगभर फिरवा</mark>"}, widget:"idl",
+     body:()=>`<p class="lead">${esc(L({en:"Move the slider to change the time at Greenwich (0°). Watch where the day changes.",mr:"स्लायडर हलवून ग्रीनिच (०°) येथील वेळ बदला. वार कुठे बदलतो ते पाहा."}))}</p><div class="card widget" id="w"></div>
+       <p class="src">${esc(L({en:"Shows local mean time (1 hour per 15°). Real time zones follow country borders, so they differ a little. India uses one time for the whole country, based on 82°30′E: 5 h 30 min ahead of Greenwich.",mr:"स्थानिक सरासरी वेळ दाखवली आहे (दर १५° ला १ तास). प्रत्यक्ष कालविभाग देशांच्या सीमांनुसार असल्याने थोडे वेगळे असतात. भारत ८२°३०′ पूर्व रेखावृत्तावर आधारित एकच वेळ वापरतो: ग्रीनिचपेक्षा ५ तास ३० मिनिटे पुढे."}))}</p>`},
+    {step:{en:"Bends",mr:"वळणे"}, eyebrow:{en:"Why the line is not straight",mr:"रेषा सरळ का नाही"}, title:{en:"The line <mark>bends around land</mark>",mr:"रेषा <mark>भूभाग टाळून वळते</mark>"},
+     body:()=>`${pts([
+       {k:{en:"North",mr:"उत्तरेकडे"}, h:{en:"Russia and Alaska",mr:"रशिया आणि अलास्का"}, p:{en:"The line bends east around the tip of Russia (Chukotka) and west around the Aleutian Islands of the USA, so each country keeps one date.",mr:"रशियाच्या टोकाभोवती (चुकोटका) रेषा पूर्वेकडे आणि अमेरिकेच्या अल्युशियन बेटांभोवती पश्चिमेकडे वळते, ज्यामुळे प्रत्येक देशात एकच तारीख राहते."}},
+       {k:{en:"Pacific islands",mr:"पॅसिफिकमधील बेटे"}, h:{en:"Kiribati, Samoa, Tonga, Fiji",mr:"किरिबाटी, सामोआ, टोंगा, फिजी"}, p:{en:"The line zig-zags so that island groups are not split between two dates.",mr:"बेटांचे समूह दोन तारखांमध्ये विभागले जाऊ नयेत म्हणून रेषा वेडीवाकडी जाते."}}])}
+       <div class="row">${chips([{en:"Kiribati’s Line Islands: UTC+14, among the first places to see a new day",mr:"किरिबाटीची लाइन बेटे: UTC+14, नवा दिवस पाहणाऱ्या पहिल्या ठिकाणांपैकी"},{q:{en:"“Samoa skipped 30 December 2011 when it moved to the Asian side of the line.”",mr:"“रेषेच्या आशियाई बाजूला जाताना सामोआने ३० डिसेंबर २०११ हा दिवसच वगळला.”"}}])}</div>`},
+    {step:{en:"Check",mr:"चाचणी"}, eyebrow:{en:"Quick check",mr:"झटपट चाचणी"}, title:{en:"What did we <mark>learn?</mark>",mr:"आपण काय <mark>शिकलो?</mark>"}, quiz:[
+      {q:{en:"How many degrees does the Earth turn in one hour?",mr:"पृथ्वी एका तासात किती अंश फिरते?"}, o:[{en:"1°",mr:"१°"},{en:"15°",mr:"१५°"},{en:"24°",mr:"२४°"}], a:1, why:{en:"360° ÷ 24 hours = 15° per hour.",mr:"३६०° ÷ २४ तास = दर तासाला १५°."}},
+      {q:{en:"A ship crosses the Date Line from Asia towards America (sailing east). The date:",mr:"जहाज आशियाकडून अमेरिकेकडे (पूर्वेकडे) वाररेषा ओलांडते. तेव्हा तारीख:"}, o:[{en:"Goes forward one day",mr:"एक दिवस पुढे जाते"},{en:"Goes back one day (the day repeats)",mr:"एक दिवस मागे येते (तोच वार पुन्हा)"},{en:"Stays the same",mr:"तशीच राहते"}], a:1, why:{en:"East of the line is a day behind, so the traveller lives the same date twice.",mr:"रेषेच्या पूर्वेला एक दिवस मागे, म्हणून प्रवाशाला तीच तारीख दोनदा मिळते."}},
+      {q:{en:"Indian Standard Time is based on which meridian?",mr:"भारतीय प्रमाण वेळ कोणत्या रेखावृत्तावर आधारित आहे?"}, o:[{en:"0° (Greenwich)",mr:"०° (ग्रीनिच)"},{en:"82°30′ E",mr:"८२°३०′ पूर्व"},{en:"180°",mr:"१८०°"}], a:1, why:{en:"82°30′E ÷ 15° = 5.5 hours ahead of Greenwich.",mr:"८२°३०′ ÷ १५° = ग्रीनिचपेक्षा ५.५ तास पुढे."}}]}
+  ],
+  notes:{en:["Textbook: Grade 9 Geography (Marathi medium), chapter ‘International Date Line’. Week of 23 Nov.","Students covered local and standard time in Grade 8; start by recalling 15° per hour.","Demo: a ball or globe, a torch for the Sun, tape along 0° and 180°. Turn slowly and count hours.","The clock strip uses local mean time; real time zones are political and follow borders."],
+         mr:["पाठ्यपुस्तक: इयत्ता ९ भूगोल (मराठी माध्यम), ‘आंतरराष्ट्रीय वाररेषा’ हा पाठ. २३ नोव्हेंबरचा आठवडा.","इयत्ता ८ मध्ये स्थानिक व प्रमाण वेळ शिकलेली आहे; दर तासाला १५° याची उजळणी करून सुरुवात करा.","प्रात्यक्षिक: चेंडू किंवा पृथ्वीगोल, सूर्यासाठी विजेरी, ०° व १८०° वर चिकटपट्टी. हळूहळू फिरवा आणि तास मोजा.","घड्याळपट्टी स्थानिक सरासरी वेळ दाखवते; प्रत्यक्ष कालविभाग राजकीय सीमांनुसार असतात."]}
+},
+/* ---------- Grade 9 · Introduction to Economics ---------- */
+{ id:"g9-economics", grade:9, weeks:["2026-11-30","2026-12-07"],
+  topic:{en:"Introduction to Economics", mr:"अर्थशास्त्राचा परिचय"},
+  blurb:{en:"Scarcity and choice, three kinds of economy, and sorting Jalihal’s jobs into sectors.", mr:"दुर्मिळता व निवड, अर्थव्यवस्थेचे तीन प्रकार आणि जालिहाळमधील व्यवसायांचे क्षेत्रांनुसार वर्गीकरण."},
+  slides:[
+    {step:{en:"Question",mr:"प्रश्न"}, eyebrow:{en:"Grade 9 · Introduction to Economics",mr:"इयत्ता ९ · अर्थशास्त्राचा परिचय"}, title:{en:"Economics: <mark>choosing with limited resources</mark>",mr:"अर्थशास्त्र: <mark>मर्यादित साधनांतून निवड</mark>"},
+     body:()=>`<p class="lead">${esc(L({en:"A family has ₹500 left this week. It needs oil, notebooks, a bus pass and medicine, and wants a cricket bat. What should it buy first, and why?",mr:"या आठवड्यात कुटुंबाकडे ₹५०० उरले आहेत. तेल, वह्या, बसपास आणि औषधे यांची गरज आहे, आणि क्रिकेटची बॅट हवी आहे. आधी काय घ्यावे आणि का?"}))}</p>
+       <div class="row">${chips([{en:"Wants are many",mr:"गरजा अमर्याद"},{en:"Resources are limited",mr:"साधने मर्यादित"},{en:"So we must choose",mr:"म्हणून निवड करावी लागते"}])}</div>`},
+    {step:{en:"Types",mr:"प्रकार"}, eyebrow:{en:"Who decides what is produced?",mr:"काय उत्पादन करायचे हे कोण ठरवते?"}, title:{en:"Three kinds of <mark>economy</mark>",mr:"अर्थव्यवस्थेचे <mark>तीन प्रकार</mark>"},
+     body:()=>pts([
+       {k:{en:"Market decides",mr:"बाजार ठरवतो"}, h:{en:"Capitalist economy",mr:"भांडवलशाही अर्थव्यवस्था"}, p:{en:"Factories and land are mostly owned by private people and companies, who produce for profit. Example: USA.",mr:"कारखाने व जमीन प्रामुख्याने खाजगी व्यक्ती व कंपन्यांच्या मालकीचे; उत्पादन नफ्यासाठी. उदा. अमेरिका."}},
+       {k:{en:"Government decides",mr:"शासन ठरवते"}, h:{en:"Socialist economy",mr:"समाजवादी अर्थव्यवस्था"}, p:{en:"The government owns most resources and plans production for everyone’s needs. Example: the former USSR.",mr:"बहुतेक साधनांची मालकी शासनाकडे; सर्वांच्या गरजांसाठी उत्पादनाचे नियोजन. उदा. पूर्वीचा सोव्हिएत रशिया."}},
+       {k:{en:"Both together",mr:"दोन्ही मिळून"}, h:{en:"Mixed economy",mr:"मिश्र अर्थव्यवस्था"}, p:{en:"Public sector (railways, many banks) and private sector (shops, most factories) work side by side. Example: India.",mr:"सार्वजनिक क्षेत्र (रेल्वे, अनेक बँका) आणि खाजगी क्षेत्र (दुकाने, बहुतेक कारखाने) एकत्र काम करतात. उदा. भारत."}}])},
+    {step:{en:"Sectors",mr:"क्षेत्रे"}, eyebrow:{en:"What kind of work?",mr:"कोणत्या प्रकारचे काम?"}, title:{en:"Three <mark>sectors</mark> of work",mr:"कामाची <mark>तीन क्षेत्रे</mark>"},
+     body:()=>pts([
+       {k:{en:"Primary",mr:"प्राथमिक"}, h:{en:"Taking from nature",mr:"निसर्गातून मिळवणे"}, p:{en:"Farming, herding, fishing, mining, forestry.",mr:"शेती, पशुपालन, मासेमारी, खाणकाम, वनोद्योग."}},
+       {k:{en:"Secondary",mr:"द्वितीयक"}, h:{en:"Making things",mr:"वस्तू तयार करणे"}, p:{en:"Turning raw materials into goods: sugar factories, brick kilns, tailoring, construction.",mr:"कच्च्या मालापासून वस्तू बनवणे: साखर कारखाने, वीटभट्ट्या, शिवणकाम, बांधकाम."}},
+       {k:{en:"Tertiary",mr:"तृतीयक"}, h:{en:"Giving services",mr:"सेवा देणे"}, p:{en:"Teaching, transport, shops, banks, hospitals, mobile repair.",mr:"शिक्षण, वाहतूक, दुकाने, बँका, दवाखाने, मोबाईल दुरुस्ती."}}])},
+    {step:{en:"Sort",mr:"वर्गीकरण"}, eyebrow:{en:"Activity · jobs around Jalihal",mr:"कृती · जालिहाळच्या आसपासचे व्यवसाय"}, title:{en:"Which sector <mark>is it?</mark>",mr:"हे कोणते <mark>क्षेत्र?</mark>"}, widget:"sort",
+     body:()=>`<p class="lead">${esc(L({en:"Tap the sector for each job. Then add jobs your own families do.",mr:"प्रत्येक व्यवसायासाठी योग्य क्षेत्रावर टॅप करा. मग तुमच्या कुटुंबातील व्यवसायही जोडा."}))}</p><div class="card widget" id="w"></div>`},
+    {step:{en:"Check",mr:"चाचणी"}, eyebrow:{en:"Quick check",mr:"झटपट चाचणी"}, title:{en:"What did we <mark>learn?</mark>",mr:"आपण काय <mark>शिकलो?</mark>"}, quiz:[
+      {q:{en:"The basic problem every economy faces is:",mr:"प्रत्येक अर्थव्यवस्थेपुढील मूलभूत समस्या:"}, o:[{en:"Scarcity of resources",mr:"साधनांची दुर्मिळता"},{en:"Too much money",mr:"जास्त पैसा"},{en:"Too few wants",mr:"कमी गरजा"}], a:0, why:{en:"Wants are unlimited but resources are limited.",mr:"गरजा अमर्याद पण साधने मर्यादित."}},
+      {q:{en:"India’s economy is:",mr:"भारताची अर्थव्यवस्था:"}, o:[{en:"Capitalist",mr:"भांडवलशाही"},{en:"Socialist",mr:"समाजवादी"},{en:"Mixed",mr:"मिश्र"}], a:2, why:{en:"Public and private sectors work together in India.",mr:"भारतात सार्वजनिक व खाजगी क्षेत्रे एकत्र काम करतात."}},
+      {q:{en:"A bus conductor works in the:",mr:"बस वाहक कोणत्या क्षेत्रात काम करतो?"}, o:[{en:"Primary sector",mr:"प्राथमिक"},{en:"Secondary sector",mr:"द्वितीयक"},{en:"Tertiary sector",mr:"तृतीयक"}], a:2, why:{en:"Transport is a service.",mr:"वाहतूक ही सेवा आहे."}}]}
+  ],
+  notes:{en:["Textbook: Grade 9 Geography (Marathi medium), chapter ‘Introduction to Economics’. Weeks of 30 Nov and 7 Dec.","Week 1: scarcity and the three types of economy. Week 2: sectors and the sorting activity.","Extension: ask students to interview one adult about their work and classify it.","Links ahead: ‘Trade’ (from 14 Dec) builds on goods and services."],
+         mr:["पाठ्यपुस्तक: इयत्ता ९ भूगोल (मराठी माध्यम), ‘अर्थशास्त्राचा परिचय’ हा पाठ. ३० नोव्हेंबर व ७ डिसेंबरचे आठवडे.","पहिला आठवडा: दुर्मिळता आणि अर्थव्यवस्थेचे तीन प्रकार. दुसरा आठवडा: क्षेत्रे आणि वर्गीकरण कृती.","विस्तार: एका प्रौढ व्यक्तीची त्यांच्या कामाबद्दल मुलाखत घ्या आणि ते कोणत्या क्षेत्रात येते ते ठरवा.","पुढील पाठ: ‘व्यापार’ (१४ डिसेंबरपासून) वस्तू व सेवांवर आधारित आहे."]}
+},
+/* ---------- Grade 10 · Population (India & Brazil) ---------- */
+{ id:"g10-population", grade:10, weeks:["2026-11-23"],
+  topic:{en:"Population: India and Brazil", mr:"लोकसंख्या: भारत व ब्राझील"},
+  blurb:{en:"Two big countries, very different crowding: size, density, cities and life expectancy, with World Bank data.", mr:"दोन मोठे देश, लोकवस्तीत मोठा फरक: आकार, घनता, शहरे आणि आयुर्मान, जागतिक बँकेच्या आकड्यांसह."},
+  slides:[
+    {step:{en:"Size",mr:"आकार"}, eyebrow:{en:"Grade 10 · Population · India and Brazil",mr:"इयत्ता १० · लोकसंख्या · भारत व ब्राझील"}, title:{en:"Bigger land, <mark>fewer people</mark>",mr:"मोठी जमीन, <mark>कमी लोक</mark>"},
+     body:()=>`<div class="row">${place("india_w",{en:"India",mr:"भारत"},{en:"Asia",mr:"आशिया"},IN,{en:"146.4 crore people · 32.9 lakh km²",mr:"१४६.४ कोटी लोक · ३२.९ लाख चौ. किमी"})}${chips([{en:"Most people of any country",mr:"जगात सर्वाधिक लोकसंख्या"}])}</div>
+       <div class="row">${place("brazil",{en:"Brazil",mr:"ब्राझील"},{en:"South America",mr:"दक्षिण अमेरिका"},BR,{en:"21.3 crore people · 85.1 lakh km²",mr:"२१.३ कोटी लोक · ८५.१ लाख चौ. किमी"})}${chips([{en:"About 2.6 times India’s area",mr:"भारताच्या सुमारे २.६ पट क्षेत्रफळ"},{en:"About 1/7 of India’s people",mr:"भारताच्या सुमारे १/७ लोकसंख्या"}])}</div>
+       <p class="src">${esc(L({en:"World Bank: population 2025, surface area 2023.",mr:"जागतिक बँक: लोकसंख्या २०२५, क्षेत्रफळ २०२३."}))}</p>`},
+    {step:{en:"Compare",mr:"तुलना"}, eyebrow:{en:"Side by side",mr:"शेजारी शेजारी"}, title:{en:"Same questions, <mark>different answers</mark>",mr:"तेच प्रश्न, <mark>वेगळी उत्तरे</mark>"},
+     body:()=>cmp([
+       {h:{en:"People per km²",mr:"दर चौ. किमी लोक"}, v:[{l:{en:"India",mr:"भारत"},n:445,t:"445",c:IN},{l:{en:"Brazil",mr:"ब्राझील"},n:25,t:"25",c:BR}]},
+       {h:{en:"Living in towns and cities",mr:"शहरांत राहणारे"}, v:[{l:{en:"India",mr:"भारत"},n:35.7,t:"35.7%",c:IN},{l:{en:"Brazil",mr:"ब्राझील"},n:88.2,t:"88.2%",c:BR}]},
+       {h:{en:"Life expectancy",mr:"आयुर्मान"}, v:[{l:{en:"India",mr:"भारत"},n:72.2,t:{en:"72.2 yrs",mr:"७२.२ वर्षे"},c:IN},{l:{en:"Brazil",mr:"ब्राझील"},n:76.0,t:{en:"76.0 yrs",mr:"७६.० वर्षे"},c:BR}]}])
+       +`<p class="src">${esc(L({en:"World Bank World Development Indicators: density from 2025 population and 2023 area; urban share 2025; life expectancy 2024.",mr:"जागतिक बँक: घनता २०२५ ची लोकसंख्या व २०२३ च्या क्षेत्रफळावरून; शहरी वाटा २०२५; आयुर्मान २०२४."}))}</p>`},
+    {step:{en:"Where?",mr:"कुठे?"}, eyebrow:{en:"Distribution of population",mr:"लोकसंख्येचे वितरण"}, title:{en:"Crowded coasts, <mark>empty interiors</mark>",mr:"दाट किनारे, <mark>विरळ अंतर्भाग</mark>"},
+     body:()=>pts([
+       {k:{en:"Brazil · dense",mr:"ब्राझील · दाट"}, h:{en:"South-east and the Atlantic coast",mr:"आग्नेय भाग व अटलांटिक किनारा"}, p:{en:"Big cities such as São Paulo and Rio de Janeiro, ports, industry and a mild climate.",mr:"साओ पावलो, रिओ दी जानेरो सारखी मोठी शहरे, बंदरे, उद्योग आणि सौम्य हवामान."}},
+       {k:{en:"Brazil · sparse",mr:"ब्राझील · विरळ"}, h:{en:"The Amazon basin",mr:"ॲमेझॉन खोरे"}, p:{en:"Dense rainforest, heavy rain, few roads. Very few people per km².",mr:"घनदाट वर्षावन, प्रचंड पाऊस, कमी रस्ते. दर चौ. किमी फार कमी लोक."}},
+       {k:{en:"India · dense",mr:"भारत · दाट"}, h:{en:"Ganga plains and the coasts",mr:"गंगेचे मैदान व किनारी प्रदेश"}, p:{en:"Fertile soil, rivers, farming and cities.",mr:"सुपीक मृदा, नद्या, शेती आणि शहरे."}},
+       {k:{en:"India · sparse",mr:"भारत · विरळ"}, h:{en:"Thar desert, Himalaya, north-east hills",mr:"थरचे वाळवंट, हिमालय, ईशान्येकडील डोंगराळ भाग"}, p:{en:"Dry land, cold heights or steep forested slopes.",mr:"कोरडी जमीन, थंड उंच प्रदेश किंवा जंगलव्याप्त तीव्र उतार."}}])},
+    {step:{en:"Activity",mr:"कृती"}, eyebrow:{en:"Activity · use the atlas",mr:"कृती · नकाशा वापरा"}, title:{en:"Explain <mark>the map</mark>",mr:"<mark>नकाशा</mark> समजावून सांगा"},
+     body:()=>`<div class="pts">${[
+       {k:"1",h:{en:"Open the World map",mr:"जगाचा नकाशा उघडा"},p:{en:"Geography Lab atlas → World → Density. Find India and Brazil.",mr:"भूगोल प्रयोगशाळा नकाशा → जग → घनता. भारत व ब्राझील शोधा."}},
+       {k:"2",h:{en:"Switch to Urban",mr:"‘शहरी’ निवडा"},p:{en:"Which country is darker now? Write one sentence on why.",mr:"आता कोणता देश गडद दिसतो? का, ते एका वाक्यात लिहा."}},
+       {k:"3",h:{en:"Three reasons",mr:"तीन कारणे"},p:{en:"In groups, write three reasons why the Amazon basin has so few people.",mr:"गटांमध्ये, ॲमेझॉन खोऱ्यात इतके कमी लोक का राहतात याची तीन कारणे लिहा."}}].map(p => `<div class="card pt"><span class="k">${p.k}</span><h3>${esc(L(p.h))}</h3><p>${esc(L(p.p))}</p></div>`).join("")}</div>
+       <div class="row"><a class="btn" href="https://adm-htfre.github.io/Open-Source-SCOPE-Geography-Lab/" target="_blank" rel="noopener">${esc(L({en:"Open the atlas",mr:"नकाशा उघडा"}))}</a></div>`},
+    {step:{en:"Check",mr:"चाचणी"}, eyebrow:{en:"Quick check",mr:"झटपट चाचणी"}, title:{en:"What did we <mark>learn?</mark>",mr:"आपण काय <mark>शिकलो?</mark>"}, quiz:[
+      {q:{en:"Which country has the higher population density?",mr:"कोणत्या देशाची लोकसंख्येची घनता जास्त आहे?"}, o:[{en:"India",mr:"भारत"},{en:"Brazil",mr:"ब्राझील"},{en:"They are equal",mr:"दोन्ही समान"}], a:0, why:{en:"About 445 per km² in India against about 25 in Brazil.",mr:"भारतात दर चौ. किमी सुमारे ४४५, ब्राझीलमध्ये सुमारे २५."}},
+      {q:{en:"Which part of Brazil has the fewest people?",mr:"ब्राझीलच्या कोणत्या भागात सर्वात कमी लोक राहतात?"}, o:[{en:"The south-east coast",mr:"आग्नेय किनारा"},{en:"The Amazon basin",mr:"ॲमेझॉन खोरे"},{en:"Around São Paulo",mr:"साओ पावलोच्या आसपास"}], a:1, why:{en:"Dense forest and heavy rain make the Amazon basin hard to settle.",mr:"घनदाट जंगल व प्रचंड पावसामुळे ॲमेझॉन खोऱ्यात वस्ती करणे कठीण."}},
+      {q:{en:"About what share of Brazil’s people live in towns and cities?",mr:"ब्राझीलमधील सुमारे किती टक्के लोक शहरांत राहतात?"}, o:[{en:"About 36%",mr:"सुमारे ३६%"},{en:"About 58%",mr:"सुमारे ५८%"},{en:"About 88%",mr:"सुमारे ८८%"}], a:2, why:{en:"88.2% in 2025 (World Bank). India’s is 35.7%.",mr:"२०२५ मध्ये ८८.२% (जागतिक बँक). भारताचा ३५.७%."}}]}
+  ],
+  notes:{en:["Textbook: Grade 10 Geography (Marathi medium), chapter ‘Population’ (India and Brazil). Week of 23 Nov.","These figures are recent World Bank numbers (2023–2025). The textbook uses older census figures (India 2011, Brazil 2010), so numbers will differ: use this to discuss why data changes over time.","Board exam focus: comparing distribution and density, and giving reasons. Practise ‘give geographical reasons’ answers.","Next: ‘Human Settlements’ (30 Nov and 7 Dec)."],
+         mr:["पाठ्यपुस्तक: इयत्ता १० भूगोल (मराठी माध्यम), ‘लोकसंख्या’ हा पाठ (भारत व ब्राझील). २३ नोव्हेंबरचा आठवडा.","हे आकडे जागतिक बँकेचे अलीकडील (२०२३–२०२५) आहेत. पाठ्यपुस्तकात जुने जनगणना आकडे (भारत २०११, ब्राझील २०१०) आहेत, त्यामुळे आकडे वेगळे दिसतील: आकडेवारी काळानुसार का बदलते यावर चर्चा करा.","बोर्ड परीक्षा: वितरण व घनतेची तुलना आणि भौगोलिक कारणे. ‘भौगोलिक कारणे द्या’ प्रकारच्या उत्तरांचा सराव घ्या.","पुढील पाठ: ‘मानवी वस्ती’ (३० नोव्हेंबर व ७ डिसेंबर)."]}
+},
+/* ---------- Grade 10 · Human Settlements ---------- */
+{ id:"g10-settlements", grade:10, weeks:["2026-11-30","2026-12-07"],
+  topic:{en:"Human Settlements: India and Brazil", mr:"मानवी वस्ती: भारत व ब्राझील"},
+  blurb:{en:"Why settlements grow where they do, the three settlement patterns, and how urban the two countries are.", mr:"वस्ती कुठे व का वसते, वस्तीचे तीन आकृतिबंध आणि दोन्ही देशांचे नागरीकरण."},
+  slides:[
+    {step:{en:"Question",mr:"प्रश्न"}, eyebrow:{en:"Grade 10 · Human Settlements",mr:"इयत्ता १० · मानवी वस्ती"}, title:{en:"Human settlements: <mark>why here?</mark>",mr:"मानवी वस्ती: <mark>इथेच का?</mark>"},
+     body:()=>`<p class="lead">${esc(L({en:"Why was Jalihal built where it is and not two kilometres away? List everything people needed.",mr:"जालिहाळ आज जिथे आहे तिथेच का वसले, दोन किलोमीटर दूर का नाही? लोकांना काय काय लागत होते याची यादी करा."}))}</p>
+       <div class="row">${chips([{en:"Water",mr:"पाणी"},{en:"Flat land",mr:"सपाट जमीन"},{en:"Fertile soil",mr:"सुपीक मृदा"},{en:"Roads and markets",mr:"रस्ते व बाजार"},{en:"Safety",mr:"सुरक्षितता"}])}</div>`},
+    {step:{en:"Patterns",mr:"आकृतिबंध"}, eyebrow:{en:"Seen from above",mr:"वरून पाहिल्यास"}, title:{en:"Three <mark>settlement patterns</mark>",mr:"वस्तीचे <mark>तीन आकृतिबंध</mark>"}, widget:"patterns",
+     body:()=>`<div class="pattern" id="w"></div>`},
+    {step:{en:"Cities",mr:"शहरे"}, eyebrow:{en:"Urbanisation",mr:"नागरीकरण"}, title:{en:"Brazil lives in cities, <mark>India in villages</mark>",mr:"ब्राझील शहरांत, <mark>भारत खेड्यांत</mark>"},
+     body:()=>cmp([{h:{en:"Share of people in towns and cities, 2025",mr:"शहरांत राहणाऱ्या लोकांचा वाटा, २०२५"}, v:[{l:{en:"India",mr:"भारत"},n:35.7,t:"35.7%",c:IN},{l:{en:"Brazil",mr:"ब्राझील"},n:88.2,t:"88.2%",c:BR},{l:{en:"World",mr:"जग"},n:57.8,t:"57.8%",c:"var(--muted)"}]}])
+       + pts([
+       {k:{en:"Brazil",mr:"ब्राझील"}, h:{en:"Cities along the coast",mr:"किनाऱ्यालगत शहरे"}, p:{en:"Most towns are in the south-east and along the Atlantic. In the Amazon, small settlements line the rivers.",mr:"बहुतेक शहरे आग्नेय भागात व अटलांटिक किनाऱ्यालगत. ॲमेझॉनमध्ये लहान वस्त्या नद्यांच्या काठाने."}},
+       {k:{en:"India",mr:"भारत"}, h:{en:"Most people still rural",mr:"बहुतेक लोक अजूनही ग्रामीण"}, p:{en:"Almost two in three Indians live in villages, but towns are growing fast.",mr:"जवळपास तीनपैकी दोन भारतीय खेड्यांत राहतात, पण शहरे वेगाने वाढत आहेत."}}])
+       +`<p class="src">${esc(L({en:"World Bank, urban population (% of total), 2025.",mr:"जागतिक बँक, शहरी लोकसंख्या (एकूण %), २०२५."}))}</p>`},
+    {step:{en:"Activity",mr:"कृती"}, eyebrow:{en:"Activity · our village from above",mr:"कृती · वरून दिसणारे आपले गाव"}, title:{en:"What pattern <mark>is Jalihal?</mark>",mr:"जालिहाळचा <mark>आकृतिबंध कोणता?</mark>"},
+     body:()=>`<div class="pts">${[
+       {k:"1",h:{en:"Look from above",mr:"वरून पाहा"},p:{en:"Use a satellite map on the school computer, or sketch the village after a short walk.",mr:"शाळेच्या संगणकावर उपग्रह नकाशा पाहा, किंवा छोट्या फेरफटक्यानंतर गावाचे रेखाटन करा."}},
+       {k:"2",h:{en:"Mark the houses",mr:"घरे चिन्हांकित करा"},p:{en:"Draw houses as dots. Mark wells, tanks, roads and the school.",mr:"घरे ठिपक्यांनी दाखवा. विहिरी, तलाव, रस्ते व शाळा चिन्हांकित करा."}},
+       {k:"3",h:{en:"Decide and explain",mr:"ठरवा आणि स्पष्ट करा"},p:{en:"Is it compact, dispersed or linear? Give two geographical reasons.",mr:"केंद्रित, विखुरलेली की रेषीय? दोन भौगोलिक कारणे द्या."}}].map(p => `<div class="card pt"><span class="k">${p.k}</span><h3>${esc(L(p.h))}</h3><p>${esc(L(p.p))}</p></div>`).join("")}</div>`},
+    {step:{en:"Check",mr:"चाचणी"}, eyebrow:{en:"Quick check",mr:"झटपट चाचणी"}, title:{en:"What did we <mark>learn?</mark>",mr:"आपण काय <mark>शिकलो?</mark>"}, quiz:[
+      {q:{en:"Houses built in a row along a road or river form a:",mr:"रस्ता किंवा नदीकाठाने रांगेत बांधलेल्या घरांची वस्ती:"}, o:[{en:"Linear settlement",mr:"रेषीय वस्ती"},{en:"Compact settlement",mr:"केंद्रित वस्ती"},{en:"Dispersed settlement",mr:"विखुरलेली वस्ती"}], a:0, why:{en:"Linear settlements follow a line such as a road, river or coast.",mr:"रेषीय वस्ती रस्ता, नदी किंवा किनाऱ्यासारख्या रेषेच्या बाजूने असते."}},
+      {q:{en:"Dispersed settlements are most common in:",mr:"विखुरलेल्या वस्त्या कुठे जास्त आढळतात?"}, o:[{en:"Flat, fertile plains",mr:"सपाट, सुपीक मैदाने"},{en:"Hilly and forested areas",mr:"डोंगराळ व जंगलव्याप्त भाग"},{en:"City centres",mr:"शहरांचे मध्यवर्ती भाग"}], a:1, why:{en:"Uneven land and scattered farmland keep houses apart.",mr:"असमान भूभाग व विखुरलेल्या शेतीमुळे घरे दूर दूर असतात."}},
+      {q:{en:"Which country is more urbanised?",mr:"कोणत्या देशाचे नागरीकरण जास्त झाले आहे?"}, o:[{en:"India",mr:"भारत"},{en:"Brazil",mr:"ब्राझील"}], a:1, why:{en:"88.2% of Brazil’s people live in towns and cities against 35.7% in India (2025).",mr:"ब्राझीलमध्ये ८८.२% तर भारतात ३५.७% लोक शहरांत राहतात (२०२५)."}}]}
+  ],
+  notes:{en:["Textbook: Grade 10 Geography (Marathi medium), chapter ‘Human Settlements’ (India and Brazil). Weeks of 30 Nov and 7 Dec.","Check the textbook’s exact Marathi terms for the patterns (केंद्रित / विखुरलेली / रेषीय) and use the same words in class.","Week 1: factors and patterns. Week 2: urbanisation and the Jalihal activity.","Board exam focus: diagrams of settlement patterns; practise drawing them neatly."],
+         mr:["पाठ्यपुस्तक: इयत्ता १० भूगोल (मराठी माध्यम), ‘मानवी वस्ती’ हा पाठ (भारत व ब्राझील). ३० नोव्हेंबर व ७ डिसेंबरचे आठवडे.","आकृतिबंधांसाठी पाठ्यपुस्तकातील नेमके शब्द (केंद्रित / विखुरलेली / रेषीय) तपासा आणि वर्गात तेच वापरा.","पहिला आठवडा: घटक आणि आकृतिबंध. दुसरा आठवडा: नागरीकरण आणि जालिहाळ कृती.","बोर्ड परीक्षा: वस्ती आकृतिबंधांच्या आकृत्या; त्या नीट काढण्याचा सराव घ्या."]}
+}
+];
+
+/* ===================== WIDGETS ===================== */
+const W = {
+  grid(el){
+    const uses = [
+      {k:"agri", c:"#e7c53a", n:{en:"Farmland",mr:"शेतजमीन"}}, {k:"fallow", c:"#c9b28a", n:{en:"Fallow",mr:"पडीक"}},
+      {k:"forest", c:"#3e8a4f", n:{en:"Forest / pasture",mr:"वन / गायरान"}}, {k:"homes", c:"#d1543a", n:{en:"Houses (gaothan)",mr:"घरे (गावठाण)"}},
+      {k:"water", c:"#3b6fd6", n:{en:"Water",mr:"पाणी"}}, {k:"road", c:"#6b675d", n:{en:"Roads",mr:"रस्ते"}}, {k:"public", c:"#8a5cc7", n:{en:"School, temple, office",mr:"शाळा, मंदिर, कार्यालय"}}];
+    let cur = "agri", cells = Array(100).fill(null);
+    el.innerHTML = `<div class="pal" id="pal">${uses.map(u => `<button data-k="${u.k}" aria-pressed="${u.k===cur}"><i style="background:${u.c}"></i>${esc(L(u.n))}</button>`).join("")}<button id="clr">${esc(L(UI.reset))}</button></div>
+      <div class="wflex"><div class="lgrid" id="lg" style="flex:1 1 280px">${cells.map((_, i) => `<button data-i="${i}" aria-label="square ${i+1}"></button>`).join("")}</div><div class="bars" id="lb" style="flex:1 1 240px"></div></div>`;
+    const paint = () => {
+      el.querySelectorAll("#lg button").forEach(b => { const u = uses.find(x => x.k === cells[b.dataset.i]); b.style.background = u ? u.c : ""; });
+      el.querySelector("#lb").innerHTML = uses.map(u => { const n = cells.filter(c => c === u.k).length;
+        return `<div class="bar"><span>${esc(L(u.n))}</span><span class="tr"><i style="width:${n}%;background:${u.c};animation:none;transition:width .3s"></i></span><span class="v">${DEV(n)}%</span></div>`; }).join("");
+    };
+    let down = false;
+    el.querySelector("#lg").addEventListener("pointerdown", e => { const b = e.target.closest("[data-i]"); if (!b) return; down = true; cells[b.dataset.i] = cells[b.dataset.i] === cur ? null : cur; paint(); });
+    el.querySelector("#lg").addEventListener("pointerover", e => { if (!down) return; const b = e.target.closest("[data-i]"); if (b){ cells[b.dataset.i] = cur; paint(); } });
+    window.addEventListener("pointerup", () => down = false);
+    el.querySelectorAll("#pal [data-k]").forEach(b => b.onclick = () => { cur = b.dataset.k; el.querySelectorAll("#pal [data-k]").forEach(x => x.setAttribute("aria-pressed", x === b)); });
+    el.querySelector("#clr").onclick = () => { cells.fill(null); paint(); };
+    paint();
+  },
+  tally(el){
+    const f = [{k:"m",n:{en:"Men and boys",mr:"पुरुष व मुले"}},{k:"f",n:{en:"Women and girls",mr:"स्त्रिया व मुली"}},{k:"a0",n:{en:"Age 0–14",mr:"वय ०–१४"}},{k:"a1",n:{en:"Age 15–59",mr:"वय १५–५९"}},{k:"a2",n:{en:"Age 60+",mr:"वय ६०+"}}];
+    const v = {m:0,f:0,a0:0,a1:0,a2:0};
+    el.innerHTML = `<div class="tally">${f.map(x => `<div><span>${esc(L(x.n))}</span><div class="ctl"><button data-k="${x.k}" data-d="-1" aria-label="minus">−</button><output id="o-${x.k}">0</output><button data-k="${x.k}" data-d="1" aria-label="plus">+</button><button data-k="${x.k}" data-d="10" aria-label="plus ten" style="width:auto;padding:0 6px;font-size:13px">+10</button></div></div>`).join("")}</div>
+      <div class="wflex"><div><span class="k" style="font-family:var(--f-sans);font-weight:800">${esc(L({en:"Our sex ratio",mr:"आपले लिंग गुणोत्तर"}))}</span><div class="big" id="sr">—</div><p class="src" id="srn"></p></div><div class="bars" id="ages" style="flex:1 1 260px"></div></div>`;
+    const upd = () => {
+      f.forEach(x => el.querySelector("#o-"+x.k).textContent = DEV(v[x.k]));
+      const sr = v.m ? Math.round(v.f / v.m * 1000) : null;
+      el.querySelector("#sr").textContent = sr == null ? "—" : DEV(sr);
+      el.querySelector("#srn").textContent = sr == null ? "" : L({en:`women per 1,000 men · Sangli 966 · India 943`, mr:`दर १,००० पुरुषांमागे स्त्रिया · सांगली ९६६ · भारत ९४३`});
+      const tot = v.a0 + v.a1 + v.a2 || 1;
+      el.querySelector("#ages").innerHTML = [["a0","var(--amber)"],["a1","var(--blue)"],["a2","var(--red)"]].map(([k,c]) => `<div class="bar"><span>${esc(L(f.find(x=>x.k===k).n))}</span><span class="tr"><i style="width:${v[k]/tot*100}%;background:${c};animation:none;transition:width .3s"></i></span><span class="v">${DEV(Math.round(v[k]/tot*100))}%</span></div>`).join("");
+    };
+    el.querySelectorAll("[data-d]").forEach(b => b.onclick = () => { v[b.dataset.k] = Math.max(0, v[b.dataset.k] + +b.dataset.d); upd(); });
+    upd();
+  },
+  idl(el){
+    const days = {en:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"], mr:["रवि","सोम","मंगळ","बुध","गुरु","शुक्र","शनि"]};
+    let utc = 18*60;
+    el.innerHTML = `<div class="idl-ctl"><label for="utc">${esc(L({en:"Time at Greenwich (0°), Monday:",mr:"ग्रीनिच (०°) येथील वेळ, सोमवार:"}))}</label><input type="range" id="utc" min="0" max="1439" step="15" value="${utc}"><b id="utcv"></b></div>
+      <div class="idl-wrap"><div class="idl" id="strip"></div></div>
+      <div class="row" style="gap:8px">${[{en:"Blue: Monday",mr:"निळा: सोमवार"},{en:"Yellow: Tuesday",mr:"पिवळा: मंगळवार"},{en:"Red: Sunday",mr:"लाल: रविवार"}].map(c => `<span class="chip">${esc(L(c))}</span>`).join("")}</div>`;
+    const fmt = m => { m = ((m % 1440) + 1440) % 1440; const h = Math.floor(m/60), mm = m%60; return DEV(String(h).padStart(2,"0") + ":" + String(mm).padStart(2,"0")); };
+    const draw = () => {
+      el.querySelector("#utcv").textContent = fmt(utc);
+      const cols = [];
+      for (let lon = -180; lon <= 180; lon += 15){
+        const local = utc + lon*4, day = Math.floor(local / 1440);   /* 0 = Monday, 1 = Tuesday, -1 = Sunday */
+        const cls = day > 0 ? "d1" : day < 0 ? "dm" : "d0";
+        const dn = days[LANG][(1 + day + 7) % 7];
+        const lab = lon === 0 ? "0°" : (Math.abs(lon) + "°" + (lon < 0 ? (LANG==="mr"?"प":"W") : (LANG==="mr"?"पू":"E")));
+        cols.push(`<div class="${cls}"><span>${DEV(lab)}</span><b>${fmt(local)}</b><span>${dn}</span></div>`);
+      }
+      el.querySelector("#strip").innerHTML = cols.join("");
+    };
+    el.querySelector("#utc").oninput = e => { utc = +e.target.value; draw(); };
+    draw();
+  },
+  sort(el){
+    const S = [{en:"Primary",mr:"प्राथमिक"},{en:"Secondary",mr:"द्वितीयक"},{en:"Tertiary",mr:"तृतीयक"}];
+    const jobs = [[{en:"Grape farmer",mr:"द्राक्ष बागायतदार"},0],[{en:"Shepherd",mr:"मेंढपाळ"},0],[{en:"Sugar factory worker",mr:"साखर कारखान्यातील कामगार"},1],[{en:"Teacher",mr:"शिक्षक"},2],[{en:"Brick kiln worker",mr:"वीटभट्टी कामगार"},1],
+      [{en:"Bus conductor",mr:"बस वाहक"},2],[{en:"Dairy farmer",mr:"दुग्ध व्यावसायिक"},0],[{en:"Tailor",mr:"शिंपी"},1],[{en:"Shopkeeper",mr:"दुकानदार"},2],[{en:"Mason (builds houses)",mr:"गवंडी"},1],[{en:"Nurse",mr:"परिचारिका"},2],[{en:"Fisher at the tank",mr:"तलावातील मच्छीमार"},0]];
+    let right = 0, tried = 0;
+    el.innerHTML = `<div class="sort">${jobs.map(([n], i) => `<div class="it"><span>${esc(L(n))}</span><div class="opts">${S.map((s, j) => `<button data-i="${i}" data-j="${j}">${esc(L(s))}</button>`).join("")}</div></div>`).join("")}</div><div class="chip" id="sc"></div>`;
+    const done = new Set();
+    const sc = () => el.querySelector("#sc").textContent = `${L(UI.score)}: ${DEV(right)} / ${DEV(jobs.length)}`;
+    el.querySelectorAll(".opts button").forEach(b => b.onclick = () => {
+      const i = +b.dataset.i, j = +b.dataset.j; if (done.has(i)) return; done.add(i);
+      const ok = jobs[i][1] === j; if (ok) right++;
+      b.classList.add(ok ? "ok" : "no");
+      if (!ok) el.querySelector(`.opts button[data-i="${i}"][data-j="${jobs[i][1]}"]`).classList.add("ok");
+      sc();
+    });
+    sc();
+  },
+  patterns(el){
+    let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+    const dots = (pts, extra) => `<svg viewBox="0 0 220 140" role="img">${extra||""}${pts.map(([x,y]) => `<rect x="${x-3.5}" y="${y-3.5}" width="7" height="7" fill="var(--red)" stroke="var(--ink)" stroke-width=".8"/>`).join("")}</svg>`;
+    const compact = Array.from({length:46}, () => { const a = rnd()*6.28, r = Math.sqrt(rnd())*34; return [110 + Math.cos(a)*r*1.3, 70 + Math.sin(a)*r]; });
+    const dispersed = Array.from({length:22}, () => [14 + rnd()*192, 12 + rnd()*116]);
+    const linear = Array.from({length:30}, (_, i) => { const x = 10 + i*7, y = 70 + Math.sin(x/30)*18; return [x, y + (i%2 ? -11 : 11)]; });
+    const road = `<path d="${Array.from({length:23}, (_, i) => { const x = i*10; return (i?"L":"M") + x + "," + (70 + Math.sin(x/30)*18).toFixed(1); }).join("")}" fill="none" stroke="var(--blue)" stroke-width="5"/>`;
+    const well = `<circle cx="110" cy="70" r="7" fill="var(--blue)" stroke="var(--ink)"/>`;
+    const C = [
+      {h:{en:"Compact (nucleated)",mr:"केंद्रित"}, s:dots(compact, well), p:{en:"Houses close together around a well, tank or temple. Common on fertile plains with one water source, like many Deccan villages.",mr:"विहीर, तलाव किंवा मंदिराभोवती जवळजवळ घरे. एकाच जलस्रोताच्या सुपीक मैदानी भागात, उदा. दख्खनमधील अनेक गावे."}},
+      {h:{en:"Dispersed (scattered)",mr:"विखुरलेली"}, s:dots(dispersed), p:{en:"Houses far apart, each near its own fields. Common in hilly, forested or rugged areas, such as the Konkan hills or the Amazon.",mr:"घरे दूर दूर, प्रत्येक आपापल्या शेताजवळ. डोंगराळ, जंगलव्याप्त भागात, उदा. कोकणातील डोंगर किंवा ॲमेझॉन."}},
+      {h:{en:"Linear",mr:"रेषीय"}, s:dots(linear, road), p:{en:"Houses in a line along a road, river, canal or coast. Common along highways and in river valleys.",mr:"रस्ता, नदी, कालवा किंवा किनाऱ्याच्या बाजूने रांगेत घरे. महामार्ग व नदीखोऱ्यांत आढळतात."}}];
+    el.innerHTML = C.map(c => `<div class="card"><h3 style="margin:0;font-size:21px">${esc(L(c.h))}</h3>${c.s}<p style="margin:0;font-size:15.5px">${esc(L(c.p))}</p></div>`).join("");
+  }
+};
+
+/* ===================== RENDER ===================== */
+const fmtWeek = iso => { const d = new Date(iso + "T00:00:00"); return LANG === "mr" ? DEV(d.getDate()) + " " + ["जानेवारी","फेब्रुवारी","मार्च","एप्रिल","मे","जून","जुलै","ऑगस्ट","सप्टेंबर","ऑक्टोबर","नोव्हेंबर","डिसेंबर"][d.getMonth()] : d.toLocaleDateString("en-GB", {day:"numeric", month:"short"}); };
+let cur = {id:null, i:0};
+function home(){
+  document.title = "Geography Lab Term 2 Lessons";
+  $("#eyebrow").textContent = L(UI.homeEyebrow); $("#title").innerHTML = L(UI.homeTitle);
+  $("#homeBtn").hidden = true; $("#rail").hidden = true;
+  const weeks = [...new Set(LESSONS.flatMap(l => l.weeks))].sort();
+  $("#stage").innerHTML = `<p class="home-intro">${esc(L(UI.intro))}</p><div class="weeks">${weeks.map(w => `<section class="week"><h3>${esc(L(UI.weekOf))} ${esc(fmtWeek(w))}</h3><div class="lcards">${LESSONS.filter(l => l.weeks.includes(w)).map(l => `<a class="card lcard" href="#${l.id}"><div class="row"><span class="g-chip">${esc(L(UI.grade))} ${DEV(l.grade)}</span>${l.weeks.length>1?`<span class="g-chip" style="border-style:dashed">${DEV(l.weeks.indexOf(w)+1)}/${DEV(l.weeks.length)}</span>`:""}</div><h2>${esc(L(l.topic))}</h2><p>${esc(L(l.blurb))}</p><span class="btn" style="align-self:flex-start">${esc(L(UI.open))}</span></a>`).join("")}</div></section>`).join("")}</div>`;
+}
+function lesson(id, i){
+  const l = LESSONS.find(x => x.id === id); if (!l){ home(); return; }
+  cur = {id, i: Math.max(0, Math.min(l.slides.length - 1, i))};
+  const s = l.slides[cur.i];
+  $("#eyebrow").textContent = L(s.eyebrow); $("#title").innerHTML = L(s.title);
+  $("#homeBtn").hidden = false; $("#homeBtn").textContent = "← " + L(UI.all);
+  let body = s.quiz ? quizHTML(s.quiz) : s.body();
+  const notes = cur.i === l.slides.length - 1 ? `<details class="card notes" open><summary>${esc(L(UI.notes))}</summary><ul>${(LANG==="mr"?l.notes.mr:l.notes.en).map(n => `<li>${esc(n)}</li>`).join("")}</ul></details>` : "";
+  $("#stage").innerHTML = `<section class="slide enter">${body}${notes}</section>`;
+  if (s.widget) W[s.widget]($("#w"));
+  if (s.quiz) bindQuiz(s.quiz);
+  $("#rail").hidden = false;
+  $("#rbrand").textContent = L(UI.brand); $("#rsub").textContent = `${L(UI.grade)} ${DEV(l.grade)} · ${L(l.topic)}`;
+  $("#rsteps").innerHTML = l.slides.map((x, j) => `<button aria-current="${j===cur.i}" class="${j<cur.i?"done":""}" data-j="${j}">${DEV(j+1)}. ${esc(L(x.step))}</button>`).join("");
+  $("#rsteps").querySelectorAll("button").forEach(b => b.onclick = () => go(id, +b.dataset.j));
+  $("#prev").disabled = cur.i === 0; $("#next").disabled = cur.i === l.slides.length - 1;
+}
+function quizHTML(qs){ return qs.map((q, n) => `<div class="card q" data-n="${n}"><h3>${DEV(n+1)}. ${esc(L(q.q))}</h3><div class="opts">${q.o.map((o, j) => `<button data-j="${j}">${esc(L(o))}</button>`).join("")}</div><p class="why" hidden></p></div>`).join("") + `<div class="chip" id="qs"></div>`; }
+function bindQuiz(qs){
+  let score = 0, answered = 0;
+  const upd = () => $("#qs").textContent = `${L(UI.score)}: ${DEV(score)} / ${DEV(qs.length)}`;
+  document.querySelectorAll(".q").forEach(card => {
+    const q = qs[+card.dataset.n];
+    card.querySelectorAll("button").forEach(b => b.onclick = () => {
+      if (card.dataset.done) return; card.dataset.done = 1; answered++;
+      const ok = +b.dataset.j === q.a; if (ok) score++;
+      b.classList.add(ok ? "ok" : "no"); if (!ok) card.querySelector(`button[data-j="${q.a}"]`).classList.add("ok");
+      const w = card.querySelector(".why"); w.hidden = false; w.textContent = `${L(ok ? UI.right : UI.wrong)} ${L(q.why)}`;
+      upd();
+    });
+  });
+  upd();
+}
+function go(id, i){ location.hash = id + (i ? "-s" + (i+1) : ""); }
+function route(){
+  const h = location.hash.slice(1); const m = h.match(/^(.*?)(?:-s(\d+))?$/);
+  if (m && LESSONS.some(l => l.id === m[1])) lesson(m[1], m[2] ? +m[2] - 1 : 0); else home();
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+function setLang(l){ LANG = l; document.documentElement.lang = l; try { localStorage.setItem("lab-lang", l); } catch(e) {}
+  $("#lgEn").setAttribute("aria-pressed", l==="en"); $("#lgMr").setAttribute("aria-pressed", l==="mr"); route(); }
+$("#lgEn").onclick = () => setLang("en"); $("#lgMr").onclick = () => setLang("mr");
+$("#homeBtn").onclick = e => { e.preventDefault(); location.hash = ""; home(); };
+$("#prev").onclick = () => go(cur.id, cur.i - 1); $("#next").onclick = () => go(cur.id, cur.i + 1);
+document.addEventListener("keydown", e => { if (!cur.id || $("#rail").hidden || /input|textarea/i.test(e.target.tagName)) return;
+  const l = LESSONS.find(x => x.id === cur.id); if (e.key === "ArrowRight" && cur.i < l.slides.length-1) go(cur.id, cur.i+1); if (e.key === "ArrowLeft" && cur.i > 0) go(cur.id, cur.i-1); });
+window.addEventListener("hashchange", route);
+setLang(LANG);
+</script>

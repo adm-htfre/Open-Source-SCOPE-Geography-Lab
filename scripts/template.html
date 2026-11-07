@@ -2,9 +2,9 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Source+Sans+3:wght@400;600;700&family=Mukta:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400;1,8..60,500&family=Archivo:wght@500;600;700;800;900&family=Mukta:wght@400;500;600;700;800&family=Tiro+Devanagari+Marathi:ital@0;1&display=swap">
 <style>
-/* Layout: election-night "balance" board — a headline bar across the top, map on the left, ranked board on the right */
+/* Layout: a lesson board on warm grid paper — serif headline with a highlighter word, outlined cards, black fact chips */
 :root{
   --bg:#eef1f5; --panel:#ffffff; --ink:#0f1b2d; --muted:#5a6678; --line:#d9dee7; --soft:#f4f6f9;
   --accent:#0b5f73; --accent-ink:#ffffff; --good:#1f8a52; --bad:#c23b3b; --focus:#e08a00;
@@ -202,6 +202,127 @@ html[lang="mr"] .rankhead h3{font-family:var(--f-mr);text-transform:none}
 .src{font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--line);padding-top:12px}
 .src a{color:var(--accent)}
 .src p{margin:0;max-width:110ch}
+
+/* ===== Paper & highlighter theme ===== */
+:root{
+  --bg:#ebe6da; --paper-hi:#f6f2e8; --grid:rgba(40,36,28,.05); --panel:#fbf9f4; --ink:#15171c; --muted:#6b675d; --line:#d8d1c1; --soft:#f2eee4;
+  --accent:#3b6fd6; --accent-ink:#ffffff; --good:#2f8a4f; --bad:#c9452f; --focus:#c98e00; --hl:#f7d548; --chip:#15171c; --chip-ink:#ffffff; --red:#d1543a; --blue:#3b6fd6;
+  --s0:#e5dfd1; --s1:#c9ccca; --s2:#a2b2c3; --s3:#7895bb; --s4:#4f74aa; --s5:#2f5390; --s6:#1b3263;
+  --ghost:#dcd5c5; --bg-map:#fbf9f4; --ocean:#f5f1e7; --shadow:0 2px 0 rgba(0,0,0,.06),0 12px 26px -16px rgba(60,45,15,.4);
+  --f-display:"Source Serif 4","Iowan Old Style",Georgia,serif;
+  --f-label:"Archivo","Mukta","Arial Narrow",system-ui,sans-serif;
+  --f-body:"Source Serif 4","Mukta",Georgia,serif;
+  --f-mr:"Mukta","Noto Sans Devanagari",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#1b1a17; --paper-hi:#25231f; --grid:rgba(255,248,230,.045); --panel:#23211d; --ink:#f1ece0; --muted:#a9a293; --line:#3b382f; --soft:#2a2823;
+  --accent:#6f9bf0; --accent-ink:#0f1320; --good:#5cc483; --bad:#f08a72; --focus:#f2c94c; --hl:#e8c234; --chip:#f1ece0; --chip-ink:#15171c; --red:#ec7c62; --blue:#6f9bf0;
+  --s0:#2b2b2a; --s1:#2c3a4e; --s2:#344f78; --s3:#3f67a1; --s4:#5a86c4; --s5:#86aade; --s6:#c3d6f3;
+  --ghost:#302e29; --bg-map:#23211d; --ocean:#201f1b; --shadow:0 2px 0 rgba(0,0,0,.3); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#1b1a17; --paper-hi:#25231f; --grid:rgba(255,248,230,.045); --panel:#23211d; --ink:#f1ece0; --muted:#a9a293; --line:#3b382f; --soft:#2a2823;
+  --accent:#6f9bf0; --accent-ink:#0f1320; --good:#5cc483; --bad:#f08a72; --focus:#f2c94c; --hl:#e8c234; --chip:#f1ece0; --chip-ink:#15171c; --red:#ec7c62; --blue:#6f9bf0;
+  --s0:#2b2b2a; --s1:#2c3a4e; --s2:#344f78; --s3:#3f67a1; --s4:#5a86c4; --s5:#86aade; --s6:#c3d6f3;
+  --ghost:#302e29; --bg-map:#23211d; --ocean:#201f1b; --shadow:0 2px 0 rgba(0,0,0,.3); color-scheme:dark}
+html[lang="mr"]{--f-display:"Tiro Devanagari Marathi","Noto Serif Devanagari",serif; --f-label:"Mukta","Noto Sans Devanagari",sans-serif; --f-body:"Mukta","Noto Sans Devanagari",sans-serif}
+body{background:
+  radial-gradient(ellipse 70% 55% at 50% 30%, var(--paper-hi), transparent 70%) fixed,
+  linear-gradient(var(--grid) 1px, transparent 1px) 0 0/28px 28px,
+  linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0/28px 28px,
+  var(--bg);
+  font-size:15.5px}
+mark{background:var(--hl);color:#15171c;padding:0 .14em;border-radius:3px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+button:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--hl);outline-offset:2px}
+
+/* labels: heavy caps sans */
+.eyebrow,.metrics button,.seg button,.btn,.drill,.crumb button,.pill,.tag,.home,.stat .k,.rankhead h3,.rankhead button,.zchip,.half span,.bar .seg2,.legend,.smalls button,.extremes,.strip .avg span,.d-meta,.hint,.readout em,#rank .val,.quiz .score{font-family:var(--f-label)}
+.eyebrow{font-weight:800;font-size:12.5px;letter-spacing:.2em;color:var(--muted)}
+.top{border-bottom:2px solid var(--ink)}
+h1{font-family:var(--f-display);font-weight:700;text-transform:none;letter-spacing:-.01em;line-height:1.08;font-size:clamp(32px,4.8vw,52px)}
+h1 small{font-family:var(--f-label);font-weight:800;font-size:.26em;letter-spacing:.16em;text-transform:uppercase;vertical-align:.6em}
+.seg{border:2px solid var(--ink);border-radius:6px;background:var(--panel)}
+.seg button{font-weight:800;font-size:13px;letter-spacing:.04em}
+.metrics button{border:2px solid var(--ink);background:var(--panel);border-radius:4px;font-weight:800;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;padding:6px 11px}
+.metrics button[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff;box-shadow:0 0 0 2px var(--ink)}
+
+/* cards */
+.card,.balance{background:var(--panel);border:2px solid var(--ink);border-radius:12px;box-shadow:var(--shadow)}
+.bal-title,.maphead h2,.d-name,.rankhead h3{font-family:var(--f-display);text-transform:none;letter-spacing:-.005em}
+.bal-title{font-weight:700;font-size:clamp(22px,2.6vw,30px)}
+.maphead h2{font-weight:700;font-size:21px}
+.bal-big{font-family:var(--f-display);font-weight:700}
+.bal-big span{font-family:var(--f-label);font-weight:700;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase}
+.bar{height:40px;border:2px solid var(--ink);border-radius:6px;overflow:hidden;background:var(--soft)}
+.bar .seg2{font-weight:800;font-size:14px;border-right:2px solid var(--ink)}
+.bar .seg2:first-child,.bar .seg2:last-child{border-radius:0}
+.half{border-left-color:var(--ink)}
+.half span{font-weight:800;font-size:10.5px;letter-spacing:.12em;background:var(--hl);color:#15171c;padding:1px 6px;border-radius:2px}
+.zchip{font-weight:600;font-size:13.5px}
+.zchip i{border-radius:2px}
+.strip .dot{border-color:var(--panel)}
+.strip .avg span{font-weight:800;letter-spacing:.08em;background:var(--hl);color:#15171c;padding:0 5px;border-radius:2px}
+.extremes{font-size:13.5px}
+.extremes b{font-family:var(--f-display);font-weight:700;font-size:15px}
+
+/* map */
+.mapbox{background:var(--paper-hi)}
+html:not(.lay-world) .mapbox{background:none}
+#tip{background:var(--chip);color:var(--chip-ink);border-radius:4px;font-family:var(--f-label);font-weight:600}
+#tip b{font-family:var(--f-display);font-size:16px}
+.zoomctl{border:2px solid var(--ink);border-radius:6px}
+.zoomctl button{border-bottom:2px solid var(--ink)}
+.readout{border:2px solid var(--ink);border-radius:6px}
+.readout b{font-family:var(--f-display);text-transform:none;font-size:20px;font-weight:700}
+.readout em{font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--blue)}
+.legend{font-weight:600}
+.legend .ramp i{border-top:1.5px solid var(--ink);border-bottom:1.5px solid var(--ink)}
+.smalls button{border:1.5px solid var(--ink);border-radius:4px;font-weight:700}
+.hint{font-family:var(--f-body);font-style:italic;font-size:14px}
+html[lang="mr"] .hint{font-style:normal}
+
+/* buttons & chips */
+.btn,.drill,.crumb button{background:var(--chip);color:var(--chip-ink);border:2px solid var(--chip);border-radius:4px;font-weight:800;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;padding:7px 12px}
+.btn.ghost{background:var(--panel);color:var(--ink);border-color:var(--ink)}
+.drill{background:var(--blue);border-color:var(--blue);color:#fff}
+.pill{border-radius:2px;font-weight:800;letter-spacing:.06em;padding:3px 8px}
+.home{background:var(--hl);color:#15171c;border-radius:2px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;align-self:flex-start}
+.quiz{border:2px solid var(--ink);background:var(--panel);border-radius:10px}
+.quiz .q{font-family:var(--f-display);font-size:20px}
+.quiz .score{font-weight:900}
+
+/* detail card */
+.d-name{font-weight:700;font-size:clamp(28px,3vw,36px);line-height:1.08}
+.d-alt{font-family:var(--f-body);font-style:italic}
+.d-meta{font-size:13.5px}
+.d-meta b{font-family:var(--f-display);font-size:15px}
+.note{font-family:var(--f-body);font-style:italic;background:var(--soft);border-left:4px solid var(--hl);font-size:14.5px}
+.stat{border:1.5px solid var(--line);border-radius:8px;background:var(--panel)}
+.stat.on{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.stat .k{font-weight:800;font-size:11.5px;letter-spacing:.1em}
+.stat .v{font-family:var(--f-display);font-weight:700;font-size:26px}
+.stat .r{font-family:var(--f-body);font-style:italic}
+.cmp{background:var(--soft);border-radius:2px}
+.cmp i{background:var(--blue);border-radius:2px}
+
+/* ranking */
+.rankhead h3{font-weight:700;font-size:20px}
+.rankhead button{border:1.5px solid var(--ink);border-radius:4px;font-weight:700}
+#rank .nm span{font-family:var(--f-display);font-weight:600;font-size:15px}
+#rank .nm i{height:6px;border-radius:1px}
+#rank .val{font-weight:800}
+#rank li button.sel{background:color-mix(in srgb, var(--hl) 35%, transparent);box-shadow:inset 3px 0 0 var(--ink)}
+
+/* sources */
+.src{font-family:var(--f-body);border-top:2px solid var(--ink)}
+.src strong{font-family:var(--f-label);font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:12px}
+
+
+/* Devanagari: no tracking or capitals (they break the headline bar of the script) */
+html[lang="mr"] .eyebrow,html[lang="mr"] .metrics button,html[lang="mr"] .btn,html[lang="mr"] .drill,html[lang="mr"] .crumb button,html[lang="mr"] .pill,html[lang="mr"] .home,html[lang="mr"] .stat .k,html[lang="mr"] .half span,html[lang="mr"] .strip .avg span,html[lang="mr"] .bal-big span,html[lang="mr"] .readout em,html[lang="mr"] .src strong,html[lang="mr"] h1 small{letter-spacing:0!important;text-transform:none!important}
+html[lang="mr"] h1,html[lang="mr"] .d-name,html[lang="mr"] .bal-title,html[lang="mr"] .maphead h2,html[lang="mr"] .rankhead h3,html[lang="mr"] .readout b{font-weight:400;line-height:1.3}
+html[lang="mr"] .stat .v,html[lang="mr"] .bal-big{font-weight:400}
+html[lang="mr"] .metrics button,html[lang="mr"] .btn,html[lang="mr"] .drill{font-size:14px;font-weight:700}
+html[lang="mr"] .stat .k{font-size:13px;font-weight:700}
 </style>
 
 <div class="wrap">
@@ -283,7 +404,7 @@ const LEVELS = {
 let UNITS, FEAT, U, ZONES, INDIA, SMALL, FINDABLE;
 
 const T = {
-  en:{eyebrow:"SCOPE · Geography Lab", title:"India Atlas", sub:"Census 2011",
+  en:{eyebrow:"SCOPE · What the map says", title:"India Atlas", sub:"Census 2011",
     india:"India", world:"World", next:"next",
     zones:{N:"Northern",C:"Central",E:"Eastern",W:"Western",S:"Southern",NE:"North Eastern",KK:"Konkan",PN:"Pune",NS:"Nashik",AU:"Chh. Sambhajinagar",AM:"Amravati",NG:"Nagpur",BL:"Bengaluru",MY:"Mysuru",BG:"Belagavi",KB:"Kalaburagi",AS:"Asia",AF:"Africa",EU:"Europe",NA:"North America",SA:"South America",OC:"Oceania"},
     lv:{india:{zoneWord:"Zone",zones:"Zones",across:"across States & UTs",avg:"India",total:"India total",unit:"State",units:"States & UTs",mapTitle:"Click a State or UT",small:"Small States & UTs:",hint:"Tip: double-click Maharashtra or Karnataka to see their districts.",balPop:"Where India's people live, by zone",balArea:"How India's land is shared, by zone",balZone:"India's six zones by population",half:"Half of India"},
@@ -306,7 +427,7 @@ const T = {
     men:"Males", women:"Females", crore:"crore", lakh:"lakh",
     srcHead:"Where the numbers come from",
   },
-  mr:{eyebrow:"स्कोप · भूगोल प्रयोगशाळा", title:"भारत नकाशा", sub:"जनगणना २०११",
+  mr:{eyebrow:"स्कोप · नकाशा काय सांगतो", title:"भारत नकाशा", sub:"जनगणना २०११",
     india:"भारत", world:"जग", next:"लवकरच",
     zones:{N:"उत्तर",C:"मध्य",E:"पूर्व",W:"पश्चिम",S:"दक्षिण",NE:"ईशान्य",KK:"कोकण",PN:"पुणे",NS:"नाशिक",AU:"छ. संभाजीनगर",AM:"अमरावती",NG:"नागपूर",BL:"बंगळूरु",MY:"म्हैसूर",BG:"बेळगाव",KB:"कलबुर्गी",AS:"आशिया",AF:"आफ्रिका",EU:"युरोप",NA:"उत्तर अमेरिका",SA:"दक्षिण अमेरिका",OC:"ओशनिया"},
     lv:{india:{zoneWord:"विभाग",zones:"विभाग",across:"राज्ये व केंद्रशासित प्रदेशांतील",avg:"भारत",total:"भारत एकूण",unit:"राज्य",units:"राज्ये व प्रदेश",mapTitle:"राज्य किंवा केंद्रशासित प्रदेशावर क्लिक करा",small:"लहान राज्ये व प्रदेश:",hint:"टीप: जिल्हे पाहण्यासाठी महाराष्ट्र किंवा कर्नाटकावर डबल-क्लिक करा.",balPop:"भारताची लोकसंख्या कोणत्या विभागात राहते",balArea:"भारताची जमीन विभागानुसार",balZone:"लोकसंख्येनुसार भारताचे सहा विभाग",half:"भारताचा अर्धा भाग"},
@@ -911,7 +1032,9 @@ function renderAll(){
   $("#h1").innerHTML = `${esc(t().title)} <small>${esc(t().sub)}</small>`;
   $("#scIndia").textContent = t().india; $("#scWorld").textContent = t().world;
   $("#scIndia").setAttribute("aria-pressed", S.level !== "world"); $("#scWorld").setAttribute("aria-pressed", S.level === "world");
-  $("#h1").innerHTML = `${esc(S.level==="world" ? t().wtitle : t().title)} <small>${esc(S.level==="world" ? t().wsub : t().sub)}</small>`;
+  const mrL = S.lang === "mr";
+  const place = S.level === "world" ? (mrL ? "जग" : "World") : S.level === "india" ? (mrL ? "भारत" : "India") : LEVELS[S.level].name[mrL ? "mr" : "en"];
+  $("#h1").innerHTML = `${mrL ? "भूगोल प्रयोगशाळा" : "Geography Lab"}: <mark>${esc(place)}</mark> <small>${esc(S.level==="world" ? t().wsub : t().sub)}</small>`;
   $("#mapTitle").textContent = S.metric === "zone" ? LV().zones : `${t().metrics[S.metric]} · ${t().units[S.metric]}`;
   $("#crumb").innerHTML = isDist() ? `<button id="backBtn">← ${esc(t().back)}</button><b>${esc(LEVELS[S.level].name[S.lang==="mr"?"mr":"en"])}</b>` : "";
   const bb = $("#backBtn"); if (bb) bb.onclick = () => setLevel("india", S.level);
